@@ -1,4 +1,4 @@
-# ShareSage Full Stack Project
+# ShareSage
 
 ## a splitwise financial web application clone 
 ---
