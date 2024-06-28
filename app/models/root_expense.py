@@ -13,3 +13,21 @@ class RootExpense(db.Model):
     expense_type = db.Column(db.String(20), nullable=False, default="Other")
     created_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
+
+    # comment : root_expense relationship
+    comment_expenses = db.relationship(
+        "Comment",
+        back_populates="expense_comments"
+    )
+
+    # child_expense : root_expense relationship
+    child_expense_root_expenses = db.relationship(
+        "ChildExpense",
+        back_populates="root_expense_child_expenses"
+    )
+
+    # user : root_expense relationship
+    user_root_expenses = db.relationship(
+        "User",
+        back_populates="root_expense_users"
+    )

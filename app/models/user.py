@@ -24,8 +24,37 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
-    root_expenses = db.relationship("RootExpense", backref = "users")
-    friends = db.relationship("User", secondary=relationships, back_populates="users")
+    # friends (user : user) relationship 
+    friends = db.relationship(
+        "User", 
+        secondary=relationships, 
+        # back_populates="users"
+    )
+
+    # comments : users relationship 
+    comment_users = db.relationship(
+        "Comment",
+        back_populates="user_comments"
+    )
+
+    # child expense : user relationship 
+    child_expense_users = db.relationship(
+        "ChildExpense",
+        back_populates="user_child_expenses"
+    )
+
+    # payment : user relationship 
+    payment_users = db.relationship(
+        "Payment",
+        back_populates="user_payments"
+    )
+
+    # user : root_expense relationship
+    root_expense_users = db.relationship(
+        "RootExpense",
+        back_populates="user_root_expenses"
+    )
+
 
     @property
     def password(self):
