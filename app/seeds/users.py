@@ -4,10 +4,8 @@ from alembic import op
 
 # Adds a demo user, you can add other users here if you want
 def seed_users():
-
-    db.drop_all()
-    db.create_all()
-
+    # db.drop_all()
+    # db.create_all()
 
     demo = User(
         username='Demo', email='demo@aa.io', password='password', first_name="Demo", last_name="Drake", avatar="/img/yahoo.jpeg")
