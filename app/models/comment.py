@@ -7,14 +7,12 @@ class Comment(db.Model):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
     
-    # id
     id = db.Column(db.Integer, primary_key=True)
-    # text
     text = db.Column(db.String(200), nullable=False)
     # expense_id
-    expense_id = db.Column(db.Integer, db.ForeignKey('root_expenses.id'), nullable=False)
+    expense_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('root_expenses.id')), nullable=False)
     # user_id
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     created_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
 
