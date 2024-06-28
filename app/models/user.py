@@ -1,7 +1,17 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from sqlalchemy.schema import Column, ForeignKey, Table
+from sqlalchemy import MetaData
 
+metadata_obj = MetaData()
+
+relationships = Table(
+    "relationships",
+    metadata_obj,
+    Column("user1_id", ForeignKey("users.id"), primary_key=True),
+    Column("user2_id", ForeignKey("users.id"), primary_key=True)
+)
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -15,6 +25,7 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
 
     root_expenses = db.relationship("RootExpense", backref = "users")
+    friends = db.relationship("User", secondary=relationships, back_populates="users")
 
     @property
     def password(self):
