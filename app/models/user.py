@@ -6,12 +6,12 @@ from sqlalchemy import MetaData
 
 metadata_obj = MetaData()
 
-relationships = Table(
-    "relationships",
-    metadata_obj,
-    Column("user1_id", ForeignKey("users.id"), primary_key=True),
-    Column("user2_id", ForeignKey("users.id"), primary_key=True)
-)
+# relationships = Table(
+#     "relationships",
+#     metadata_obj,
+#     Column("user1_id", ForeignKey("users.id"), primary_key=True),
+#     Column("user2_id", ForeignKey("users.id"), primary_key=True)
+# )
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -35,9 +35,9 @@ class User(db.Model, UserMixin):
     # friends (user : user) relationship 
     friends = db.relationship(
         "User", 
-        secondary=relationships, 
-        # back_populates="users"
+        secondary="relationships"
     )
+
 
     # comments : users relationship 
     comment_users = db.relationship(
