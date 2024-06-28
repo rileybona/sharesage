@@ -1,7 +1,10 @@
-from .db import db
+from .db import db, environment, SCHEMA
 
 class RootExpense(db.Model):
     __tablename__ = "root_expenses"
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
