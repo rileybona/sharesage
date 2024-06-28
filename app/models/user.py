@@ -1,17 +1,17 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from sqlalchemy.schema import Column, ForeignKey, Table
 from sqlalchemy import MetaData
 
 metadata_obj = MetaData()
 
-# relationships = Table(
-#     "relationships",
-#     metadata_obj,
-#     Column("user1_id", ForeignKey("users.id"), primary_key=True),
-#     Column("user2_id", ForeignKey("users.id"), primary_key=True)
-# )
+relationships = db.Table(
+    "relationships",
+    db.metadata,
+    db.Column("user1_id", db.Integer, db.ForeignKey("users.id"), primary_key=True),
+    db.Column("user2_id", db.Integer, db.ForeignKey("users.id"), primary_key=True)
+)
+
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -33,16 +33,20 @@ class User(db.Model, UserMixin):
     updated_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
 
     # friends (user : user) relationship 
-    friend1 = db.relationship(
+    friender = db.relationship(
         "User", 
-        secondary="relationships",
-        back_populates="friend2"
+        secondary=relationships,
+        primaryjoin=(relationships.c.user1_id == id),
+        secondaryjoin=(relationships.c.user2_id == id),
+        back_populates="friendee"
     )
 
-    friend2 = db.relationship(
+    friendee = db.relationship(
         "User",
         secondary="relationships",
-        back_populates="friend1"
+        primaryjoin=(relationships.c.user2_id == id),
+        secondaryjoin=(relationships.c.user1_id == id),
+        back_populates="friender"
     )
 
 

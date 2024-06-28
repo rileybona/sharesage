@@ -1,9 +1,14 @@
 from app.models import db, User, environment, SCHEMA
 from sqlalchemy.sql import text
-
+from alembic import op 
 
 # Adds a demo user, you can add other users here if you want
 def seed_users():
+
+    db.drop_all()
+    db.create_all()
+
+
     demo = User(
         username='Demo', email='demo@aa.io', password='password', first_name="Demo", last_name="Drake", avatar="/img/yahoo.jpeg")
     marnie = User(
@@ -15,7 +20,6 @@ def seed_users():
     db.session.add(marnie)
     db.session.add(bobbie)
     db.session.commit()
-
 
 # Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't
 # have a built in function to do this. With postgres in production TRUNCATE
