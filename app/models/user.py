@@ -1,16 +1,16 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from sqlalchemy import MetaData
-
-metadata_obj = MetaData()
-
-relationships = db.Table(
-    "relationships",
-    db.metadata,
-    db.Column("user1_id", db.Integer, db.ForeignKey("users.id"), primary_key=True),
-    db.Column("user2_id", db.Integer, db.ForeignKey("users.id"), primary_key=True)
-)
+# from sqlalchemy import MetaData
+#
+# metadata_obj = MetaData()
+#
+# relationships = db.Table(
+#     "relationships",
+#     db.metadata,
+#     db.Column("user1_id", db.Integer, db.ForeignKey("users.id"), primary_key=True),
+#     db.Column("user2_id", db.Integer, db.ForeignKey("users.id"), primary_key=True)
+# )
 
 
 class User(db.Model, UserMixin):
@@ -33,22 +33,22 @@ class User(db.Model, UserMixin):
     updated_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
 
     # friends (user : user) relationship 
-    friender = db.relationship(
-        "User", 
-        secondary=relationships,
-        primaryjoin=(relationships.c.user1_id == id),
-        secondaryjoin=(relationships.c.user2_id == id),
-        back_populates="friendee"
-    )
-
-    friendee = db.relationship(
-        "User",
-        secondary="relationships",
-        primaryjoin=(relationships.c.user2_id == id),
-        secondaryjoin=(relationships.c.user1_id == id),
-        back_populates="friender"
-    )
-
+    # friender = db.relationship(
+    #     "User", 
+    #     secondary=relationships,
+    #     primaryjoin=(relationships.c.user1_id == id),
+    #     secondaryjoin=(relationships.c.user2_id == id),
+    #     back_populates="friendee"
+    # )
+    #
+    # friendee = db.relationship(
+    #     "User",
+    #     secondary="relationships",
+    #     primaryjoin=(relationships.c.user2_id == id),
+    #     secondaryjoin=(relationships.c.user1_id == id),
+    #     back_populates="friender"
+    # )
+    #
 
     # comments : users relationship 
     comment_users = db.relationship(
