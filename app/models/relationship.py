@@ -9,3 +9,6 @@ class Relationship(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user1_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user2_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+
+# remote_side=[user.id]

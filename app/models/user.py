@@ -33,9 +33,16 @@ class User(db.Model, UserMixin):
     updated_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
 
     # friends (user : user) relationship 
-    friends = db.relationship(
+    friend1 = db.relationship(
         "User", 
-        secondary="relationships"
+        secondary="relationships",
+        back_populates="friend2"
+    )
+
+    friend2 = db.relationship(
+        "User",
+        secondary="relationships",
+        back_populates="friend1"
     )
 
 
