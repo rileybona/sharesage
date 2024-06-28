@@ -6,7 +6,7 @@ SCHEMA = os.environ.get("SCHEMA")
 
 
 db = SQLAlchemy()
-
+print(dir(db))
 # helper function for adding prefix to foreign key column references in production
 def add_prefix_for_prod(attr):
     if environment == "production":
