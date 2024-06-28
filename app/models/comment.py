@@ -12,7 +12,7 @@ class Comment(db.Model):
     # text
     text = db.Column(db.String(200), nullable=False)
     # expense_id
-    expense_id = db.Column(db.Integer, db.ForeignKey('expenses.id'), nullable=False)
+    expense_id = db.Column(db.Integer, db.ForeignKey('root_expenses.id'), nullable=False)
     # user_id
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     # createdat

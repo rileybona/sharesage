@@ -1,5 +1,6 @@
 from .db import db, environment, SCHEMA
 
+
 class RootExpense(db.Model):
     __tablename__ = "root_expenses"
 
