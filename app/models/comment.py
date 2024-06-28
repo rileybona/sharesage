@@ -15,10 +15,9 @@ class Comment(db.Model):
     expense_id = db.Column(db.Integer, db.ForeignKey('root_expenses.id'), nullable=False)
     # user_id
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    # createdat
-    created_at = db.Column(db.DateTime(), default=datetime.now)
-    # updatedat
-    updated_at = db.Column(db.DateTime(), default=datetime.now)
+    created_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
+
 
     user_comments = db.relationship(
         "User",

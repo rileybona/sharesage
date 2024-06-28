@@ -1,5 +1,4 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from datetime import datetime
 
 
 class Payment(db.Model):
@@ -14,7 +13,7 @@ class Payment(db.Model):
     method = db.Column(db.String(31))
     amount = db.Column(db.Float)
     note = db.Column(db.String(255))
-    created_at = db.Column(db.DateTime(), default=datetime.now)
+    created_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
 
     # user : payments relationship
     user_payments = db.relationship(
