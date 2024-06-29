@@ -9,7 +9,21 @@ def seed_root_expense():
         amount = 100, 
         expense_type = "Food", 
     )
-    db.session.add(expense1)
+    expense2 = RootExpense(
+        owner_id = 2,
+        name = 'Dinner', 
+        amount = 200, 
+        expense_type = "Food", 
+    )
+    expense3 = RootExpense(
+        owner_id = 3, 
+        name = "Gas", 
+        amount = 200, 
+        expense_type = "Travel", 
+    )
+    expenses = [expense1, expense2, expense3]
+    for exp in expenses: 
+        db.session.add(exp)
     db.session.commit()
     # db.session.add(bobbie)
     # db.session.commit()
