@@ -14,6 +14,7 @@ class RootExpense(db.Model):
     expense_type = db.Column(db.String(20), nullable=False, default="Other")
     created_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
+    # may need to add boolean equal split ? 
 
     # comment : root_expense relationship
     comment_expenses = db.relationship(
