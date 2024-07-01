@@ -1,6 +1,5 @@
 from flask import Blueprint, request
-from .utils import CommentUtils, AuthUtils
-from app.models import db, Comment, User
+from .utils import CommentUtils
 from flask_login import login_required
 
 comment = Blueprint("comments", __name__)
@@ -15,3 +14,14 @@ def get_comments(expense_id):
 def post_new_comment(expense_id):
     req_body = request.get_json()
     return CommentUtils.create_new_comment(req_body, expense_id)
+
+@comment.route("/comments/<int:comment_id>", methods=["PUT"])
+@login_required
+def update_comment(comment_id):
+    req_body = request.get_json()
+    return CommentUtils.update_comment_by_id(req_body, comment_id)
+
+@comment.route("/comments/<int:comment_id>", methods=["DELETE"])
+@login_required
+def delete_comment(comment_id):
+    return CommentUtils.delete_comment_by_id(comment_id)

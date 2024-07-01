@@ -160,3 +160,42 @@ class CommentUtils:
             return CommentUtils.parse_data(new_comment)
         except Exception as e:
             raise e
+
+    @staticmethod
+    def get_comment_by_id(id):
+        return Comment.query.filter(Comment.id == int(id)).first()
+
+    @staticmethod
+    def update_comment_by_id(details, comment_id):
+        # retrieve expense obj from db
+        comment = CommentUtils.get_comment_by_id(comment_id)
+        # validate auth
+        current_user = AuthUtils.get_current_user()['id']
+        if not (current_user == comment.user_id):
+            return Response(response="You are not authorized to edit this expense", status=403)
+
+        # [try] Update db obj and commit changes
+        try:
+            comment.text = details["text"]
+            db.session.commit()
+        except Exception as e:
+            raise e
+
+        return CommentUtils.parse_data(comment)
+
+    @staticmethod
+    def delete_comment_by_id(comment_id):
+        # retrieve expense obj from db
+        comment = CommentUtils.get_comment_by_id(comment_id)
+        # validate auth
+        current_user = AuthUtils.get_current_user()['id']
+        if not (current_user == comment.user_id):
+            return {"message": "Not Authorized"}
+
+        try:
+            db.session.delete(comment)
+            db.session.commit()
+        except Exception as e:
+            raise e
+
+        return {"message": "Deletion succeeded"}
