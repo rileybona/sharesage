@@ -4,7 +4,6 @@ from .root_expenses import seed_root_expenses, undo_root_expenses
 from .child_expenses import seed_child_expenses, undo_child_expenses
 from .comments import seed_comments, undo_comments
 from .payments import seed_payments, undo_payments
-from .root_expenses import seed_root_expense, undo_root_expense
 from app.models.db import environment
 from app.models import db
 
@@ -37,7 +36,7 @@ def seed():
 @seed_commands.command('undo')
 def undo():
     undo_users()
-    undo_root_expense()
+    undo_root_expenses()
 
     # Add other undo functions here
     undo_root_expenses()
