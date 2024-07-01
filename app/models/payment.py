@@ -10,8 +10,8 @@ class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     expense_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('child_expenses.id')), nullable=False)
-    method = db.Column(db.String(31))
-    amount = db.Column(db.Float)
+    method = db.Column(db.String(31), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
     note = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
 
@@ -21,9 +21,8 @@ class Payment(db.Model):
         back_populates="payment_users"
     )
 
-    # child_expense : payments relationship 
+    # child_expense : payments relationship
     child_expense_payments = db.relationship(
         "ChildExpense",
         back_populates="payments_child_expenses"
     )
-
