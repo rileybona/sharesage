@@ -1,5 +1,5 @@
 from os import name
-from app.models import db, RootExpense, ChildExpense, User, Comment
+from app.models import db, RootExpense, ChildExpense, User, Comment, Payment
 from flask_login import current_user
 from flask import Response, jsonify
 
@@ -144,13 +144,13 @@ class CommentUtils:
             raise Exception("Invalid Expense Object from query")
     @staticmethod
     def get_all_comments(expense_id):
-        all_comments = Comment.query.filter(Comment.expense_id == expense_id).all()
+        all_comments = Comment.query.filter(Comment.expense_id == expense_id)
 
         return list(map(lambda x: CommentUtils.parse_data(x), all_comments))
     @staticmethod
     def create_new_comment(details, expense_id):
         new_comment = Comment(
-            text=details["text"],
+            text=details.get("text"),
             expense_id=expense_id,
             user_id=AuthUtils.get_current_user()['id']
         )
@@ -163,7 +163,7 @@ class CommentUtils:
 
     @staticmethod
     def get_comment_by_id(id):
-        return Comment.query.filter(Comment.id == int(id)).first()
+        return Comment.query.filter(Comment.id == int(id))
 
     @staticmethod
     def update_comment_by_id(details, comment_id):
@@ -176,7 +176,7 @@ class CommentUtils:
 
         # [try] Update db obj and commit changes
         try:
-            comment.text = details["text"]
+            comment.text = details.get("text")
             db.session.commit()
         except Exception as e:
             raise e
@@ -199,3 +199,47 @@ class CommentUtils:
             raise e
 
         return {"message": "Deletion succeeded"}
+
+class PaymentUtils:
+    @staticmethod
+    def parse_data(payment_obj):
+        try:
+            return ({
+                "id": payment_obj.id,
+                "note": payment_obj.note,
+                "expense_id": payment_obj.expense_id,
+                "user_id": payment_obj.user_id,
+                "method": payment_obj.method,
+                "amount": payment_obj.amount,
+                "created_at": payment_obj.created_at
+            })
+        except:
+            raise Exception("Invalid Payment Object from query")
+
+    @staticmethod
+    def get_all_payments(expense_id):
+        all_payments = Payment.query.filter(Payment.expense_id == expense_id)
+
+        return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))
+
+    @staticmethod
+    def create_new_payment(details, expense_id):
+        new_payment = Payment(
+            note=details.get("note"),
+            method=details.get("method"),
+            amount=details.get("amount"),
+            expense_id=expense_id,
+            user_id=AuthUtils.get_current_user()['id']
+        )
+        try:
+            db.session.add(new_payment)
+            db.session.commit()
+            return PaymentUtils.parse_data(new_payment)
+        except Exception as e:
+            raise e
+
+    @staticmethod
+    def get_payments_by_user():
+        user_id = AuthUtils.get_current_user()['id']
+        all_payments = Payment.query.filter(Payment.user_id == user_id)
+        return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))

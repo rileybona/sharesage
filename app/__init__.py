@@ -7,6 +7,7 @@ from flask_login import LoginManager
 
 from .api.root_expense_routes import root as root_expense_routes
 from .api.comment_routes import comment as comment_routes
+from .api.payment_routes import payment as payment_routes
 from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
@@ -33,6 +34,7 @@ app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(root_expense_routes, url_prefix="/api/expenses")
 app.register_blueprint(comment_routes, url_prefix="/api")
+app.register_blueprint(payment_routes, url_prefix="/api")
 db.init_app(app)
 Migrate(app, db)
 
