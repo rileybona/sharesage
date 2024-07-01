@@ -146,9 +146,24 @@ class ChildExpenseUtils:
         else:
             return {"message": f"Child expense {id} not updated"}
 
-
     @staticmethod
-    def add_payee_to_expense(expense_id, user_id):
+    def add_payee_to_expense(root_expense_id, payload):
+        """ Returns updated child expenses and their associated users"""
+        """payload structure
+        {
+            "new_user": {
+                "id": int
+                "split_amount": float
+            },
+            user1_email: {
+                "split_amount": float //updated split_amount from frontend
+            },
+            user2_email: {
+                "split_amount": float //updated split_amount from frontend
+            }
+
+        }
+        """
         pass
 
 class UserUtils:
@@ -174,6 +189,11 @@ class UserUtils:
         if not user:
             raise Exception("User not found")
         return UserUtils.parse_data(user)
+
+    @staticmethod
+    def get_user_by_email(email):
+        """ Returns parsed user info by their email """
+        pass
 
 class AuthUtils:
     @staticmethod
