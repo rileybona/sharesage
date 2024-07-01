@@ -1,5 +1,11 @@
+<<<<<<< Updated upstream
 from flask import Blueprint 
 from app.models import RootExpense, db
+=======
+from flask import Blueprint, request, jsonify
+from .utils import ExpenseUtils, AuthUtils, ChildExpenseUtils
+from flask_login import login_required
+>>>>>>> Stashed changes
 
 expense_routes = Blueprint("root_expenses", __name__, "/expenses")
 
@@ -15,6 +21,7 @@ def get_expense_by_id():
     return expense.to_dict()
 
 
+<<<<<<< Updated upstream
 # UPDATE AN EXPENSE 
 @expense_routes.route("/<int: id>", methods=["PUT"])
 def update_expense(fe_expense_data): 
@@ -45,3 +52,31 @@ def update_expense(fe_expense_data):
 
 
 # (david get all, post, & delete)
+=======
+#Child Expense routes
+@expense.route("/<int:id>/payees", methods = ["GET"])
+def get_payees_by_expense(id):
+    """ Returns child expenses and their owners:
+        [{
+            "id": 1,
+            "owner": {
+                "avatar": "/img/cow.jpeg",
+                "email": "marnie@aa.io",
+                "first_name": "Marnie",
+                "id": 2,
+                "last_name": "Blake",
+                "username": "marnie"
+            },
+            "root_expense_id": 1,
+            "split_amount": 50.0,
+            "user_id": 2
+        },
+        ...]
+    """
+    return ChildExpenseUtils.get_payees_by_expense_id(int(id))
+
+
+@expense.route("/<int:id>/payees", methods=["POST", "PUT"])
+def add_payee_expense(payload): 
+    return jsonify(ChildExpenseUtils.add_payee_to_expense(id, payload)), 201
+>>>>>>> Stashed changes
