@@ -1,4 +1,3 @@
-from app.models import child_expense
 from flask import Blueprint, request, jsonify
 from .utils import ExpenseUtils, AuthUtils, ChildExpenseUtils
 from flask_login import login_required
