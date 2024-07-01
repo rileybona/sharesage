@@ -1,8 +1,9 @@
 from os import name
-from app.models import db, RootExpense
+from app.models import db, RootExpense, ChildExpense, User
 from flask_login import current_user
-from flask import Response
+from flask import Response, jsonify
 
+# ROOT EXPENSES 
 class ExpenseUtils: 
     @staticmethod
     def parse_data(expense_obj): # TO-DO add new attributes 
@@ -76,8 +77,6 @@ class ExpenseUtils:
         updated_expense = ExpenseUtils.get_expense_by_id(int(id))
         return ExpenseUtils.parse_data(updated_expense)
 
-        
-
 
     @staticmethod 
     def delete_expense_by_id(id):
@@ -89,6 +88,36 @@ class ExpenseUtils:
             return {"message": "Deletion suceeded"}
         else: 
             return {"message": "Not Authorized"}
+    
+
+# CHILD EXPENSES / PAYEES 
+class ChildExpenseUtils:
+    @staticmethod
+    def get_payees_by_expense(id):
+        # child_expenses = ChildExpense.query.filter(ChildExpense.root_expense_id == id)
+        # payees = []
+        # for child in child_expenses:
+        #     payee_id = child.user_id 
+        #     payee = User.query.filter(User.id == payee_id)
+        #     payee = jsonify(payee)
+        #     payees.append(payee)
+        # return payees
+        pass 
+
+    @staticmethod
+    def add_payee_to_expense(expense_id, user_id):
+        # current_payees = ChildExpenseUtils.get_payees_by_expense(id)
+        # for payee in current_payees:
+        #     if payee.user_id == user_id: return {"message": "User already added"}
+
+        # new_child_expense = ChildExpense(
+        #     root_expense_id = expense_id,
+        #     user_id = user_id
+        # )
+        # db.session.add(new_child_expense)
+        # db.session.commit() 
+
+        pass 
 
 class AuthUtils: 
     @staticmethod 
