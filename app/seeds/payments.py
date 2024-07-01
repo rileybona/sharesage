@@ -8,10 +8,10 @@ def seed_payments():
         user_id = 3, expense_id=1, method="venmo", amount=83.34, note="I can cover the rest if need be", created_at=db.func.now()
     )
     payment2 = Payment(
-        user_id = 1, expense_id=3, method="cash", amount=266.67, created_at=db.func.now()
+        user_id = 1, expense_id=4, method="cash", amount=266.67, created_at=db.func.now()
     )
     payment3 = Payment(
-        user_id = 3, expense_id=3, method="paypal", amount=266.67, created_at=db.func.now()
+        user_id = 3, expense_id=5, method="paypal", amount=266.67, created_at=db.func.now()
     )
 
 
