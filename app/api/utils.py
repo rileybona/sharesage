@@ -27,7 +27,10 @@ class ExpenseUtils:
         """ Get all root expenses associated with the current user """
         ownerId = AuthUtils.get_current_user()['id']
         all_expenses = RootExpense.query.filter(RootExpense.owner_id == int(ownerId)).all()
-
+        child_exp_user = ChildExpenseUtils.get_expense_by_user()
+        for exp in child_exp_user:
+            rt_exp_id = exp['root_expense_id']
+            all_expenses.append(ExpenseUtils.get_expense_by_id(rt_exp_id))
         return list(map(lambda x: ExpenseUtils.parse_data(x), all_expenses))
 
     @staticmethod
@@ -62,16 +65,19 @@ class ExpenseUtils:
 
         # validate auth
         current_user = AuthUtils.get_current_user()['id']
-        if not (current_user == expense['owner_id']):
+        if not (current_user == expense.owner_id):
             return Response(response="You are not authorized to edit this expense", status=403)
 
         # TO-DO expense details validator for POST & PUT
 
         # [try] Update db obj and commit changes
         try:
-            expense['name'] = details["name"]
-            expense['amount'] = details['amount']
-            expense['expense_type'] = details['expense_type']
+            if "name" in details:
+                expense.name = details["name"]
+            if "amount" in details:
+                expense.amount = details['amount']
+            if "expense_type" in details:
+                expense.expense_type = details['expense_type']
             # expense['is_equal'] = details['is_equal']
             # expense['transaction_date'] = details['transaction_date]
             db.session.commit()
@@ -121,11 +127,24 @@ class ChildExpenseUtils:
             e["owner"] = UserUtils.get_user_by_id(e['user_id'])
             payees.append(e)
         return payees
+
+    @staticmethod
+    def get_expense_by_user():
+        """ Returns all child expenses associated with user"""
+        user_id = AuthUtils.get_current_user()['id']
+        child_expenses = ChildExpense.query.filter(ChildExpense.user_id == int(user_id)).all()
+        return list(map(lambda x: ChildExpenseUtils.parse_data(x), child_expenses ))
+
     @staticmethod
     def update_child_expense_by_id(id, payload):
-        """ Returns updated child expense"""
+        """ Returns updated child expense """
         child_expense = ChildExpense.query.filter(ChildExpense.id == int(id)).first()
-        pass
+        if child_expense:
+            if "split_amount" in payload:
+                split_amount = payload["split_amount"]
+            db.session.commit()
+        else:
+            return {"message": f"Child expense {id} not updated"}
 
 
     @staticmethod

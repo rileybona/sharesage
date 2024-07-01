@@ -25,7 +25,7 @@ def get_expense(id):
 
 
 @expense.route("/<int:id>", methods = ["PUT"])
-def update_expense():
+def update_expense(id):
     req_body = request.get_json()
     return ExpenseUtils.update_expense_by_id(id, req_body)
 
