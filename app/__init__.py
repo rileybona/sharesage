@@ -5,7 +5,6 @@ from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
 
-from .api.root_expense_routes import root as root_expense_routes
 from .api.comment_routes import comment as comment_routes
 from .api.payment_routes import payment as payment_routes
 from .api.expense_routes import expense as expense_routes
