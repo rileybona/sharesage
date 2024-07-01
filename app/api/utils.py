@@ -323,31 +323,34 @@ class AuthUtils:
         else:
             raise Exception("User not logged in")
 
+
 class CommentUtils:
     @staticmethod
     def parse_data(comment_obj):
         try:
-            return ({
+            return {
                 "id": comment_obj.id,
                 "text": comment_obj.text,
                 "expense_id": comment_obj.expense_id,
                 "user_id": comment_obj.user_id,
                 "created_at": comment_obj.created_at,
-                "updated_at": comment_obj.updated_at
-            })
+                "updated_at": comment_obj.updated_at,
+            }
         except:
             raise Exception("Invalid Expense Object from query")
+
     @staticmethod
     def get_all_comments(expense_id):
         all_comments = Comment.query.filter(Comment.expense_id == expense_id)
 
         return list(map(lambda x: CommentUtils.parse_data(x), all_comments))
+
     @staticmethod
     def create_new_comment(details, expense_id):
         new_comment = Comment(
             text=details.get("text"),
             expense_id=expense_id,
-            user_id=AuthUtils.get_current_user()['id']
+            user_id=AuthUtils.get_current_user()["id"],
         )
         try:
             db.session.add(new_comment)
@@ -365,9 +368,11 @@ class CommentUtils:
         # retrieve expense obj from db
         comment = CommentUtils.get_comment_by_id(comment_id)
         # validate auth
-        current_user = AuthUtils.get_current_user()['id']
+        current_user = AuthUtils.get_current_user()["id"]
         if not (current_user == comment.user_id):
-            return Response(response="You are not authorized to edit this expense", status=403)
+            return Response(
+                response="You are not authorized to edit this expense", status=403
+            )
 
         # [try] Update db obj and commit changes
         try:
@@ -383,7 +388,7 @@ class CommentUtils:
         # retrieve expense obj from db
         comment = CommentUtils.get_comment_by_id(comment_id)
         # validate auth
-        current_user = AuthUtils.get_current_user()['id']
+        current_user = AuthUtils.get_current_user()["id"]
         if not (current_user == comment.user_id):
             return {"message": "Not Authorized"}
 
@@ -395,19 +400,20 @@ class CommentUtils:
 
         return {"message": "Deletion succeeded"}
 
+
 class PaymentUtils:
     @staticmethod
     def parse_data(payment_obj):
         try:
-            return ({
+            return {
                 "id": payment_obj.id,
                 "note": payment_obj.note,
                 "expense_id": payment_obj.expense_id,
                 "user_id": payment_obj.user_id,
                 "method": payment_obj.method,
                 "amount": payment_obj.amount,
-                "created_at": payment_obj.created_at
-            })
+                "created_at": payment_obj.created_at,
+            }
         except:
             raise Exception("Invalid Payment Object from query")
 
@@ -424,7 +430,7 @@ class PaymentUtils:
             method=details.get("method"),
             amount=details.get("amount"),
             expense_id=expense_id,
-            user_id=AuthUtils.get_current_user()['id']
+            user_id=AuthUtils.get_current_user()["id"],
         )
         try:
             db.session.add(new_payment)
@@ -435,6 +441,6 @@ class PaymentUtils:
 
     @staticmethod
     def get_payments_by_user():
-        user_id = AuthUtils.get_current_user()['id']
+        user_id = AuthUtils.get_current_user()["id"]
         all_payments = Payment.query.filter(Payment.user_id == user_id)
         return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))
