@@ -2,6 +2,7 @@ from app.models import db, ChildExpense, environment, SCHEMA
 from sqlalchemy.sql import text
 from alembic import op
 
+# Adds a demo user, you can add other users here if you want
 def seed_child_expenses():
 
     dinner_expense1 = ChildExpense(

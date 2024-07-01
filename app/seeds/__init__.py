@@ -4,10 +4,11 @@ from .root_expenses import seed_root_expenses, undo_root_expenses
 from .child_expenses import seed_child_expenses, undo_child_expenses
 from .comments import seed_comments, undo_comments
 from .payments import seed_payments, undo_payments
+from .root_expenses import seed_root_expense, undo_root_expense
+from app.models.db import environment
+from app.models import db
 
-from app.models.db import db, environment, SCHEMA
-
-# Creates a seed group to hold our commands
+# Creates a seed group to hold our cmmands
 # So we can type `flask seed --help`
 seed_commands = AppGroup('seed')
 
@@ -21,6 +22,9 @@ def seed():
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
         undo_users()
+    else:
+        db.drop_all()
+        db.create_all()
     seed_users()
     # Add other seed functions here
     seed_root_expenses()
@@ -33,6 +37,8 @@ def seed():
 @seed_commands.command('undo')
 def undo():
     undo_users()
+    undo_root_expense()
+
     # Add other undo functions here
     undo_root_expenses()
     undo_child_expenses()
