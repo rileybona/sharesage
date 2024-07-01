@@ -141,7 +141,7 @@ class ChildExpenseUtils:
         child_expense = ChildExpense.query.filter(ChildExpense.id == int(id)).first()
         if child_expense:
             if "split_amount" in payload:
-                split_amount = payload["split_amount"]
+                child_expense.split_amount = payload["split_amount"] 
             db.session.commit()
         else:
             return {"message": f"Child expense {id} not updated"}
