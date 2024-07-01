@@ -151,46 +151,54 @@ class ChildExpenseUtils:
         """ Returns updated child expenses and their associated users"""
         """payload structure
         {
-            "new_user": {
-                "id": int
-                "split_amount": float
-            },
-            user1_email: {
-                "split_amount": float //updated split_amount from frontend
-            },
-            user2_email: {
-                "split_amount": float //updated split_amount from frontend
-            }
+            "existing_payees": [
+                {
+                    "email": "example1@gmail.com",
+                    "split_amount": 14.24
+                },
+                {
+                    "email": "example2@gmail.com",
+                    "split_amount": 21.22
+                }
+            ],
 
+            "new_payees": [
+                {
+                    "email": "example3@aol.com",
+                    "split_amount": 12.34
+                }
+            ]
         }
         """
-        # set up response list
-        response = []
-        # convert payload to list of child expenses
-        existing_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
-
-        for payee in payload:
-            for child_exp in existing_expenses:
-                # if pre-existing, update
-                if (payee.id == child_exp.user_id): 
-                    ChildExpenseUtils.update_child_expense_by_id(child_exp.id, payee)
-
-                # if new addition, try to create new child expense 
-                else:
-                    new_payee = ChildExpense(
-                        root_expense_id = id,
-                        user_id = payee.id,
-                        split_amount = payee.split_amount
-                    )
-                    try: 
-                        db.session.add(new_payee)
-                        db.session.commit()
-                    except Exception as e: 
-                        raise e 
-
+        # grab old child expenses from the database 
+        db_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
+        fe_old_expenses = payload["existing_payees"]
+        # compare db expenses to payload 'previous expenses'
+        for expense in db_expenses:
+            kill = True
+            for payee in fe_old_expenses: 
+                if (expense.owner.email == payee.email):
+                    ChildExpenseUtils.update_child_expense_by_id(expense.id)
+                    kill = False 
+            if kill: 
+                db.session.delete(expense)
+        
+        # create new child expenses for new payees 
+        for newbie in payload["new_payees"]:
+            new_child_expense = ChildExpense(
+                root_expense_id = root_expense_id,
+                user_id = UserUtils.get_user_by_email(newbie.email).id,
+                split_amount = newbie.split_amount 
+            )
+            try: 
+                db.session.add(new_child_expense)
+                db.session.commit()
+            except Exception as e: 
+                raise e 
+        
         # returns all updated / added child expenses and their users 
-        hopefully_updated_child_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
-        return hopefully_updated_child_expenses
+        updated_children = ChildExpenseUtils.get_payees_by_expense_id(id)
+        return updated_children
 
 class UserUtils:
     @staticmethod
