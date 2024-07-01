@@ -3,7 +3,17 @@ from sqlalchemy.sql import text
 
 # Adds a demo user, you can add other users here if you want
 def seed_child_expense():
-    expenses = []
+    expense1 = ChildExpense(
+        root_expense_id = 1, 
+        user_id = 2, 
+        split_amount = 50, 
+    )
+    expense2 = ChildExpense(
+        root_expense_id = 1, 
+        user_id = 3, 
+        split_amount = 50, 
+    )
+    expenses = [expense1, expense2]
     for exp in expenses: 
         db.session.add(exp)
     db.session.commit()
