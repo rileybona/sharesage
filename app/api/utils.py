@@ -1,9 +1,11 @@
 from os import name
 from app.models import db, RootExpense
 from flask_login import current_user
+from flask import Response
+
 class ExpenseUtils: 
     @staticmethod
-    def parse_data(expense_obj): 
+    def parse_data(expense_obj): # TO-DO add new attributes 
         try: 
             return ({
                 "id": expense_obj.id, 
@@ -45,6 +47,37 @@ class ExpenseUtils:
 
         except Exception as e: 
             raise e
+
+
+    @staticmethod
+    def update_expense_by_id(id, details):
+        # retrieve expense obj from db 
+        expense = ExpenseUtils.get_expense_by_id(int(id))
+
+        # validate auth 
+        current_user = AuthUtils.get_current_user()['id']
+        if not (current_user == expense['owner_id']): 
+            return Response(response="You are not authorized to edit this expense", status=403)
+        
+        # TO-DO expense details validator for POST & PUT
+        
+        # [try] Update db obj and commit changes 
+        try: 
+            expense['name'] = details["name"]
+            expense['amount'] = details['amount']
+            expense['expense_type'] = details['expense_type']
+            # expense['is_equal'] = details['is_equal']
+            # expense['transaction_date'] = details['transaction_date]
+            db.session.commit() 
+        except Exception as e:
+            raise e
+
+        # grab updated obj from db and return it 
+        updated_expense = ExpenseUtils.get_expense_by_id(int(id))
+        return ExpenseUtils.parse_data(updated_expense)
+
+        
+
 
     @staticmethod 
     def delete_expense_by_id(id):
