@@ -1,4 +1,5 @@
-from flask import Blueprint, request
+from app.models import child_expense
+from flask import Blueprint, request, jsonify
 from .utils import ExpenseUtils, AuthUtils, ChildExpenseUtils
 from flask_login import login_required
 
@@ -8,49 +9,44 @@ expense = Blueprint("root_expenses", __name__)
 @expense.route("/", methods = ["GET"])
 @login_required
 def get_all_expenses():
-    return ExpenseUtils.get_all_expenses()
+    return jsonify({"expenses": ExpenseUtils.get_all_expenses()})
 
 @expense.route("/", methods = ["POST"])
+@login_required
 def post_new_expense():
     req_body = request.get_json()
-    return ExpenseUtils.create_new_expense(req_body)
+    return jsonify( ExpenseUtils.create_new_expense(req_body)), 201
 
 @expense.route("/<int:id>", methods = ["GET"])
+@login_required
 def get_expense(id):
     expense = ExpenseUtils.get_expense_by_id(int(id))
     if expense.owner_id == AuthUtils.get_current_user()['id']:
-        return ExpenseUtils.parse_data(expense)
+        return jsonify(ExpenseUtils.parse_data(expense)), 200
     else:
-        return {"message": "Not Authorized"}
+        return jsonify({"message": "Not Authorized"}), 403
 
 
 @expense.route("/<int:id>", methods = ["PUT"])
+@login_required
 def update_expense(id):
     req_body = request.get_json()
-    return ExpenseUtils.update_expense_by_id(id, req_body)
+    return jsonify(ExpenseUtils.update_expense_by_id(id, req_body)), 200
 
 @expense.route("/<int:id>", methods = ["DELETE"])
+@login_required
 def delete_expense(id):
-    return ExpenseUtils.delete_expense_by_id(int(id))
+    status = ExpenseUtils.delete_expense_by_id(int(id))
+    if status == 0: 
+        return jsonify({"message": "Deletion Successful"}), 200
+    else: 
+        return jsonify({"message": "Internal Server Error"}), 500
 
 #Child Expense routes
 @expense.route("/<int:id>/payees", methods = ["GET"])
+@login_required
 def get_payees_by_expense(id):
-    """ Returns child expenses and their owners:
-        [{
-            "id": 1,
-            "owner": {
-                "avatar": "/img/cow.jpeg",
-                "email": "marnie@aa.io",
-                "first_name": "Marnie",
-                "id": 2,
-                "last_name": "Blake",
-                "username": "marnie"
-            },
-            "root_expense_id": 1,
-            "split_amount": 50.0,
-            "user_id": 2
-        },
-        ...]
-    """
-    return ChildExpenseUtils.get_payees_by_expense_id(int(id))
+    """ Returns child expenses and their owners"""
+    (child_expenses, users) = ChildExpenseUtils.get_payees_by_expense_id(int(id))
+ 
+    return jsonify({"child_expenses":child_expenses, "payees": users}), 200

@@ -53,8 +53,8 @@ class ExpenseUtils:
             db.session.commit()
             return ExpenseUtils.parse_data(new_expense)
 
-        except Exception as e:
-            raise e
+        except:
+            return Response(response="Internal Server Error", status=500)
 
 
     @staticmethod
@@ -81,8 +81,8 @@ class ExpenseUtils:
             # expense['is_equal'] = details['is_equal']
             # expense['transaction_date'] = details['transaction_date]
             db.session.commit()
-        except Exception as e:
-            raise e
+        except Exception:
+            return Response(response="Internal Server Error", status=500)
 
         # grab updated obj from db and return it
         updated_expense = ExpenseUtils.get_expense_by_id(int(id))
@@ -97,9 +97,9 @@ class ExpenseUtils:
         if isinstance(expense, RootExpense) and AuthUtils.get_current_user()['id'] == expense.owner_id:
             db.session.delete(expense)
             db.session.commit()
-            return {"message": "Deletion suceeded"}
+            return 0
         else:
-            return {"message": "Not Authorized"}
+            return -1
 
 
 # CHILD EXPENSES / PAYEES
@@ -122,18 +122,21 @@ class ChildExpenseUtils:
         """ Returns payees info within their associated child expense obj"""
         child_expenses = ChildExpense.query.filter(ChildExpense.root_expense_id == int(id)).all()
         payees = []
+        users = []
         for expense in child_expenses:
             e = ChildExpenseUtils.parse_data(expense)
-            e["owner"] = UserUtils.get_user_by_id(e['user_id'])
+            owner =  UserUtils.get_user_by_id(e['user_id'])
+            e["owner"] = owner
             payees.append(e)
-        return payees
+            users.append(owner)
+        return payees, users
 
     @staticmethod
     def get_expense_by_user():
         """ Returns all child expenses associated with user"""
         user_id = AuthUtils.get_current_user()['id']
         child_expenses = ChildExpense.query.filter(ChildExpense.user_id == int(user_id)).all()
-        return list(map(lambda x: ChildExpenseUtils.parse_data(x), child_expenses ))
+        return list(map(lambda x: ChildExpenseUtils.parse_data(x), child_expenses))
 
     @staticmethod
     def update_child_expense_by_id(id, payload):
