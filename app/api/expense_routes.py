@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from .utils import ExpenseUtils, AuthUtils, ChildExpenseUtils
 from flask_login import login_required
 
@@ -54,3 +54,8 @@ def get_payees_by_expense(id):
         ...]
     """
     return ChildExpenseUtils.get_payees_by_expense_id(int(id))
+
+
+@expense.route("/<int:id>/payees", methods=["POST", "PUT"])
+def add_payee_expense(payload): 
+    return jsonify(ChildExpenseUtils.add_payee_to_expense(id, payload)), 201

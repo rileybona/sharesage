@@ -164,7 +164,33 @@ class ChildExpenseUtils:
 
         }
         """
-        pass
+        # set up response list
+        response = []
+        # convert payload to list of child expenses
+        existing_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
+
+        for payee in payload:
+            for child_exp in existing_expenses:
+                # if pre-existing, update
+                if (payee.id == child_exp.user_id): 
+                    ChildExpenseUtils.update_child_expense_by_id(child_exp.id, payee)
+
+                # if new addition, try to create new child expense 
+                else:
+                    new_payee = ChildExpense(
+                        root_expense_id = id,
+                        user_id = payee.id,
+                        split_amount = payee.split_amount
+                    )
+                    try: 
+                        db.session.add(new_payee)
+                        db.session.commit()
+                    except Exception as e: 
+                        raise e 
+
+        # returns all updated / added child expenses and their users 
+        hopefully_updated_child_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
+        return hopefully_updated_child_expenses
 
 class UserUtils:
     @staticmethod
