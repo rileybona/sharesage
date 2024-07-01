@@ -130,7 +130,7 @@ class AuthUtils:
 
 class CommentUtils:
     @staticmethod
-    def parse_data(comment_obj): # TO-DO add new attributes
+    def parse_data(comment_obj):
         try:
             return ({
                 "id": comment_obj.id,
@@ -147,3 +147,16 @@ class CommentUtils:
         all_comments = Comment.query.filter(Comment.expense_id == expense_id).all()
 
         return list(map(lambda x: CommentUtils.parse_data(x), all_comments))
+    @staticmethod
+    def create_new_comment(details, expense_id):
+        new_comment = Comment(
+            text=details["text"],
+            expense_id=expense_id,
+            user_id=AuthUtils.get_current_user()['id']
+        )
+        try:
+            db.session.add(new_comment)
+            db.session.commit()
+            return CommentUtils.parse_data(new_comment)
+        except Exception as e:
+            raise e
