@@ -24,20 +24,24 @@ class ExpenseUtils:
             }
         except:
             raise Exception("Invalid Expense Object from query")
-
+    
     @staticmethod
-    def get_all_expenses():
-        """Get all root expenses associated with the current user"""
-        ownerId = AuthUtils.get_current_user()["id"]
-        all_expenses = RootExpense.query.filter(
-            RootExpense.owner_id == int(ownerId)
-        ).all()
-        child_exp_user = ChildExpenseUtils.get_expense_by_user()
-        for exp in child_exp_user:
-            rt_exp_id = exp["root_expense_id"]
-            all_expenses.append(ExpenseUtils.get_expense_by_id(rt_exp_id))
-        return list(map(lambda x: ExpenseUtils.parse_data(x), all_expenses))
-
+    def get_all_expenses(): 
+        expenses = db.session.query(RootExpense).join(ChildExpense, RootExpense.id == ChildExpense.root_expense_id).filter(RootExpense.id == 1).all().to_dict()
+        return expenses
+    # @staticmethod
+    # def get_all_expenses():
+    #     """Get all root expenses associated with the current user"""
+    #     ownerId = AuthUtils.get_current_user()["id"]
+    #     all_expenses = RootExpense.query.filter(
+    #         RootExpense.owner_id == int(ownerId)
+    #     ).all()
+    #     child_exp_user = ChildExpenseUtils.get_expense_by_user()
+    #     for exp in child_exp_user:
+    #         rt_exp_id = exp["root_expense_id"]
+    #         all_expenses.append(ExpenseUtils.get_expense_by_id(rt_exp_id))
+    #     return list(map(lambda x: ExpenseUtils.parse_data(x), all_expenses))
+    #
     @staticmethod
     def get_expense_by_id(id):
         """Returns expense by id"""
