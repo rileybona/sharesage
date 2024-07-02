@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
+import Sidebar from "../components/Sidebar/Sidebar"
 
 export default function Layout() {
   const dispatch = useDispatch();
