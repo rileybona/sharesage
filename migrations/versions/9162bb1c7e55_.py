@@ -8,6 +8,9 @@ Create Date: 2024-07-02 12:53:40.788363
 from alembic import op
 import sqlalchemy as sa
 
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
 revision = '9162bb1c7e55'
@@ -32,6 +35,10 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+
     op.create_table('root_expenses',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('owner_id', sa.Integer(), nullable=False),
@@ -43,6 +50,10 @@ def upgrade():
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE root_expenses SET SCHEMA {SCHEMA};")
+
     op.create_table('child_expenses',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('root_expense_id', sa.Integer(), nullable=False),
@@ -52,6 +63,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE child_expenses SET SCHEMA {SCHEMA};")
     op.create_table('comments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('text', sa.String(length=200), nullable=False),
@@ -63,6 +76,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
     op.create_table('payments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -75,6 +91,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE payments SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 

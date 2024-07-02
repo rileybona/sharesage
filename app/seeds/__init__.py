@@ -24,12 +24,8 @@ def seed():
         undo_comments()
         undo_child_expenses()
         undo_root_expenses()
-        undo_users()
-    else:
-        db.drop_all()
-        db.create_all()
+        undo_users() 
     seed_users()
-    # Add other seed functions here
     seed_root_expenses()
     seed_child_expenses()
     seed_comments()
