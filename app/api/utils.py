@@ -2,10 +2,16 @@ from os import name
 from app.models import db, RootExpense, ChildExpense, User, Comment, Payment
 from flask_login import current_user
 from flask import Response
+from datetime import datetime
 
 
 class ExpenseUtils:
     """Root Expenses Ultilities"""
+
+    @staticmethod
+    def parse_time(time_str):
+        format_str = "%m/%d/%Y"
+        return datetime.strptime(time_str, format_str)
 
     @staticmethod
     def parse_data(expense_obj):
@@ -19,6 +25,7 @@ class ExpenseUtils:
                 "name": expense_obj.name,
                 "amount": expense_obj.amount,
                 "expense_type": expense_obj.expense_type,
+                "transaction_date": expense_obj.transaction_date,
                 "created_at": expense_obj.created_at,
                 "updated_at": expense_obj.updated_at,
             }
@@ -67,6 +74,11 @@ class ExpenseUtils:
             expense_type=details["expense_type"],
         )
 
+        if "transaction_date" in details:
+            new_expense.transaction_date = ExpenseUtils.parse_time(
+                details["transaction_date"]
+            )
+
         try:
             db.session.add(new_expense)
             db.session.commit()
@@ -99,7 +111,10 @@ class ExpenseUtils:
             if "expense_type" in details:
                 expense.expense_type = details["expense_type"]
             # expense['is_equal'] = details['is_equal']
-            # expense['transaction_date'] = details['transaction_date]
+            if "transaction_date" in details:
+                expense.transaction_date = ExpenseUtils.parse_time(
+                    details["transaction_date"]
+                )
             db.session.commit()
         except Exception:
             return Response(response="Internal Server Error", status=500)
@@ -176,7 +191,7 @@ class ChildExpenseUtils:
             return {"message": f"Child expense {id} not updated"}
 
     @staticmethod
-    def add_payee_to_expense(root_expense_id, payload):
+    def add_payee_to_expense(id, payload):
         """Returns updated child expenses and their associated users"""
         """payload structure
         {
@@ -201,23 +216,32 @@ class ChildExpenseUtils:
         """
         # grab old child expenses from the database
         db_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
-        fe_old_expenses = payload["existing_payees"]
-        # compare db expenses to payload 'previous expenses'
-        for expense in db_expenses:
-            kill = True
-            for payee in fe_old_expenses:
-                if expense.owner.email == payee.email:
-                    ChildExpenseUtils.update_child_expense_by_id(expense.id)
-                    kill = False
-            if kill:
-                db.session.delete(expense)
+
+        if not len(db_expenses) == 0 and not len(db_expenses[0]) == 0:
+
+            fe_old_expenses = payload["existing_payees"]
+            # compare db expenses to payload 'previous expenses'
+
+            for expense in db_expenses[0]:
+                kill = True
+                for payee in fe_old_expenses:
+                    if expense["owner"]["email"] == payee["email"]:
+                        ChildExpenseUtils.update_child_expense_by_id(
+                            expense["id"], {"split_amount": payee["split_amount"]}
+                        )
+                        kill = False
+                if kill:
+                    expense = ChildExpense.query.filter(
+                        ChildExpense.id == expense["id"]
+                    ).first()
+                    db.session.delete(expense)
 
         # create new child expenses for new payees
         for newbie in payload["new_payees"]:
             new_child_expense = ChildExpense(
-                root_expense_id=root_expense_id,
-                user_id=UserUtils.get_user_by_email(newbie.email).id,
-                split_amount=newbie.split_amount,
+                root_expense_id=id,
+                user_id=UserUtils.get_user_by_email(newbie["email"]).id,
+                split_amount=newbie["split_amount"],
             )
             try:
                 db.session.add(new_child_expense)
@@ -366,7 +390,7 @@ class CommentUtils:
     @staticmethod
     def update_comment_by_id(details, comment_id):
         # retrieve expense obj from db
-        comment = CommentUtils.get_comment_by_id(comment_id)
+        comment = CommentUtils.get_comment_by_id(comment_id).first()
         # validate auth
         current_user = AuthUtils.get_current_user()["id"]
         if not (current_user == comment.user_id):
@@ -386,7 +410,7 @@ class CommentUtils:
     @staticmethod
     def delete_comment_by_id(comment_id):
         # retrieve expense obj from db
-        comment = CommentUtils.get_comment_by_id(comment_id)
+        comment = CommentUtils.get_comment_by_id(comment_id).first()
         # validate auth
         current_user = AuthUtils.get_current_user()["id"]
         if not (current_user == comment.user_id):

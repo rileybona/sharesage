@@ -54,3 +54,11 @@ def get_payees_by_expense(id):
     (child_expenses, users) = ChildExpenseUtils.get_payees_by_expense_id(int(id))
 
     return jsonify({"child_expenses": child_expenses, "payees": users}), 200
+
+
+@expense.route("/<int:id>/payees", methods=["POST", "PUT"])
+def add_payee_expense(id):
+    payload = request.get_json()
+    # return {"test": ChildExpenseUtils.add_payee_to_expense(id, payload)}
+    (child_expenses, users) = ChildExpenseUtils.add_payee_to_expense(id, payload)
+    return jsonify({"child_expenses": child_expenses, "payees": users}), 201
