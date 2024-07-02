@@ -390,7 +390,7 @@ class CommentUtils:
     @staticmethod
     def update_comment_by_id(details, comment_id):
         # retrieve expense obj from db
-        comment = CommentUtils.get_comment_by_id(comment_id)
+        comment = CommentUtils.get_comment_by_id(comment_id).first()
         # validate auth
         current_user = AuthUtils.get_current_user()["id"]
         if not (current_user == comment.user_id):
@@ -410,7 +410,7 @@ class CommentUtils:
     @staticmethod
     def delete_comment_by_id(comment_id):
         # retrieve expense obj from db
-        comment = CommentUtils.get_comment_by_id(comment_id)
+        comment = CommentUtils.get_comment_by_id(comment_id).first()
         # validate auth
         current_user = AuthUtils.get_current_user()["id"]
         if not (current_user == comment.user_id):
