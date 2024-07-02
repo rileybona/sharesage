@@ -4,8 +4,10 @@ import { useDispatch } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
+import AllExpensePage from "../components/AllExpensePage/AllExpensePage";
+import ExpenseDetail from "../components/ExpenseDetail/ExpenseDetail";
 
-export default function Layout() {
+export default function Layout() { 
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
