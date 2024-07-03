@@ -6,10 +6,12 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
+import expenseModalReducer from "./expense_modal";
 import commentReducer from "./comment";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
+  expenseModal: expenseModalReducer,
   comment: commentReducer,
 });
 
