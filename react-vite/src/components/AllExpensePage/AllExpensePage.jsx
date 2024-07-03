@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import './AllExpensePage.css'
 
 function AllExpensePage() {
-
+    
     return (
         <>
          <h1>wow its all your expenses!</h1>
