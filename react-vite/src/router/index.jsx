@@ -6,6 +6,7 @@ import Main from '../components/Main/Main';
 import AllExpensePage from '../components/AllExpensePage/AllExpensePage';
 import ExpenseDetail from '../components/ExpenseDetail/ExpenseDetail';
 import RecentActivityPage from '../components/RecentActivityPage/RecentActivityPage'
+import Comments from '../components/Comments/Comments';
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "expenses/:id",
         element: <ExpenseDetail />
+      },
+      {
+        path: "expenses/:expenseId/comments",
+        element: <Comments />
       },
       {
         path: "recentActivity",
