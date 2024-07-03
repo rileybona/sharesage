@@ -1,0 +1,13 @@
+div.expense-details-container {
+  display: flex;
+  width: 100%;
+  padding: 1em;
+  flex-direction: column;
+  font: 1em "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+
+div.expense-toolbar {
+  display: flex;
+  flex-direction: row-reverse;
+}

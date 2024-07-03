@@ -8,11 +8,13 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import expenseModalReducer from "./expense_modal";
 import commentReducer from "./comment";
+import expenseReducer from "./expense";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   expenseModal: expenseModalReducer,
   comment: commentReducer,
+  expense: expenseReducer
 });
 
 let enhancer;

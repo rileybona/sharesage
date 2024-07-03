@@ -62,6 +62,14 @@ class ExpenseUtils:
             ChildExpenseUtils.get_child_expense_details_by_id(x)
             for x in child_expense_ids
         ]
+        payeeIds = [
+            child_expense["user_id"] for child_expense in expense["child_expenses"]
+        ]
+        # return payeeIds
+        if (AuthUtils.get_current_user()["id"] not in payeeIds) and not (
+            AuthUtils.get_current_user()["id"] == expense["owner_id"]
+        ):
+            return Response(response="Not Authorized", status=403)
         return expense
 
     @staticmethod
@@ -85,7 +93,7 @@ class ExpenseUtils:
             return ExpenseUtils.parse_data(new_expense)
 
         except:
-            return Response(response="Internal Server Error", status=500)
+            return {"message": "Expense creation error"}
 
     @staticmethod
     def update_expense_by_id(id, details):

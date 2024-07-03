@@ -23,10 +23,12 @@ def post_new_expense():
 @login_required
 def get_expense(id):
     expense = ExpenseUtils.get_expense_details_by_id(int(id))
-    if expense["owner_id"] == AuthUtils.get_current_user()["id"]:
-        return jsonify(expense), 200
-    else:
-        return jsonify({"message": "Not Authorized"}), 403
+    # if expense["owner_id"] == AuthUtils.get_current_user()["id"]:
+    return jsonify(expense), 200
+
+
+# else:
+#     return jsonify({"message": "Not Authorized"}), 403
 
 
 @expense.route("/<int:id>", methods=["PUT"])
