@@ -1,7 +1,21 @@
 div#comments {
     width: 90%;
 
-    & > div {
+    & > div.comment {
         margin-top: 25px;
+
+        & > div.comment-header {
+            margin-bottom: 10px;
+        }
+
+        & > div.comment-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        & button {
+            margin: 10px;
+            width: 80px
+        }
     }
 }
