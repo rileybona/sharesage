@@ -66,7 +66,7 @@ class ExpenseUtils:
             child_expense["user_id"] for child_expense in expense["child_expenses"]
         ]
         # return payeeIds
-        if AuthUtils.get_current_user()["id"] not in payeeIds:
+        if ((AuthUtils.get_current_user()["id"] not in payeeIds) and not (AuthUtils.get_current_user()["id"] == expense["owner_id"])):
             return Response(response="Not Authorized", status=403)
         return expense
 
