@@ -19,11 +19,12 @@ function Comments() {
   }, [dispatch, expenseId]);
 
   return (
-    <div>
+    <div id="comments">
       <h1>Comments</h1>
-      {userComments?.map((comment, i) => (
+      <button>Post your comment</button>
+      {/* {userComments?.map((comment, i) => (
         <div key={i}>{JSON.stringify(comment)}</div>
-      ))}
+      ))} */}
     </div>
   );
 }

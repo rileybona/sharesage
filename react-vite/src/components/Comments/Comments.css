@@ -1,0 +1,7 @@
+div#comments {
+    width: 90%;
+
+    & > div {
+        margin-top: 25px;
+    }
+}
