@@ -75,6 +75,21 @@ export const thunkUpdateComment = (commentId, comment) => async (dispatch) => {
   }
 };
 
+export const thunkDeleteComment = (commentId) => async (dispatch) => {
+  const response = await fetch(`/api/comments/${commentId}`, {
+    method: "DELETE",
+  });
+
+  if (response.ok) {
+    dispatch(deleteComment(commentId));
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+};
+
 const initialState = { comments: null };
 
 function commentReducer(state = initialState, action) {
@@ -89,8 +104,10 @@ function commentReducer(state = initialState, action) {
       );
       return { ...state, comments: updatedComments };
     case DELETE_COMMENT:
-      return state;
-    // return { ...state, comments: action.payload };
+      const filteredComments = state.comments.filter(
+        (comment) => comment.id !== action.commentId
+      );
+      return { ...state, comments: filteredComments };
     default:
       return state;
   }
