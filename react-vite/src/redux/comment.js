@@ -3,19 +3,19 @@ const POST_COMMENT = "comment/postComment";
 const UPDATE_COMMENT = "comment/updateComment";
 const DELETE_COMMENT = "comment/deleteComment";
 
-const getComments = (payload) => ({
+const getComments = (comment) => ({
   type: GET_COMMENTS,
-  payload
+  payload: comment
 });
 
-const postComment = (expenseId, commentBody) => ({
+const postComment = (expenseId, comment) => ({
   type: POST_COMMENT,
-  payload: { expenseId, commentBody },
+  payload: { expenseId, comment },
 });
 
-const updateComment = (commentId, commentBody) => ({
+const updateComment = (commentId, comment) => ({
   type: UPDATE_COMMENT,
-  payload: { commentId, commentBody },
+  payload: { commentId, comment },
 });
 
 const deleteComment = (commentId) => ({
@@ -37,16 +37,34 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
   }
 };
 
-export const thunkPostComment = (expenseId, commentBody) => async (dispatch) => {
+export const thunkPostComment = (expenseId, comment) => async (dispatch) => {
   const response = await fetch(`/api/expenses/${expenseId}/comments`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ commentBody })
+    body: JSON.stringify({ comment })
   });
 
   if (response.ok) {
     const data = await response.json();
     dispatch(postComment(data));
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+};
+
+export const thunkUpdateComment = (commentId, comment) => async (dispatch) => {
+  const response = await fetch(`/api/comments/${commentId}`, {
+    method: 'UPDATE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ comment })
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(updateComment(data));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
@@ -62,9 +80,12 @@ function commentReducer(state = initialState, action) {
     case GET_COMMENTS:
       return { ...state, comments: action.payload };
     case POST_COMMENT:
-      return { ...state, comments: [...state.comments, action.payload] };
+      return { ...state, comments: [...state?.comments, action.payload] };
     case UPDATE_COMMENT:
-      return { ...state, comments: action.payload };
+      const updatedComments = state.comments.map(comment =>
+        comment.id === action.payload.id ? action.payload : comment
+      );
+      return { ...state, comments: updatedComments };
     case DELETE_COMMENT:
       return { ...state, comments: action.payload };
     default:
