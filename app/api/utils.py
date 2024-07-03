@@ -62,6 +62,12 @@ class ExpenseUtils:
             ChildExpenseUtils.get_child_expense_details_by_id(x)
             for x in child_expense_ids
         ]
+        payeeIds = [
+            child_expense["user_id"] for child_expense in expense["child_expenses"]
+        ]
+        # return payeeIds
+        if AuthUtils.get_current_user()["id"] not in payeeIds:
+            return Response(response="Not Authorized", status=403)
         return expense
 
     @staticmethod
