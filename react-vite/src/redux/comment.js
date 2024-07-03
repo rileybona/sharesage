@@ -8,9 +8,8 @@ const getComments = (comments) => ({
   comments,
 });
 
-const postComment = (expenseId, comment) => ({
+const postComment = (comment) => ({
   type: POST_COMMENT,
-  expenseId,
   comment,
 });
 
@@ -29,8 +28,8 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
   const response = await fetch(`/api/expenses/${expenseId}/comments`);
 
   if (response.ok) {
-    const data = await response.json();
-    dispatch(getComments(data));
+    const comments = await response.json();
+    dispatch(getComments(comments));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
@@ -47,8 +46,8 @@ export const thunkPostComment = (expenseId, comment) => async (dispatch) => {
   });
 
   if (response.ok) {
-    const data = await response.json();
-    dispatch(postComment(data));
+    const newComment = await response.json();
+    dispatch(postComment(newComment));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
@@ -65,8 +64,8 @@ export const thunkUpdateComment = (commentId, comment) => async (dispatch) => {
   });
 
   if (response.ok) {
-    const data = await response.json();
-    dispatch(updateComment(data));
+    const newComment = await response.json();
+    dispatch(updateComment(commentId, newComment));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
