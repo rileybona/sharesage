@@ -8,10 +8,8 @@ const processComments = async (comments) => {
 
   if (response.ok) {
     const users = await response.json();
-    for (let comment in comments) {
-      comment = { ...comment, user: users[comment.user_id] }
-    }
-    return comments;
+    const userComments = comments.map(c => ({ ...c, 'user': users[c.user_id] }));
+    return userComments;
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
@@ -25,8 +23,8 @@ const processComment = async (comment) => {
 
   if (response.ok) {
     const user = await response.json();
-    comment = { ...comment, user }
-    return comment;
+    userComment = { ...comment, user };
+    return userComment;
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
