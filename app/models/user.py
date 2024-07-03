@@ -29,9 +29,9 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, nullable = False, server_default=db.func.now())
 
-    # friends (user : user) relationship 
+    # friends (user : user) relationship
     # friender = db.relationship(
-    #     "User", 
+    #     "User",
     #     secondary=relationships,
     #     primaryjoin=(relationships.c.user1_id == id),
     #     secondaryjoin=(relationships.c.user2_id == id),
@@ -47,19 +47,19 @@ class User(db.Model, UserMixin):
     # )
     #
 
-    # comments : users relationship 
+    # comments : users relationship
     comment_users = db.relationship(
         "Comment",
         back_populates="user_comments"
     )
 
-    # child expense : user relationship 
+    # child expense : user relationship
     child_expense_users = db.relationship(
         "ChildExpense",
         back_populates="user_child_expenses"
     )
 
-    # payment : user relationship 
+    # payment : user relationship
     payment_users = db.relationship(
         "Payment",
         back_populates="user_payments"
@@ -87,5 +87,8 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
-            'email': self.email
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'avatar': self.avatar
         }

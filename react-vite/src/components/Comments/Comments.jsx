@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   thunkGetComments,
   thunkPostComment,
@@ -16,14 +16,14 @@ function Comments() {
 
   useEffect(() => {
     dispatch(thunkGetComments(expenseId));
-  }, [expenseId]);
+  }, [dispatch, expenseId]);
 
   return (
     <div>
-      <h1>Testing</h1>
-      {userComments?.map((comment, i) => (
+      <h1>Comments</h1>
+      {/* {userComments?.map((comment, i) => (
         <div key={i}>{JSON.stringify(comment)}</div>
-      ))}
+      ))} */}
     </div>
   );
 }
