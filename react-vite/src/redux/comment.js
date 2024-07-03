@@ -3,38 +3,37 @@ const POST_COMMENT = "comment/postComment";
 const UPDATE_COMMENT = "comment/updateComment";
 const DELETE_COMMENT = "comment/deleteComment";
 
-// const processComments = async (comments) => {
-//   const response = await fetch(`/api/users`);
+const processComments = async (comments) => {
+  const response = await fetch(`/api/users/`);
 
-//   if (response.ok) {
-//     const users = await response.json();
-//     for (let comment in comments) {
-//       comment.user = users[comment.user_id]
-//     }
-//     console.log("comments =>>>>>>>>", comments)
-//     return comments;
-//   } else if (response.status < 500) {
-//     const errorMessages = await response.json();
-//     return errorMessages;
-//   } else {
-//     return { server: "Something went wrong. Please try again" };
-//   }
-// }
+  if (response.ok) {
+    const users = await response.json();
+    for (let comment in comments) {
+      comment = { ...comment, user: users[comment.user_id] }
+    }
+    return comments;
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+}
 
-// const processComment = async (comment) => {
-//   const response = await fetch(`/api/users/${comment.user_id}`);
+const processComment = async (comment) => {
+  const response = await fetch(`/api/users/${comment.user_id}/`);
 
-//   if (response.ok) {
-//     const user = await response.json();
-//     comment.user = user
-//     return comment;
-//   } else if (response.status < 500) {
-//     const errorMessages = await response.json();
-//     return errorMessages;
-//   } else {
-//     return { server: "Something went wrong. Please try again" };
-//   }
-// }
+  if (response.ok) {
+    const user = await response.json();
+    comment = { ...comment, user }
+    return comment;
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+}
 
 const getComments = (comments) => ({
   type: GET_COMMENTS,
@@ -62,8 +61,8 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
 
   if (response.ok) {
     const comments = await response.json();
-    // const processedComments = await processComments(comments);
-    dispatch(getComments(comments));
+    const processedComments = await processComments(comments);
+    dispatch(getComments(processedComments));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
@@ -81,8 +80,8 @@ export const thunkPostComment = (expenseId, comment) => async (dispatch) => {
 
   if (response.ok) {
     const newComment = await response.json();
-    // const processedComment = await processComment(newComment);
-    dispatch(postComment(newComment));
+    const processedComment = await processComment(newComment);
+    dispatch(postComment(processedComment));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
@@ -100,8 +99,8 @@ export const thunkUpdateComment = (commentId, comment) => async (dispatch) => {
 
   if (response.ok) {
     const newComment = await response.json();
-    // const processedComment = await processComment(newComment);
-    dispatch(updateComment(commentId, newComment));
+    const processedComment = await processComment(newComment);
+    dispatch(updateComment(commentId, processedComment));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;

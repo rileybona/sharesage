@@ -21,9 +21,9 @@ function Comments() {
   return (
     <div>
       <h1>Comments</h1>
-      {/* {userComments?.map((comment, i) => (
+      {userComments?.map((comment, i) => (
         <div key={i}>{JSON.stringify(comment)}</div>
-      ))} */}
+      ))}
     </div>
   );
 }
