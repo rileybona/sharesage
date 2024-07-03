@@ -7,7 +7,6 @@ expense = Blueprint("root_expenses", __name__)
 
 # Root Expense routes
 @expense.route("/", methods=["GET"])
-@login_required
 def get_all_expenses():
     return jsonify({"expenses": ExpenseUtils.get_all_expenses()})
 
