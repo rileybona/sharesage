@@ -3,9 +3,9 @@ const POST_COMMENT = "comment/postComment";
 const UPDATE_COMMENT = "comment/updateComment";
 const DELETE_COMMENT = "comment/deleteComment";
 
-const getComments = (expenseId) => ({
+const getComments = (payload) => ({
   type: GET_COMMENTS,
-  payload: expenseId,
+  payload
 });
 
 const postComment = (expenseId, commentBody) => ({
@@ -22,6 +22,21 @@ const deleteComment = (commentId) => ({
   type: DELETE_COMMENT,
   payload: commentId,
 });
+
+export const thunkGetComments = (expenseId) => async (dispatch) => {
+	const response = await fetch(`/api/expenses/${expenseId}/comments`);
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(getComments(data));
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages
+  } else {
+    return { server: "Something went wrong. Please try again" }
+  }
+};
+
 
 const initialState = { comments: null };
 
