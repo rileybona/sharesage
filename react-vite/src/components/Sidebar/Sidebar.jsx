@@ -29,7 +29,7 @@ function Sidebar() {
                 <NavLink to="/">Dashboard</NavLink>
             </li>
             <li>
-                <NavLink to="/">Activities</NavLink>
+                <NavLink to="/recentActivity">Activities</NavLink>
             </li>
             <li>
                 <NavLink to="/expenses">All Expenses</NavLink>
