@@ -23,14 +23,17 @@ function CreateExpenseModal() {
 
     const handleSubmit =  async (e) => {
         e.preventDefault();
-        const newDate = new Date(date)
-        const formatDate = (newDate.getMonth() + 1) + '/' + newDate.getDate() + '/' +  newDate.getFullYear();
         const newExpense = {
             owner_id: sessionUser.id,
             name,
-            amount,
+            amount: Number(amount),
             expense_type: type,
-            transaction_date: formatDate,
+        }
+
+        if (date) {
+            const newDate = new Date(date)
+            const formatDate = (newDate.getMonth() + 1) + '/' + newDate.getDate() + '/' +  newDate.getFullYear();
+            newExpense.transaction_date = formatDate
         }
         setErrors({})
         const serverResponse = await dispatch(
@@ -84,7 +87,6 @@ function CreateExpenseModal() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                required
                 >
                 </input>
             </label>

@@ -8,6 +8,7 @@ const addExpense = (expense) => {
 }
 
 export const addAnExpense = (data) => async dispatch => {
+    console.log(JSON.stringify(data))
     const response = await fetch("/api/expenses/", {
         method: "POST",
         headers: {
