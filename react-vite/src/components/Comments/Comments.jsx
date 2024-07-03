@@ -24,8 +24,8 @@ function Comments() {
       <button>Post your comment</button>
       {userComments?.map((comment, i) => (
         <div className="comment" key={i}>
-          <div className="comment-header">date by FirstName</div>
-          <div className="comment-body">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem, cumque! Molestiae natus excepturi explicabo labore assumenda, expedita animi minima aliquam voluptatem aperiam neque qui omnis nihil obcaecati ullam provident odio.</div>
+          <div className="comment-header">Created {comment.created_at.slice(0, -13)} by {comment.user.first_name}</div>
+          <div className="comment-body">{comment.text}</div>
           <div className="comment-buttons">
             <button>Update</button><button>Delete</button>
           </div>
