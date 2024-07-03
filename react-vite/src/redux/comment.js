@@ -1,9 +1,27 @@
-const GET_COMMENTS = 'comment/getComments';
-const POST_COMMENT = 'comment/postComment';
-const UPDATE_COMMENT = 'comment/updateComment';
-const DELETE_COMMENT = 'comment/deleteComment';
+const GET_COMMENTS = "comment/getComments";
+const POST_COMMENT = "comment/postComment";
+const UPDATE_COMMENT = "comment/updateComment";
+const DELETE_COMMENT = "comment/deleteComment";
 
+const getComments = (expenseId) => ({
+  type: GET_COMMENTS,
+  payload: expenseId,
+});
 
+const postComment = (expenseId, commentBody) => ({
+  type: POST_COMMENT,
+  payload: { expenseId, commentBody },
+});
+
+const updateComment = (commentId, commentBody) => ({
+  type: UPDATE_COMMENT,
+  payload: { commentId, commentBody },
+});
+
+const deleteComment = (commentId) => ({
+  type: DELETE_COMMENT,
+  payload: commentId,
+});
 
 const initialState = { comments: null };
 
