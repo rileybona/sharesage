@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal'
+import { addAnExpense } from '../../redux/expense_modal';
 
 const EXPENSE_TYPE = [
     "Other",
@@ -15,11 +16,33 @@ function CreateExpenseModal() {
     const [name, setName] = useState("")
     const [amount, setAmount] = useState(0.00)
     const [type, setType] = useState(EXPENSE_TYPE[0])
-    const [date, setDate] = useState(new Date())
+    const [date, setDate] = useState("")
+    const [errors, setErrors] = useState({});
 
+    const sessionUser = useSelector(state => state.session.user);
 
-    const handleSubmit = (e) => {
-        return
+    const handleSubmit =  async (e) => {
+        e.preventDefault();
+        const newDate = new Date(date)
+        const formatDate = (newDate.getMonth() + 1) + '/' + newDate.getDate() + '/' +  newDate.getFullYear();
+        const newExpense = {
+            owner_id: sessionUser.id,
+            name,
+            amount,
+            expense_type: type,
+            transaction_date: formatDate,
+        }
+        setErrors({})
+        const serverResponse = await dispatch(
+            addAnExpense(newExpense)
+        )
+
+        if (serverResponse) {
+            setErrors(serverResponse);
+            console.log(errors)
+          } else {
+            closeModal();
+          }
     }
 
     return (
@@ -61,11 +84,13 @@ function CreateExpenseModal() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                defaultValue={new Date().toISOString().substring(0, 10)}
                 required
                 >
                 </input>
             </label>
+            <button
+            type="submit"
+            >Save</button>
         </form>
     )
 }

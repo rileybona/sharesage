@@ -52,6 +52,7 @@ function PaymentModal() {
                 name="note"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
+                style={{"resize": "none"}}
                 />
             </label>
         </form>
