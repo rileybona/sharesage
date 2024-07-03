@@ -6,6 +6,7 @@ import Main from '../components/Main/Main';
 import AllExpensePage from '../components/AllExpensePage/AllExpensePage';
 import ExpenseDetail from '../components/ExpenseDetail/ExpenseDetail';
 import RecentActivityPage from '../components/RecentActivityPage/RecentActivityPage'
+import Test from '../components/Main/Test';
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: "recentActivity",
         element: <RecentActivityPage />
+      },
+      {
+        path: "test",
+        element: <Test />
       }
     ],
   },
