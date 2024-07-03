@@ -37,6 +37,23 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
   }
 };
 
+export const thunkPostComment = (expenseId, commentBody) => async (dispatch) => {
+  const response = await fetch(`/api/expenses/${expenseId}/comments`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ commentBody })
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(postComment(data));
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+};
 
 const initialState = { comments: null };
 
@@ -45,7 +62,7 @@ function commentReducer(state = initialState, action) {
     case GET_COMMENTS:
       return { ...state, comments: action.payload };
     case POST_COMMENT:
-      return { ...state, comments: action.payload };
+      return { ...state, comments: [...state.comments, action.payload] };
     case UPDATE_COMMENT:
       return { ...state, comments: action.payload };
     case DELETE_COMMENT:
