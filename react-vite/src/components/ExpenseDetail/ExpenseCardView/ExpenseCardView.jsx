@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import "./ExpenseCardView.css";
-import ExpenseTypeImage from "./ExpenseTypeImage/ExpenseTypeImage";
+import ExpenseTypeImage from "../../ExpenseTypeImage/ExpenseTypeImage";
 
 export default function ExpenseCardView({ id }) {
   const root_expense = useSelector(
