@@ -19,7 +19,7 @@ def post_new_expense():
     new_expense = ExpenseUtils.create_new_expense(req_body)
     if new_expense == 500:
         return jsonify({"message": "Expense creation failed"}), 500
-    return jsonify(ExpenseUtils.create_new_expense(req_body)), 201
+    return jsonify(new_expense), 201
 
 
 @expense.route("/<int:id>", methods=["GET"])

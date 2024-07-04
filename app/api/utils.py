@@ -41,9 +41,11 @@ class ExpenseUtils:
         ).all()
         child_exp_user = ChildExpenseUtils.get_expense_by_user()
         for exp in child_exp_user:
-            rt_exp_id = exp["root_expense_id"]
-            all_expenses.append(ExpenseUtils.get_expense_by_id(rt_exp_id))
-        return list(map(lambda x: ExpenseUtils.parse_data(x), all_expenses))
+            if exp not in all_expenses:
+                rt_exp_id = exp["root_expense_id"]
+                all_expenses.append(ExpenseUtils.get_expense_by_id(rt_exp_id))
+        all_expenses = list(map(lambda x: ExpenseUtils.parse_data(x), all_expenses))
+        return list({x["id"]: x for x in all_expenses}.values())
 
     @staticmethod
     def get_expense_by_id(id):
