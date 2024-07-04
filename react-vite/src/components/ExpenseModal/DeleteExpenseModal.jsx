@@ -25,8 +25,14 @@ export default function DeleteExpenseModal({ expenseId }) {
       } else {
         console.log(`dispatching deletion`);
         dispatch(expenseActions.deleteAnExpense(parseInt(expenseId)))
+<<<<<<< Updated upstream
           .then(navigate("/expenses"))
           .then(closeModal);
+=======
+          .then((result) => console.log(result))
+          .then(navigate("/expenses"));
+        closeModal;
+>>>>>>> Stashed changes
       }
     } catch (err) {
       console.log(err);
