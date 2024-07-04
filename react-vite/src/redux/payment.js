@@ -1,6 +1,6 @@
 const GET_PAYMENT = "payment/getPayment"
 const ADD_PAYMENT = "payment/addPayment"
-
+// testing push
 const addPayment = (payment) => {
     return {
         type: ADD_PAYMENT,
