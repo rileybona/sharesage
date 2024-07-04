@@ -16,8 +16,6 @@ export default function DeleteExpenseModal({ expenseId }) {
     (state) => state.expense.expense_details[expenseId]
   );
 
-  // console.log({ user, expense });
-
   const deleteExpense = (expenseId) => {
     try {
       if (user.id !== expense.owner_id) {

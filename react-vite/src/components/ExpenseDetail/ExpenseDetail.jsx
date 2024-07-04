@@ -15,8 +15,8 @@ export default function ExpenseDetail() {
   const { expenseId } = useParams();
   // proper auth verification:
   // NOTE: if current user != expense owner, expense toolbar won't show
-  const user = useSelector((state) => state.session.user);
-  const expense = useSelector((state) => state.expense.expense_details);
+  const user = useSelector((state) => state.session?.user);
+  const expense = useSelector((state) => state.expense?.expense_details);
   // console.log({ user, expense });
 
   useEffect(() => {
