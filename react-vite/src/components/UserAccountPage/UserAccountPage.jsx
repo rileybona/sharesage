@@ -14,7 +14,11 @@ export default function UserAccountPage() {
           ></img>
         </div>
       </div>
-      <div className="account-right-container"></div>
+      <div className="account-right-container">
+        <div>{`${user.first_name} ${user.last_name}`}</div>
+        <div>{`${user.username}`}</div>
+        <div>{`${user.email}`}</div>
+      </div>
     </div>
   );
 }

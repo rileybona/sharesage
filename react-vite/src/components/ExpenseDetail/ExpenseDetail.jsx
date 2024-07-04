@@ -17,7 +17,7 @@ export default function ExpenseDetail() {
   // NOTE: if current user != expense owner, expense toolbar won't show
   const user = useSelector((state) => state.session.user);
   const expense = useSelector((state) => state.expense.expense_details);
-  console.log({ user, expense });
+  // console.log({ user, expense });
 
   useEffect(() => {
     dispatch(expenseActions.getSingleExpense(parseInt(expenseId)))

@@ -15,6 +15,10 @@ div#delete-expense-modal {
   align-items: center;
 }
 
+div#delete-expense-modal p {
+  font-weight: bold;
+}
+
 div#delete-expense-modal > div {
   display: flex;
   column-gap: 1em;

@@ -3,12 +3,29 @@ const POST_COMMENT = "comment/postComment";
 const UPDATE_COMMENT = "comment/updateComment";
 const DELETE_COMMENT = "comment/deleteComment";
 
+const getUser = async () => {
+  const response = await fetch(`/api/auth/`);
+
+  if (response.ok) {
+    const user = await response.json();
+    return user;
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+};
+
 const processComments = async (comments) => {
   const response = await fetch(`/api/users/`);
 
   if (response.ok) {
     const users = await response.json();
-    const userComments = comments.map(c => ({ ...c, 'user': users[c.user_id] }));
+    const userComments = comments.map((c) => ({
+      ...c,
+      user: users[c.user_id],
+    }));
     return userComments;
   } else if (response.status < 500) {
     const errorMessages = await response.json();
@@ -16,14 +33,14 @@ const processComments = async (comments) => {
   } else {
     return { server: "Something went wrong. Please try again" };
   }
-}
+};
 
 const processComment = async (comment) => {
-  const response = await fetch(`/api/users/${comment.user_id}/`);
+  const response = await fetch(`/api/users/${comment.user_id}`);
 
   if (response.ok) {
     const user = await response.json();
-    userComment = { ...comment, user };
+    const userComment = { ...comment, user };
     return userComment;
   } else if (response.status < 500) {
     const errorMessages = await response.json();
@@ -31,7 +48,7 @@ const processComment = async (comment) => {
   } else {
     return { server: "Something went wrong. Please try again" };
   }
-}
+};
 
 const getComments = (comments) => ({
   type: GET_COMMENTS,
@@ -70,10 +87,11 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
 };
 
 export const thunkPostComment = (expenseId, comment) => async (dispatch) => {
+  const user = await getUser();
   const response = await fetch(`/api/expenses/${expenseId}/comments`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ comment }),
+    body: JSON.stringify({ user_id: user.id, text: comment, expenseId }),
   });
 
   if (response.ok) {
@@ -90,9 +108,9 @@ export const thunkPostComment = (expenseId, comment) => async (dispatch) => {
 
 export const thunkUpdateComment = (commentId, comment) => async (dispatch) => {
   const response = await fetch(`/api/comments/${commentId}`, {
-    method: "UPDATE",
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ comment }),
+    body: JSON.stringify({ text: comment }),
   });
 
   if (response.ok) {
