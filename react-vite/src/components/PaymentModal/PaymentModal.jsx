@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal'
-import { addAnExpense } from '../../redux/expense_modal';
+import { addAPayment } from '../../redux/payment';
 
 const PAYMENT_METHODS = [
     "Cash",
@@ -10,7 +10,7 @@ const PAYMENT_METHODS = [
 ]
 
 
-function PaymentModal() {
+function PaymentModal({expense_id}) {
     const dispatch = useDispatch();
     const { closeModal } = useModal;
     const [method, setMethod] = useState(PAYMENT_METHODS[0])
@@ -22,17 +22,18 @@ function PaymentModal() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // TODO Change expense_id to passed in prop
         const newPayment = {
             user_id: sessionUser.id,
             expense_id: 1,
-            method: "Venmo",
-            amount: 100,
-            note: "Test Note"
+            method,
+            amount: Number(amount),
+            note
         }
 
         setErrors({})
         const serverResponse = await dispatch(
-            addAnExpense(newPayment, 1)
+            addAPayment(newPayment, 1)
         )
 
         if (serverResponse) {

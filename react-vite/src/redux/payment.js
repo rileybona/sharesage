@@ -9,7 +9,7 @@ const addPayment = (payment) => {
 
 export const addAPayment = (data, expense_id) => async dispatch => {
     console.log(JSON.stringify(data))
-    const response = await fetch(`/expenses/${expense_id}/payments/`, {
+    const response = await fetch(`/api/expenses/${expense_id}/payments`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -29,7 +29,7 @@ export const addAPayment = (data, expense_id) => async dispatch => {
 };
 
 // Reducer
-const initialState = { expense: {}}
+const initialState = { payment: {}}
 
 const paymentReducer = (state = initialState, action) => {
     let newState;
