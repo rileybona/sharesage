@@ -3,6 +3,7 @@ const GET_ALL_EXPENSES = "expenses/GET_ALL_EXPENSES";
 const GET_EXPENSE_DETAILS = "expenses/GET_EXPENSE_DETAILS";
 const ADD_EXPENSE = "expense/ADD_EXPENSE";
 const DELETE_EXPENSE = "expense/DELETE_EXPENSE";
+const UPDATE_PAYEES = "expense/UPDATE_PAYEES";
 // ACTION CREATORS
 const loadExpenses = (expenses) => ({
   type: GET_ALL_EXPENSES,
