@@ -15,14 +15,17 @@ const getUser = async () => {
   } else {
     return { server: "Something went wrong. Please try again" };
   }
-}
+};
 
 const processComments = async (comments) => {
   const response = await fetch(`/api/users/`);
 
   if (response.ok) {
     const users = await response.json();
-    const userComments = comments.map(c => ({ ...c, 'user': users[c.user_id] }));
+    const userComments = comments.map((c) => ({
+      ...c,
+      user: users[c.user_id],
+    }));
     return userComments;
   } else if (response.status < 500) {
     const errorMessages = await response.json();
@@ -30,28 +33,22 @@ const processComments = async (comments) => {
   } else {
     return { server: "Something went wrong. Please try again" };
   }
-}
+};
 
 const processComment = async (comment) => {
-  try {
-    const response = await fetch(`/api/users/${comment.user_id}/`);
-    console.log("I made it to here!")
+  const response = await fetch(`/api/users/${comment.user_id}`);
 
-    if (response.ok) {
-      const user = await response.json();
-      console.log("I can't get here.")
-      userComment = { ...comment, user };
-      return userComment;
-    } else if (response.status < 500) {
-      const errorMessages = await response.json();
-      return errorMessages;
-    } else {
-      return { server: "Something went wrong. Please try again" };
-    }
-  } catch {
-    console.log('I was caught!')
+  if (response.ok) {
+    const user = await response.json();
+    const userComment = { ...comment, user };
+    return userComment;
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
   }
-}
+};
 
 const getComments = (comments) => ({
   type: GET_COMMENTS,
@@ -99,12 +96,8 @@ export const thunkPostComment = (expenseId, comment) => async (dispatch) => {
 
   if (response.ok) {
     const newComment = await response.json();
-    console.log('newComment', newComment)
     const processedComment = await processComment(newComment);
-    console.log('processedComment', processedComment)
-
-    dispatch(postComment(newComment));
-    console.log('made it!')
+    dispatch(postComment(processedComment));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
@@ -115,9 +108,9 @@ export const thunkPostComment = (expenseId, comment) => async (dispatch) => {
 
 export const thunkUpdateComment = (commentId, comment) => async (dispatch) => {
   const response = await fetch(`/api/comments/${commentId}`, {
-    method: "UPDATE",
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ comment }),
+    body: JSON.stringify({ text: comment }),
   });
 
   if (response.ok) {

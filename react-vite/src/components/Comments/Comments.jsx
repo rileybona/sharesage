@@ -22,7 +22,6 @@ function Comments() {
   function handlePost(expenseId) {
     dispatch(thunkPostComment(expenseId, "This is my test template POST comment!"))
     console.log('my post posted', expenseId)
-
   }
 
   function handleUpdate(commentId) {
