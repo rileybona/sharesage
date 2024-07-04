@@ -3,6 +3,20 @@ const POST_COMMENT = "comment/postComment";
 const UPDATE_COMMENT = "comment/updateComment";
 const DELETE_COMMENT = "comment/deleteComment";
 
+const getUser = async () => {
+  const response = await fetch(`/api/auth/`);
+
+  if (response.ok) {
+    const user = await response.json();
+    return user;
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+}
+
 const processComments = async (comments) => {
   const response = await fetch(`/api/users/`);
 
@@ -19,17 +33,23 @@ const processComments = async (comments) => {
 }
 
 const processComment = async (comment) => {
-  const response = await fetch(`/api/users/${comment.user_id}/`);
+  try {
+    const response = await fetch(`/api/users/${comment.user_id}/`);
+    console.log("I made it to here!")
 
-  if (response.ok) {
-    const user = await response.json();
-    userComment = { ...comment, user };
-    return userComment;
-  } else if (response.status < 500) {
-    const errorMessages = await response.json();
-    return errorMessages;
-  } else {
-    return { server: "Something went wrong. Please try again" };
+    if (response.ok) {
+      const user = await response.json();
+      console.log("I can't get here.")
+      userComment = { ...comment, user };
+      return userComment;
+    } else if (response.status < 500) {
+      const errorMessages = await response.json();
+      return errorMessages;
+    } else {
+      return { server: "Something went wrong. Please try again" };
+    }
+  } catch {
+    console.log('I was caught!')
   }
 }
 
@@ -70,16 +90,21 @@ export const thunkGetComments = (expenseId) => async (dispatch) => {
 };
 
 export const thunkPostComment = (expenseId, comment) => async (dispatch) => {
+  const user = await getUser();
   const response = await fetch(`/api/expenses/${expenseId}/comments`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ comment }),
+    body: JSON.stringify({ user_id: user.id, text: comment, expenseId }),
   });
 
   if (response.ok) {
     const newComment = await response.json();
+    console.log('newComment', newComment)
     const processedComment = await processComment(newComment);
-    dispatch(postComment(processedComment));
+    console.log('processedComment', processedComment)
+
+    dispatch(postComment(newComment));
+    console.log('made it!')
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
