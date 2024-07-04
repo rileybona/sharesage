@@ -7,9 +7,9 @@ const addPayment = (payment) => {
     }
 }
 
-export const addAPayment = (data) => async dispatch => {
+export const addAPayment = (data, expense_id) => async dispatch => {
     console.log(JSON.stringify(data))
-    const response = await fetch("/api/payment/", {
+    const response = await fetch(`/expenses/${expense_id}/payments/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -18,8 +18,8 @@ export const addAPayment = (data) => async dispatch => {
     })
 
     if (response.ok) {
-        const expense = await response.json();
-        return dispatch(addExpense(expense))
+        const payment = await response.json();
+        return dispatch(addPayment(payment))
     } else if (response.status < 500) {
         const errorMessages = await response.json();
         return errorMessages
@@ -27,3 +27,22 @@ export const addAPayment = (data) => async dispatch => {
         return { server: "Something went wrong. Please try again" }
       }
 };
+
+// Reducer
+const initialState = { expense: {}}
+
+const paymentReducer = (state = initialState, action) => {
+    let newState;
+    switch(action.type) {
+        case ADD_PAYMENT:
+            newState = {
+                ...state,
+                payment: {[action.payment.id] : action.payment}
+            }
+            return newState
+        default:
+            return state;
+    }
+}
+
+export default paymentReducer;
