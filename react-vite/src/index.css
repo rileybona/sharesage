@@ -1,1 +1,9 @@
 /* TODO: Add sitewide styles */
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+ul {
+  list-style-type: none;
+}

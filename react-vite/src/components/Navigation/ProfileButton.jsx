@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle } from "react-icons/fa";
 import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
@@ -48,8 +48,24 @@ function ProfileButton() {
         <ul className={"profile-dropdown"} ref={ulRef}>
           {user ? (
             <>
-              <li>{user.username}</li>
-              <li>{user.email}</li>
+              <li>{`Hi, ${user.first_name}!`}</li>
+              <li
+                style={{
+                  borderBottom: "1px solid black",
+                  marginBottom: "0.3em",
+                }}
+              >
+                {user.email}
+              </li>
+
+              <li
+                style={{
+                  borderBottom: "1px solid black",
+                  marginBottom: "0.3em",
+                }}
+              >
+                <a href="/account/settings">your account</a>
+              </li>
               <li>
                 <button onClick={logout}>Log Out</button>
               </li>

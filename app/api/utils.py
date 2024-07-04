@@ -69,7 +69,7 @@ class ExpenseUtils:
         if (AuthUtils.get_current_user()["id"] not in payeeIds) and not (
             AuthUtils.get_current_user()["id"] == expense["owner_id"]
         ):
-            return Response(response="Not Authorized", status=403)
+            return 401
         return expense
 
     @staticmethod
@@ -93,24 +93,17 @@ class ExpenseUtils:
             return ExpenseUtils.parse_data(new_expense)
 
         except:
-            return {"message": "Expense creation error"}
+            return 500
 
     @staticmethod
     def update_expense_by_id(id, details):
         """Update an existing expense by id"""
-        # retrieve expense obj from db
         expense = ExpenseUtils.get_expense_by_id(int(id))
 
-        # validate auth
         current_user = AuthUtils.get_current_user()["id"]
         if not (current_user == expense.owner_id):
-            return Response(
-                response="You are not authorized to edit this expense", status=403
-            )
+            return 403
 
-        # TO-DO expense details validator for POST & PUT
-
-        # [try] Update db obj and commit changes
         try:
             if "name" in details:
                 expense.name = details["name"]
@@ -125,7 +118,7 @@ class ExpenseUtils:
                 )
             db.session.commit()
         except Exception:
-            return Response(response="Internal Server Error", status=500)
+            return 500
 
         # grab updated obj from db and return it
         updated_expense = ExpenseUtils.get_expense_by_id(int(id))

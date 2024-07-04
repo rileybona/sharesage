@@ -1,18 +1,29 @@
 .profile-dropdown {
   position: absolute;
+  right: 1em;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 1em;
 }
 
 #navbar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid black;
   margin-bottom: 20px;
-  height: 100px;
-
+  height: fit-content;
 }
 
 #navbar-right ul {
   list-style-type: none;
+  margin: 0;
+  padding: 1em;
+  margin: 0.2em 0;
+}
+
+#navbar-right li {
+  padding: 0.3em 0;
 }
 
 #navbar-left {

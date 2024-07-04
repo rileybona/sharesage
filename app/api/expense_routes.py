@@ -16,6 +16,9 @@ def get_all_expenses():
 @login_required
 def post_new_expense():
     req_body = request.get_json()
+    new_expense = ExpenseUtils.create_new_expense(req_body)
+    if new_expense == 500:
+        return jsonify({"message": "Expense creation failed"}), 500
     return jsonify(ExpenseUtils.create_new_expense(req_body)), 201
 
 
@@ -23,19 +26,21 @@ def post_new_expense():
 @login_required
 def get_expense(id):
     expense = ExpenseUtils.get_expense_details_by_id(int(id))
-    # if expense["owner_id"] == AuthUtils.get_current_user()["id"]:
+    if expense == 401:
+        return jsonify({"message": "Not Authorized"}), 401
     return jsonify(expense), 200
-
-
-# else:
-#     return jsonify({"message": "Not Authorized"}), 403
 
 
 @expense.route("/<int:id>", methods=["PUT"])
 @login_required
 def update_expense(id):
     req_body = request.get_json()
-    return jsonify(ExpenseUtils.update_expense_by_id(id, req_body)), 200
+    updated_expense = ExpenseUtils.update_expense_by_id(id, req_body)
+    if updated_expense == 403:
+        return jsonify({"message": "Not Authorized"}), 403
+    if updated_expense == 500:
+        return jsonify({"message": "Expense update failed"}), 500
+    return jsonify(updated_expense), 200
 
 
 @expense.route("/<int:id>", methods=["DELETE"])

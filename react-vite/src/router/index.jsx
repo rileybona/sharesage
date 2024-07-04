@@ -4,10 +4,11 @@ import SignupFormPage from "../components/SignupFormPage";
 import Layout from "./Layout";
 import Main from "../components/Main/Main";
 import AllExpensePage from "../components/AllExpensePage/AllExpensePage";
-import ExpenseDetail from "../components/ExpenseDetail/ExpenseDetail";
+import ExpenseDetail from "../components/ExpenseDetail";
 import RecentActivityPage from "../components/RecentActivityPage/RecentActivityPage";
-import Test from '../components/Main/Test';
-import Comments from '../components/Comments/Comments';
+import Test from "../components/Main/Test";
+import Comments from "../components/Comments/Comments";
+import UserAccountPage from "../components/UserAccountPage";
 
 export const router = createBrowserRouter([
   {
@@ -31,11 +32,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "expenses/:expenseId",
-        element: <ExpenseDetail />
+        element: <ExpenseDetail />,
       },
       {
         path: "expenses/:expenseId/comments",
-        element: <Comments />
+        element: <Comments />,
       },
       {
         path: "recentActivity",
@@ -43,7 +44,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "test",
-        element: <Test />
+        element: <Test />,
+      },
+      {
+        path: "account/settings",
+        element: <UserAccountPage />,
       },
     ],
   },

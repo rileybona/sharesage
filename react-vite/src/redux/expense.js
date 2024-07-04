@@ -1,18 +1,30 @@
 // LABELS
 const GET_ALL_EXPENSES = "expenses/GET_ALL_EXPENSES";
 const GET_EXPENSE_DETAILS = "expenses/GET_EXPENSE_DETAILS";
-
+const ADD_EXPENSE = "expense/ADD_EXPENSE";
+const DELETE_EXPENSE = "expense/DELETE_EXPENSE";
 // ACTION CREATORS
-export const loadExpenses = (expenses) => ({
+const loadExpenses = (expenses) => ({
   type: GET_ALL_EXPENSES,
   payload: expenses,
 });
 
-export const loadSingleExpense = (expense) => ({
+const loadSingleExpense = (expense) => ({
   type: GET_EXPENSE_DETAILS,
   payload: expense,
 });
 
+const addExpense = (expense) => {
+  return {
+    type: ADD_EXPENSE,
+    payload: expense,
+  };
+};
+
+const deleteExpense = (expenseId) => ({
+  type: DELETE_EXPENSE,
+  expenseId,
+});
 // THUNKS - -  - -- - --  - - -- -
 export const getAllExpenses = () => async (dispatch) => {
   try {
@@ -44,6 +56,41 @@ export const getSingleExpense = (expenseId) => async (dispatch) => {
     return err;
   }
 };
+
+export const addAnExpense = (data) => async (dispatch) => {
+  console.log(JSON.stringify(data));
+  const response = await fetch("/api/expenses/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (response.ok) {
+    const expense = await response.json();
+    return dispatch(addExpense(expense));
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+};
+
+export const deleteAnExpense = (expenseId) => async (dispatch) => {
+  console.log(`confirmed deleting expense ${expenseId}`);
+  const options = {
+    method: "DELETE",
+  };
+  const response = await fetch(`/api/expenses/${expenseId}`, options);
+  if (response.ok) {
+    dispatch(deleteExpense(parseInt(expenseId)));
+    return 0;
+  } else {
+    return -1;
+  }
+};
 // REDUCER
 const expenseReducer = (
   state = { root_expenses: {}, expense_details: {} },
@@ -60,6 +107,19 @@ const expenseReducer = (
 
     case GET_EXPENSE_DETAILS: {
       state.expense_details = { [action.payload.id]: action.payload };
+      return state;
+    }
+
+    case ADD_EXPENSE: {
+      state.expense_details = { [action.payload.id]: action.payload };
+      return state;
+    }
+
+    case DELETE_EXPENSE: {
+      if (state.root_expenses[action.expenseId]) {
+        delete state.root_expenses[action.expenseId];
+      }
+      state.expense_details = {};
       return state;
     }
 

@@ -6,13 +6,15 @@ function Navigation() {
   return (
     <nav id="navbar">
       <div id="navbar-left">
-        <h2>LOGO PLACEHOLDER</h2>
+        <NavLink to="/">
+          <h3>Logo Placeholder</h3>
+        </NavLink>
       </div>
       <div id="navbar-right">
         <ul>
-          <li>
+          {/* <li>
             <NavLink to="/">Home</NavLink>
-          </li>
+          </li> */}
           <li>
             <ProfileButton />
           </li>
