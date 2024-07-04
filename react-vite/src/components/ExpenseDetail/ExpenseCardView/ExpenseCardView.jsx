@@ -6,6 +6,7 @@ export default function ExpenseCardView({ id }) {
   const root_expense = useSelector(
     (state) => state.expense.expense_details[id]
   );
+  const user = useSelector((state) => state.session.user);
   return (
     <div className="expense-details">
       <div className="expense-type-image">
@@ -19,10 +20,9 @@ export default function ExpenseCardView({ id }) {
           </div>
           <p id="expense-amount">{`$${root_expense.amount}`}</p>
         </div>
-        <p id="expense-desc">{`Added by USER GRABBED FROM REDUX STORE on ${root_expense.created_at.slice(
-          4,
-          17
-        )}`}</p>
+        <p id="expense-desc">{`Added by ${user.first_name} ${
+          user.last_name
+        } on ${root_expense.created_at.slice(4, 17)}`}</p>
       </div>
     </div>
   );
