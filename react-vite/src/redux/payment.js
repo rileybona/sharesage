@@ -1,3 +1,4 @@
+const GET_PAYMENT = "payment/getPayment"
 const ADD_PAYMENT = "payment/addPayment"
 
 const addPayment = (payment) => {
@@ -5,6 +6,32 @@ const addPayment = (payment) => {
         type: ADD_PAYMENT,
         payment
     }
+}
+
+const getPayment = (payment) => {
+    return {
+        type: GET_PAYMENT,
+        payment
+    }
+}
+
+export const getPayments = (expense_id) => async dispatch => {
+    let response;
+    if (expense_id) {
+        response = await fetch(`/api/expenses/${expense_id}/payments`)
+    } else {
+        response = await fetch(`/api/payments/current`)
+    }
+
+    if (response.ok) {
+        const payment = await response.json();
+        return dispatch(getPayment(payment))
+    } else if (response.status < 500) {
+        const errorMessages = await response.json();
+        return errorMessages
+      } else {
+        return { server: "Something went wrong. Please try again" }
+      }
 }
 
 export const addAPayment = (data, expense_id) => async dispatch => {
@@ -29,11 +56,17 @@ export const addAPayment = (data, expense_id) => async dispatch => {
 };
 
 // Reducer
-const initialState = { payment: {}}
+const initialState = { payments: [], payment: {}}
 
 const paymentReducer = (state = initialState, action) => {
     let newState;
     switch(action.type) {
+        case GET_PAYMENT:
+            newState = {
+                ...state,
+                payments: action.payment
+            }
+            return newState;
         case ADD_PAYMENT:
             newState = {
                 ...state,

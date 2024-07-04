@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal'
-import { addAnExpense } from '../../redux/expense_modal';
+import { addAnExpense } from '../../redux/expense';
 
 const EXPENSE_TYPE = [
     "Other",

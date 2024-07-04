@@ -3,6 +3,7 @@ const GET_ALL_EXPENSES = "expenses/GET_ALL_EXPENSES";
 const GET_EXPENSE_DETAILS = "expenses/GET_EXPENSE_DETAILS";
 const ADD_EXPENSE = "expense/ADD_EXPENSE";
 const DELETE_EXPENSE = "expense/DELETE_EXPENSE";
+const GET_PAYEES = "/expense/GET_PAYEES"
 // ACTION CREATORS
 const loadExpenses = (expenses) => ({
   type: GET_ALL_EXPENSES,
@@ -25,6 +26,12 @@ const deleteExpense = (expenseId) => ({
   type: DELETE_EXPENSE,
   expenseId,
 });
+
+const getPayees = (payees) => ({
+  type: GET_PAYEES,
+  payees
+})
+
 // THUNKS - -  - -- - --  - - -- -
 export const getAllExpenses = () => async (dispatch) => {
   try {
@@ -91,9 +98,23 @@ export const deleteAnExpense = (expenseId) => async (dispatch) => {
     return -1;
   }
 };
+
+export const getListOfPayees = () => async (dispatch) => {
+  const response = await fetch(`/api/users`)
+  if (response.ok) {
+    const payees = await response.json()
+    dispatch(getPayees(payees))
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages
+  } else {
+    return { server: "Something went wrong. Please try again" }
+  }
+}
+
 // REDUCER
 const expenseReducer = (
-  state = { root_expenses: {}, expense_details: {} },
+  state = { root_expenses: {}, expense_details: {}, payees: [] },
   action
 ) => {
   switch (action.type) {
@@ -120,6 +141,10 @@ const expenseReducer = (
         delete state.root_expenses[action.expenseId];
       }
       state.expense_details = {};
+      return state;
+    }
+    case GET_PAYEES: {
+      state.payees = action.payees
       return state;
     }
 
