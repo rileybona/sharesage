@@ -1,0 +1,31 @@
+div.account-container {
+  display: flex;
+  padding: 1em;
+  column-gap: 1em;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+div.account-left-container {
+  height: 100%;
+  max-width: 300px;
+}
+
+div.user-avatar-container {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.user-avatar-container img {
+  width: 90%;
+}
+
+div.account-right-container {
+  flex-grow: 2;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
+}
