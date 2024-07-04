@@ -35,7 +35,6 @@ export default function DeleteExpenseModal({ expenseId }) {
 
   return (
     <div id="delete-expense-modal">
-      <p>{`Confirm Deleting ${expense.name}`}</p>
       <div>
         <a
           className="modal-button delete"
