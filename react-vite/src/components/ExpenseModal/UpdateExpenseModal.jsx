@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { updateAnExpense } from "../../redux/expense";
+import { getListOfPayees, updateAnExpense } from "../../redux/expense";
+import Select from "react-select";
 
 const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites"];
 
@@ -10,7 +11,9 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   const curExpense = useSelector(
     (state) => state.expense.expense_details[expenseId]
   );
+  const userList = useSelector((state) => state.expense.payees);
 
+  //parsing transaction date to locale date string for field population
   const transaction_date = new Date(
     curExpense.transaction_date
   ).toLocaleDateString("en-CA");
@@ -21,29 +24,24 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   const [amount, setAmount] = useState(parseFloat(curExpense.amount));
   const [type, setType] = useState(curExpense.type);
   const [date, setDate] = useState(transaction_date);
-  const [errors, setErrors] = useState({});
-  const [validationError, setValidationError] = useState({});
-  const [showErrors, setShowErrors] = useState(false);
+  const [userLoaded, setUserLoaded] = useState(false);
+
+  console.log(userList);
+
+  // const constructSelectOptions = (userList) => {
+  //   return Object.values(userList).reduce((acc, el) => {
+  //     const option = {value: }
+  //   }, [])
+  // };
 
   useEffect(() => {
-    const errs = {};
-
-    if (name.length <= 0 || name.length > 20)
-      errs.name = "Name must not be empty or more than 20 characters long";
-    if (amount < 0) errs.amount = "Expense cost should be greater than 0";
-    //type is from a drop down list; there shouldn't be errors;
-    setValidationError(errs);
-    //TODO: add date validator
-  }, [name, amount, date]);
+    dispatch(getListOfPayees()).then(setUserLoaded(true));
+  }, [dispatch]);
 
   if (!curExpense) return <h2>Something went wrong. </h2>;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.keys(validationError).length > 0) {
-      e.stopPropagation();
-      return setShowErrors(true);
-    }
     const newExpense = {
       owner_id: sessionUser.id,
       name,
@@ -62,23 +60,15 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
         newDate.getFullYear();
       newExpense.transaction_date = formatDate;
     }
-    setErrors({});
     dispatch(updateAnExpense(expenseId, newExpense))
       .then(() => {
         setReload(reload + 1);
       })
       .then(closeModal);
-    // const serverResponse = dispatch(updateAnExpense(expenseId, newExpense));
-
-    // if (serverResponse) {
-    //   setErrors(serverResponse);
-    //   console.log(errors);
-    // } else {
-    //   setReload(reload + 1);
-    //   closeModal;
-    // }
   };
 
+  //short curcuiting component if user list not loaded
+  if (!userLoaded) return <h2>loading</h2>;
   return (
     <form onSubmit={handleSubmit}>
       <h1>Add an expense</h1>
@@ -91,9 +81,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
           required
         />
       </label>
-      {validationError.name && showErrors && (
-        <p className="validation-error">{validationError.name}</p>
-      )}
+
       <label>
         <input
           type="number"
@@ -104,9 +92,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
           required
         />
       </label>
-      {validationError.amount && showErrors && (
-        <p className="validation-error">{validationError.amount}</p>
-      )}
+
       <label>
         <select onChange={(e) => setType(e.target.value)}>
           {EXPENSE_TYPE.map((type) => (
@@ -116,9 +102,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
           ))}
         </select>
       </label>
-      {validationError.type && showErrors && (
-        <p className="validation-error">{validationError.type}</p>
-      )}
+
       <label>
         <input
           type="date"
@@ -126,9 +110,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
           onChange={(e) => setDate(e.target.value)}
         ></input>
       </label>
-      {validationError.date && showErrors && (
-        <p className="validation-error">{validationError.date}</p>
-      )}
+
       <button type="submit">Save</button>
     </form>
   );
