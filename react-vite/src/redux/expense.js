@@ -5,7 +5,7 @@ const ADD_EXPENSE = "expense/ADD_EXPENSE";
 const DELETE_EXPENSE = "expense/DELETE_EXPENSE";
 const GET_PAYEES = "/expense/GET_PAYEES";
 const GET_EXPENSE_PAYEES = "expense/GET_EXPENSE_PAYEES";
-const ADD_EXPENSE_PAYEES = "expense/ADD_EXPENSE_PAYEES";
+// const ADD_EXPENSE_PAYEES = "expense/ADD_EXPENSE_PAYEES";
 // ACTION CREATORS
 const loadExpenses = (expenses) => ({
   type: GET_ALL_EXPENSES,
