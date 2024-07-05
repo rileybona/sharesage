@@ -33,27 +33,37 @@ function Comments() {
           modalComponent={<PostCommentModal expenseId={expenseId} />}
         />
       )}
-      {userComments?.map((comment, i) => (
-        <div className="comment" key={i}>
-          <div className="comment-header">
-            Created {comment?.created_at?.slice(0, -13)} by{" "}
-            {comment?.user?.first_name}
-          </div>
-          <div className="comment-body">{comment?.text}</div>
-          {comment.user_id == userSession.id && (
-            <div className="comment-buttons">
-              <OpenModalButton
-                buttonText="Update"
-                modalComponent={<UpdateCommentModal commentId={comment?.id} />}
-              />
-              <OpenModalButton
-                buttonText="Delete"
-                modalComponent={<DeleteCommentModal commentId={comment?.id} />}
-              />
+      {userComments
+        ?.sort((a, b) => {
+          const a_dateString = new Date(a.created_at).getTime();
+          const b_dateString = new Date(b.created_at).getTime();
+          return b_dateString - a_dateString;
+        })
+        ?.map((comment, i) => (
+          <div className="comment" key={i}>
+            <div className="comment-header">
+              Created {comment?.created_at?.slice(0, -13)} by{" "}
+              {comment?.user?.first_name}
             </div>
-          )}
-        </div>
-      ))}
+            <div className="comment-body">{comment?.text}</div>
+            {comment.user_id == userSession.id && (
+              <div className="comment-buttons">
+                <OpenModalButton
+                  buttonText="Update"
+                  modalComponent={
+                    <UpdateCommentModal commentId={comment?.id} />
+                  }
+                />
+                <OpenModalButton
+                  buttonText="Delete"
+                  modalComponent={
+                    <DeleteCommentModal commentId={comment?.id} />
+                  }
+                />
+              </div>
+            )}
+          </div>
+        ))}
     </div>
   );
 }
