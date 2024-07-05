@@ -13,31 +13,24 @@ function Comments() {
   const { expenseId } = useParams();
   const userComments = useSelector((state) => state?.comment?.comments);
   const userSession = useSelector((state) => state?.session?.user);
-  const [userCommented, setUserCommented] = useState(true);
 
   useEffect(() => {
     dispatch(thunkGetComments(expenseId));
   }, [dispatch, expenseId]);
 
-  useEffect(() => {
-    setUserCommented(userComments?.find((c) => c.user_id == userSession.id));
-  }, [userComments, userSession]);
-
   return (
     <div id="comments">
       <h1>Comments</h1>
-      {userComments && !userCommented && (
-        <OpenModalButton
-          className="post-comment-button"
-          buttonText="Post your comment"
-          modalComponent={<PostCommentModal expenseId={expenseId} />}
-        />
-      )}
+      <OpenModalButton
+        className="post-comment-button"
+        buttonText="Post your comment"
+        modalComponent={<PostCommentModal expenseId={expenseId} />}
+      />
       {userComments
         ?.sort((a, b) => {
           const a_dateString = new Date(a.created_at).getTime();
           const b_dateString = new Date(b.created_at).getTime();
-          return b_dateString - a_dateString;
+          return a_dateString - b_dateString;
         })
         ?.map((comment, i) => (
           <div className="comment" key={i}>
