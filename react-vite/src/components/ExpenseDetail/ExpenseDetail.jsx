@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import ExpenseCardView from "./ExpenseCardView";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import DeleteExpenseModal from "../ExpenseModal/DeleteExpenseModal";
+import UpdateExpenseModal from "../ExpenseModal/UpdateExpenseModal";
 
 export default function ExpenseDetail() {
   // const navigate = useNavigate();
@@ -15,8 +16,8 @@ export default function ExpenseDetail() {
   const { expenseId } = useParams();
   // proper auth verification:
   // NOTE: if current user != expense owner, expense toolbar won't show
-  const user = useSelector((state) => state.session.user);
-  const expense = useSelector((state) => state.expense.expense_details);
+  const user = useSelector((state) => state.session?.user);
+  const expense = useSelector((state) => state.expense?.expense_details);
   // console.log({ user, expense });
 
   useEffect(() => {
@@ -34,7 +35,14 @@ export default function ExpenseDetail() {
       <div className="expense-details-container">
         {user.id == expense[expenseId].owner_id && (
           <div className="expense-toolbar">
-            <button className="edit-expense">Edit Expense</button>
+            <OpenModalButton
+              className="edit-expense"
+              buttonText="Edit expense"
+              modalComponent={
+                <UpdateExpenseModal expenseId={parseInt(expenseId)} />
+              }
+              // onModalClose={() => navigate("/expenses")}
+            />
             <OpenModalButton
               buttonText="Delete expense"
               modalComponent={

@@ -64,8 +64,12 @@ def get_payees_by_expense(id):
 
 
 @expense.route("/<int:id>/payees", methods=["POST", "PUT"])
+@login_required
 def add_payee_expense(id):
     payload = request.get_json()
-    # return {"test": ChildExpenseUtils.add_payee_to_expense(id, payload)}
-    (child_expenses, users) = ChildExpenseUtils.add_payee_to_expense(id, payload)
+    response = ChildExpenseUtils.add_payee_to_expense(id, payload)
+    if response == 500:
+        return jsonify({"message": "Internal Server Error"}), 500
+    (child_expenses, users) = response
+
     return jsonify({"child_expenses": child_expenses, "payees": users}), 201
