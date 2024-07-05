@@ -25,7 +25,7 @@ export default function DeleteExpenseModal({ expenseId }) {
       } else {
         console.log(`dispatching deletion`);
         dispatch(expenseActions.deleteAnExpense(parseInt(expenseId)))
-          .then(navigate("/expenses"))
+          .then(() => navigate("/expenses"))
           .then(closeModal);
       }
     } catch (err) {
@@ -35,7 +35,6 @@ export default function DeleteExpenseModal({ expenseId }) {
 
   return (
     <div id="delete-expense-modal">
-      <p>{`Confirm Deleting ${expense.name}`}</p>
       <div>
         <a
           className="modal-button delete"

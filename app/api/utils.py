@@ -3,6 +3,7 @@ from app.models import db, RootExpense, ChildExpense, User, Comment, Payment
 from flask_login import current_user
 from flask import Response
 from datetime import datetime
+import json
 
 
 class ExpenseUtils:
@@ -196,28 +197,8 @@ class ChildExpenseUtils:
     @staticmethod
     def add_payee_to_expense(id, payload):
         """Returns updated child expenses and their associated users"""
-        """payload structure
-        {
-            "existing_payees": [
-                {
-                    "email": "example1@gmail.com",
-                    "split_amount": 14.24
-                },
-                {
-                    "email": "example2@gmail.com",
-                    "split_amount": 21.22
-                }
-            ],
-
-            "new_payees": [
-                {
-                    "email": "example3@aol.com",
-                    "split_amount": 12.34
-                }
-            ]
-        }
-        """
-        # grab old child expenses from the database
+        if isinstance(payload, str):
+            payload = json.loads(payload)
         db_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
 
         if not len(db_expenses) == 0 and not len(db_expenses[0]) == 0:
@@ -238,6 +219,7 @@ class ChildExpenseUtils:
                         ChildExpense.id == expense["id"]
                     ).first()
                     db.session.delete(expense)
+                    db.session.commit()
 
         # create new child expenses for new payees
         for newbie in payload["new_payees"]:
@@ -254,6 +236,8 @@ class ChildExpenseUtils:
 
         # returns all updated / added child expenses and their users
         updated_children = ChildExpenseUtils.get_payees_by_expense_id(id)
+        if len(updated_children[0]) == len(updated_children[1]) == 0:
+            return 500
         return updated_children
 
     @staticmethod

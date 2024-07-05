@@ -1,6 +1,7 @@
 div.expense-details {
   display: flex;
   box-sizing: border-box;
+  width: 100%;
 }
 
 div.expense-type-image {
@@ -20,6 +21,7 @@ div.expense-type-image > img {
 div.expense-details-info {
   display: flex;
   flex-direction: column;
+  flex-grow: 2;
 }
 div.expense-details-info > div {
   display: flex;

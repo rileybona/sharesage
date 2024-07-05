@@ -1,0 +1,28 @@
+.outer-div-recent-activity {
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left-activity {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+}
+
+.right-activity {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    padding-right: 30px;
+}
+
+.left-activity a {
+    text-decoration: none;
+    color: black;
+}
+
+.right-activity a {
+    text-decoration: none;
+    color: black;
+}

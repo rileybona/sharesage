@@ -6,17 +6,20 @@ import { useParams } from "react-router-dom";
 import ExpenseCardView from "./ExpenseCardView";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import DeleteExpenseModal from "../ExpenseModal/DeleteExpenseModal";
+import UpdateExpenseModal from "../ExpenseModal/UpdateExpenseModal";
+import Comments from "../Comments/Comments"
 
 export default function ExpenseDetail() {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
+  const [reload, setReload] = useState(1);
   const [dispatchError, setDispatchError] = useState({});
   const { expenseId } = useParams();
   // proper auth verification:
   // NOTE: if current user != expense owner, expense toolbar won't show
-  const user = useSelector((state) => state.session.user);
-  const expense = useSelector((state) => state.expense.expense_details);
+  const user = useSelector((state) => state.session?.user);
+  const expense = useSelector((state) => state.expense?.expense_details);
   // console.log({ user, expense });
 
   useEffect(() => {
@@ -25,7 +28,7 @@ export default function ExpenseDetail() {
       .catch((error) => {
         setDispatchError({ message: error.message });
       });
-  }, [dispatch, expenseId]);
+  }, [dispatch, expenseId, reload]);
 
   if (!loaded) return <h3>Loading</h3>;
   //for some reason, onModalClose triggers when on modal open...
@@ -34,7 +37,26 @@ export default function ExpenseDetail() {
       <div className="expense-details-container">
         {user.id == expense[expenseId].owner_id && (
           <div className="expense-toolbar">
-            <button className="edit-expense">Edit Expense</button>
+            {/* <button
+              onClick={(e) => {
+                e.preventDefault();
+                setReload(reload + 1);
+              }}
+            >
+              Reload
+            </button> */}
+            <OpenModalButton
+              className="edit-expense"
+              buttonText="Edit expense"
+              modalComponent={
+                <UpdateExpenseModal
+                  expenseId={parseInt(expenseId)}
+                  setReload={setReload}
+                  reload={reload}
+                />
+              }
+              // onModalClose={() => navigate("/expenses")}
+            />
             <OpenModalButton
               buttonText="Delete expense"
               modalComponent={
@@ -49,7 +71,7 @@ export default function ExpenseDetail() {
         )}
         <ExpenseCardView id={parseInt(expenseId)} />
         <br></br>
-        <h3>Other Components go here</h3>
+        <Comments />
       </div>
     );
   }
