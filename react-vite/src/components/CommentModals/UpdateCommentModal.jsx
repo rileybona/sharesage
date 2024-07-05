@@ -15,6 +15,7 @@ export default function UpdateCommentModal({ commentId }) {
   return (
     <div id="comment-modal">
       <h1>Update your comment?</h1>
+      <textarea name="post-comment-body" id="post-comment-area" />
       <div className="comment-modal-buttons">
         <button className="modal-button" onClick={handleUpdate}>
           UPDATE
