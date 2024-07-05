@@ -35,10 +35,6 @@ export const router = createBrowserRouter([
         element: <ExpenseDetail />,
       },
       {
-        path: "expenses/:expenseId/comments",
-        element: <Comments />,
-      },
-      {
         path: "recentActivity",
         element: <RecentActivityPage />,
       },

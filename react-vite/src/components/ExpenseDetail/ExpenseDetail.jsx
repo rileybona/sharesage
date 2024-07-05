@@ -7,6 +7,7 @@ import ExpenseCardView from "./ExpenseCardView";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import DeleteExpenseModal from "../ExpenseModal/DeleteExpenseModal";
 import UpdateExpenseModal from "../ExpenseModal/UpdateExpenseModal";
+import Comments from "../Comments/Comments"
 
 export default function ExpenseDetail() {
   // const navigate = useNavigate();
@@ -57,7 +58,7 @@ export default function ExpenseDetail() {
         )}
         <ExpenseCardView id={parseInt(expenseId)} />
         <br></br>
-        <h3>Other Components go here</h3>
+        <Comments />
       </div>
     );
   }
