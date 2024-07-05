@@ -11,8 +11,10 @@ export default function PostCommentModal({ expenseId }) {
   const [validLength, setValidLength] = useState(true);
 
   function handlePost() {
-    setValidLength(comment.length > 5)
-    if (validLength) {
+    const validSubmission = comment?.length >= 5;
+
+    setValidLength(validSubmission);
+    if (validSubmission) {
       dispatch(thunkPostComment(expenseId, comment));
       closeModal();
     }
@@ -21,7 +23,9 @@ export default function PostCommentModal({ expenseId }) {
   return (
     <div id="comment-modal">
       <h1>Post your comment!</h1>
-      { !validLength && <p className="error">Comment must be 5 characters or more.</p>}
+      {!validLength && (
+        <p className="error">Comment must be 5 characters or more.</p>
+      )}
       <textarea
         name="post-comment-body"
         id="post-comment-area"
