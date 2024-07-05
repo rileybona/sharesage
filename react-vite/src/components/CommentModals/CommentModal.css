@@ -1,6 +1,11 @@
 div#comment-modal {
   padding: 0 40px;
 
+  & .error {
+    color: red;
+    font-size: 20px;
+  }
+
   & > textarea#post-comment-area {
     width: 500px;
     height: 150px;
@@ -26,6 +31,7 @@ div#comment-modal {
       border-radius: 5px;
       font-size: 20px;
       background-color: grey;
+      margin: 15px 0;
     }
 
     & > .delete {
