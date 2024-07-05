@@ -13,7 +13,7 @@ function Comments() {
   const { expenseId } = useParams();
   const userComments = useSelector((state) => state?.comment?.comments);
   const userSession = useSelector((state) => state?.session?.user);
-  const [userCommented, setUserCommented] = useState();
+  const [userCommented, setUserCommented] = useState(true);
 
   useEffect(() => {
     dispatch(thunkGetComments(expenseId));
@@ -21,12 +21,12 @@ function Comments() {
 
   useEffect(() => {
     setUserCommented(userComments?.find((c) => c.user_id == userSession.id));
-  }, [userComments]);
+  }, [userComments, userSession]);
 
   return (
     <div id="comments">
       <h1>Comments</h1>
-      {!userCommented && (
+      {userComments && !userCommented && (
         <OpenModalButton
           className="post-comment-button"
           buttonText="Post your comment"

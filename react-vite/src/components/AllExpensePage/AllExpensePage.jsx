@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { clearComments } from "../../redux/comment";
 import { NavLink } from 'react-router-dom'
 import './AllExpensePage.css'
 import { useEffect, useState } from 'react'
@@ -35,14 +36,14 @@ function moneyFormatHelper(moneyString) {
 }
 
 function AllExpensePage() {
-    // define state variables & react hooks 
+    // define state variables & react hooks
     const dispatch = useDispatch();
     const [done, setDone] = useState(false);
     const [expenses, setExpenses] = useState([]);
 
     // TEMPORARY IMAGE HARDCODE ------
-    // define type images - example method 
-    const typeImgUrls = new Map(); 
+    // define type images - example method
+    const typeImgUrls = new Map();
     typeImgUrls.set("Food", "https://static.vecteezy.com/system/resources/previews/009/430/604/original/icon-healthy-food-suitable-for-healthy-symbol-line-style-simple-design-editable-design-template-simple-illustration-vector.jpg");
     typeImgUrls.set("Travel", "https://static.vecteezy.com/system/resources/previews/019/494/001/original/travel-icon-illustration-airplane-icon-with-earth-icon-related-to-transportation-tourism-travel-line-icon-style-simple-design-editable-vector.jpg");
     // --------------------------------
@@ -51,6 +52,7 @@ function AllExpensePage() {
 
     // useEffect on page render
     useEffect(() => {
+        dispatch(clearComments());
         dispatch(getAllExpenses());
     }, [dispatch]);
 
@@ -65,10 +67,10 @@ function AllExpensePage() {
     }, [expenseState]);
 
     // return <h1>testing stuff sorry!</h1>
-    
+
     return (
         <>
-         {!(expenses.length > 0) ? <p>NOT LOADED</p> : 
+         {!(expenses.length > 0) ? <p>NOT LOADED</p> :
             <div className='out-div-all-expenses'>
                 {expenses.map((expense) => (
                     <div className='expense-card' key={expense.id}>
