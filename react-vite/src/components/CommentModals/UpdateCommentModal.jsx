@@ -3,12 +3,12 @@ import { useModal } from "../../context/Modal";
 import { thunkUpdateComment } from "../../redux/comment";
 import "./CommentModal.css";
 
-export default function UpdateCommentModal() {
+export default function UpdateCommentModal({ commentId }) {
   const { closeModal } = useModal();
   const dispatch = useDispatch();
 
-  function handleUpdate(commentId, commentText) {
-    dispatch(thunkUpdateComment(commentId, commentText));
+  function handleUpdate() {
+    dispatch(thunkUpdateComment(commentId, "testing update comment"));
     closeModal();
   }
 
