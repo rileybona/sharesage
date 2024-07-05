@@ -31,6 +31,13 @@ const deleteExpense = (expenseId) => ({
 
 const getPayees = (payees) => {
   return {
+    type: GET_PAYEES,
+    payees,
+  };
+};
+
+const fetchPayees = (payees) => {
+  return {
     type: GET_EXPENSE_PAYEES,
     payload: payees,
   };
@@ -100,9 +107,9 @@ export const getExpensePayees = (expenseId) => async (dispatch) => {
       return acc;
     }, {});
     payload.expenseId = expenseId;
-    return dispatch(getPayees(payload));
+    return dispatch(fetchPayees(payload));
   } else {
-    return dispatch(getPayees({ expenseId, payees: null }));
+    return dispatch(fetchPayees({ expenseId, payees: null }));
   }
 };
 
@@ -198,7 +205,7 @@ const expenseReducer = (
       return state;
     }
     case GET_PAYEES: {
-      state.payees = action.payload;
+      state.payees = action.payees;
       return state;
     }
 

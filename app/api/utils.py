@@ -201,10 +201,10 @@ class ChildExpenseUtils:
         # print("----------------------------------------------------")
         # print(type(payload))
         # print(type(json.loads(payload)))
-        # payload = json.loads(payload)
+
         # # print(type(payload["existing_payees"]))
         # print("----------------------------------------------------")
-
+        payload = json.loads(payload)
         db_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
 
         if not len(db_expenses) == 0 and not len(db_expenses[0]) == 0:
