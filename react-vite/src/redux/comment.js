@@ -2,6 +2,7 @@ const GET_COMMENTS = "comment/getComments";
 const POST_COMMENT = "comment/postComment";
 const UPDATE_COMMENT = "comment/updateComment";
 const DELETE_COMMENT = "comment/deleteComment";
+const CLEAR_COMMENTS = "comment/clearComments";
 
 const getUser = async () => {
   const response = await fetch(`/api/auth/`);
@@ -69,6 +70,10 @@ const updateComment = (commentId, comment) => ({
 const deleteComment = (commentId) => ({
   type: DELETE_COMMENT,
   commentId,
+});
+
+export const clearComments = () => ({
+  type: CLEAR_COMMENTS,
 });
 
 export const thunkGetComments = (expenseId) => async (dispatch) => {
@@ -148,16 +153,20 @@ function commentReducer(state = initialState, action) {
       return { ...state, comments: action.comments };
     case POST_COMMENT:
       return { ...state, comments: [...state?.comments, action.comment] };
-    case UPDATE_COMMENT:
+    case UPDATE_COMMENT: {
       const updatedComments = state.comments.map((comment) =>
         comment.id === action.commentId ? action.comment : comment
       );
       return { ...state, comments: updatedComments };
-    case DELETE_COMMENT:
+    }
+    case DELETE_COMMENT: {
       const filteredComments = state.comments.filter(
         (comment) => comment.id !== action.commentId
       );
       return { ...state, comments: filteredComments };
+    }
+    case CLEAR_COMMENTS:
+      return null;
     default:
       return state;
   }
