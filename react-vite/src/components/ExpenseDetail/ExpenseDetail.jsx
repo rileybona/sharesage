@@ -12,6 +12,7 @@ export default function ExpenseDetail() {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
+  const [reload, setReload] = useState(1);
   const [dispatchError, setDispatchError] = useState({});
   const { expenseId } = useParams();
   // proper auth verification:
@@ -26,7 +27,7 @@ export default function ExpenseDetail() {
       .catch((error) => {
         setDispatchError({ message: error.message });
       });
-  }, [dispatch, expenseId]);
+  }, [dispatch, expenseId, reload]);
 
   if (!loaded) return <h3>Loading</h3>;
   //for some reason, onModalClose triggers when on modal open...
@@ -35,11 +36,23 @@ export default function ExpenseDetail() {
       <div className="expense-details-container">
         {user.id == expense[expenseId].owner_id && (
           <div className="expense-toolbar">
+            {/* <button
+              onClick={(e) => {
+                e.preventDefault();
+                setReload(reload + 1);
+              }}
+            >
+              Reload
+            </button> */}
             <OpenModalButton
               className="edit-expense"
               buttonText="Edit expense"
               modalComponent={
-                <UpdateExpenseModal expenseId={parseInt(expenseId)} />
+                <UpdateExpenseModal
+                  expenseId={parseInt(expenseId)}
+                  setReload={setReload}
+                  reload={reload}
+                />
               }
               // onModalClose={() => navigate("/expenses")}
             />

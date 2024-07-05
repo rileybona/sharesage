@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { addAnExpense } from "../../redux/expense";
+import { updateAnExpense } from "../../redux/expense";
 
 const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites"];
 
-export default function UpdateExpenseModal({ expenseId }) {
+export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   const sessionUser = useSelector((state) => state.session.user);
   const curExpense = useSelector(
     (state) => state.expense.expense_details[expenseId]
@@ -22,16 +22,28 @@ export default function UpdateExpenseModal({ expenseId }) {
   const [type, setType] = useState(curExpense.type);
   const [date, setDate] = useState(transaction_date);
   const [errors, setErrors] = useState({});
+  const [validationError, setValidationError] = useState({});
+  const [showErrors, setShowErrors] = useState(false);
+
+  useEffect(() => {
+    const errs = {};
+
+    if (name.length <= 0 || name.length > 20)
+      errs.name = "Name must not be empty or more than 20 characters long";
+    if (amount < 0) errs.amount = "Expense cost should be greater than 0";
+    //type is from a drop down list; there shouldn't be errors;
+    setValidationError(errs);
+    //TODO: add date validator
+  }, [name, amount, date]);
 
   if (!curExpense) return <h2>Something went wrong. </h2>;
 
-  // console.log(curExpense);
-  // useEffect(() => {
-
-  // }, [dispatch]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (Object.keys(validationError).length > 0) {
+      e.stopPropagation();
+      return setShowErrors(true);
+    }
     const newExpense = {
       owner_id: sessionUser.id,
       name,
@@ -51,18 +63,24 @@ export default function UpdateExpenseModal({ expenseId }) {
       newExpense.transaction_date = formatDate;
     }
     setErrors({});
-    const serverResponse = await dispatch(addAnExpense(newExpense));
+    dispatch(updateAnExpense(expenseId, newExpense))
+      .then(() => {
+        setReload(reload + 1);
+      })
+      .then(closeModal);
+    // const serverResponse = dispatch(updateAnExpense(expenseId, newExpense));
 
-    if (serverResponse) {
-      setErrors(serverResponse);
-      console.log(errors);
-    } else {
-      closeModal;
-    }
+    // if (serverResponse) {
+    //   setErrors(serverResponse);
+    //   console.log(errors);
+    // } else {
+    //   setReload(reload + 1);
+    //   closeModal;
+    // }
   };
 
   return (
-    <form onSubmit={() => window.alert("onSubmit not plugged in")}>
+    <form onSubmit={handleSubmit}>
       <h1>Add an expense</h1>
       <label>
         <input
@@ -73,6 +91,9 @@ export default function UpdateExpenseModal({ expenseId }) {
           required
         />
       </label>
+      {validationError.name && showErrors && (
+        <p className="validation-error">{validationError.name}</p>
+      )}
       <label>
         <input
           type="number"
@@ -83,6 +104,9 @@ export default function UpdateExpenseModal({ expenseId }) {
           required
         />
       </label>
+      {validationError.amount && showErrors && (
+        <p className="validation-error">{validationError.amount}</p>
+      )}
       <label>
         <select onChange={(e) => setType(e.target.value)}>
           {EXPENSE_TYPE.map((type) => (
@@ -92,6 +116,9 @@ export default function UpdateExpenseModal({ expenseId }) {
           ))}
         </select>
       </label>
+      {validationError.type && showErrors && (
+        <p className="validation-error">{validationError.type}</p>
+      )}
       <label>
         <input
           type="date"
@@ -99,6 +126,9 @@ export default function UpdateExpenseModal({ expenseId }) {
           onChange={(e) => setDate(e.target.value)}
         ></input>
       </label>
+      {validationError.date && showErrors && (
+        <p className="validation-error">{validationError.date}</p>
+      )}
       <button type="submit">Save</button>
     </form>
   );

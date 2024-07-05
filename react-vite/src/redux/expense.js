@@ -5,7 +5,9 @@ const ADD_EXPENSE = "expense/ADD_EXPENSE";
 const DELETE_EXPENSE = "expense/DELETE_EXPENSE";
 const GET_PAYEES = "/expense/GET_PAYEES";
 const GET_EXPENSE_PAYEES = "expense/GET_EXPENSE_PAYEES";
-// const ADD_EXPENSE_PAYEES = "expense/ADD_EXPENSE_PAYEES";
+//add payees to expense doesn't need its own store action.
+const UPDATE_EXPENSE = "expenses/UPDATE_EXPENSE";
+
 // ACTION CREATORS
 const loadExpenses = (expenses) => ({
   type: GET_ALL_EXPENSES,
@@ -40,6 +42,13 @@ const fetchPayees = (payees) => {
   return {
     type: GET_EXPENSE_PAYEES,
     payload: payees,
+  };
+};
+
+const updateExpense = (expense) => {
+  return {
+    type: UPDATE_EXPENSE,
+    payload: expense,
   };
 };
 
@@ -93,6 +102,26 @@ export const addAnExpense = (data) => async (dispatch) => {
     return errorMessages;
   } else {
     return { server: "Something went wrong. Please try again" };
+  }
+};
+
+export const updateAnExpense = (id, expense) => async (dispatch) => {
+  console.log(JSON.stringify(expense));
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(expense),
+  };
+  const response = await fetch(`/api/expenses/${id}`, options);
+  if (response.ok) {
+    const expense = await response.json();
+    return dispatch(updateExpense(expense));
+  } else {
+    const error = await response.json();
+    console.log(error);
+    return { message: "Something went wrong" };
   }
 };
 
