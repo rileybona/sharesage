@@ -18,9 +18,6 @@ function Test() {
     useEffect(() => {
         dispatch(getPayments((expenseId)))
     }, [dispatch, expenseId])
-
-    console.log(payments)
-
     if (!payments) {
         return <div>Loading...</div>
     }
@@ -39,7 +36,7 @@ function Test() {
               />
             <div id = "payment">
                 {payments ? payments.map(payment => (
-                    <div>{payment.id}</div>
+                    <div key={payment.id}>{payment.id}</div>
                 )): <></>}
             </div>
         </>

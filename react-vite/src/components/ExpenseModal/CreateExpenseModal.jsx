@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal'
-import { addAnExpense } from '../../redux/expense';
+import { addAnExpense, getListOfPayees } from '../../redux/expense';
 
 const EXPENSE_TYPE = [
     "Other",
@@ -18,8 +18,22 @@ function CreateExpenseModal() {
     const [type, setType] = useState(EXPENSE_TYPE[0])
     const [date, setDate] = useState("")
     const [errors, setErrors] = useState({});
+    const [selectUser, setSelectUser] = useState("")
+    const selectedUsers = [];
 
     const sessionUser = useSelector(state => state.session.user);
+    const payees = useSelector(state => state.expense.payees)
+
+    useEffect(() => {
+        dispatch(getListOfPayees())
+    }, [dispatch])
+
+    const handleSelect = (e) => {
+        e.preventDefault();
+        console.log(selectUser)
+        selectedUsers.push(selectUser)
+        console.log(selectedUsers)
+    }
 
     const handleSubmit =  async (e) => {
         e.preventDefault();
@@ -49,51 +63,71 @@ function CreateExpenseModal() {
     }
 
     return (
-        <form onSubmit={(handleSubmit)}>
-            <h1>Add an expense</h1>
+        <>
+                        {selectedUsers.map(user => {
+                    <p>{user.first_name}</p>
+                })}
+            <form onSubmit={(handleSelect)}>
             <label>
-                <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter a description"
-                required
-                />
-            </label>
-            <label>
-                <input
-                type="number"
-                value={amount}
-                step="0.01"
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="0"
-                required
-                />
-            </label>
-            <label>
-                <select
-                onChange={(e) => setType(e.target.value)}>
-                    {EXPENSE_TYPE.map(type => (
-                        <option
-                        key={type}
-                        value={type}>
-                            {type}
-                        </ option>
-                    ))}
-                </select>
-            </label>
-            <label>
-                <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                >
-                </input>
-            </label>
-            <button
-            type="submit"
-            >Save</button>
-        </form>
+                    <select
+                    onChange={(e) => setSelectUser(e.target.value)}>
+                        {payees.map(payee => (
+                            <option
+                            key={payee.id}
+                            value={payee}>
+                                {payee.first_name}
+                            </ option>
+                        ))}
+                    </select>
+                    <button type="submit">Add User</button>
+                </label>
+            </form>
+            <form onSubmit={(handleSubmit)}>
+                <h1>Add an expense</h1>
+                <label>
+                    <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter a description"
+                    required
+                    />
+                </label>
+                <label>
+                    <input
+                    type="number"
+                    value={amount}
+                    step="0.01"
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="0"
+                    required
+                    />
+                </label>
+                <label>
+                    <select
+                    onChange={(e) => setType(e.target.value)}>
+                        {EXPENSE_TYPE.map(type => (
+                            <option
+                            key={type}
+                            value={type}>
+                                {type}
+                            </ option>
+                        ))}
+                    </select>
+                </label>
+                <label>
+                    <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    >
+                    </input>
+                </label>
+                <button
+                type="submit"
+                >Save</button>
+            </form>
+            </>
     )
 }
 

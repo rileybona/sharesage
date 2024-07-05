@@ -101,10 +101,10 @@ export const deleteAnExpense = (expenseId) => async (dispatch) => {
 };
 
 export const getListOfPayees = () => async (dispatch) => {
-  const response = await fetch(`/api/users`)
+  const response = await fetch(`/api/users/`)
   if (response.ok) {
-    const payees = await response.json()
-    dispatch(getPayees(payees))
+    const users = await response.json()
+    dispatch(getPayees(users))
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages
@@ -115,7 +115,7 @@ export const getListOfPayees = () => async (dispatch) => {
 
 // REDUCER
 const expenseReducer = (
-  state = { root_expenses: {}, expense_details: {}, payees: [] },
+  state = { root_expenses: {}, expense_details: {}, payees: []},
   action
 ) => {
   switch (action.type) {
@@ -145,10 +145,14 @@ const expenseReducer = (
       return state;
     }
     case GET_PAYEES: {
-      state.payees = action.payees
-      return state;
+      let newState = {...state}
+      let userList = []
+      Object.values(action.payees).map(payee => (
+        userList.push(payee)
+      ))
+      newState.payees = userList
+      return newState;
     }
-
     default:
       return state;
   }
