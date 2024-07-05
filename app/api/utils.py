@@ -197,14 +197,8 @@ class ChildExpenseUtils:
     @staticmethod
     def add_payee_to_expense(id, payload):
         """Returns updated child expenses and their associated users"""
-        # grab old child expenses from the database
-        # print("----------------------------------------------------")
-        # print(type(payload))
-        # print(type(json.loads(payload)))
-
-        # # print(type(payload["existing_payees"]))
-        # print("----------------------------------------------------")
-        payload = json.loads(payload)
+        if isinstance(payload, str):
+            payload = json.loads(payload)
         db_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
 
         if not len(db_expenses) == 0 and not len(db_expenses[0]) == 0:
@@ -225,6 +219,7 @@ class ChildExpenseUtils:
                         ChildExpense.id == expense["id"]
                     ).first()
                     db.session.delete(expense)
+                    db.session.commit()
 
         # create new child expenses for new payees
         for newbie in payload["new_payees"]:

@@ -1,49 +1,134 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { updateAnExpense } from "../../redux/expense";
+import {
+  addExpensePayees,
+  getExpensePayees,
+  getListOfPayees,
+  updateAnExpense,
+} from "../../redux/expense";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites"];
 
 export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   const sessionUser = useSelector((state) => state.session.user);
+  //for prepopulating the form
   const curExpense = useSelector(
     (state) => state.expense.expense_details[expenseId]
   );
+  //all users object from redux
+  const userList = useSelector((state) => state.expense.payees);
+  // existing payees associated with this root expense
+  const existingPayees = useSelector((state) => state.expense.expense_details)[
+    expenseId
+  ].payees;
+  //select options are constructed with the all-user list
+  let selectOptions;
+  //existing  payee emails parsed from existingPayees;
+  let ogPayees;
+  //default options gets constructed once existing payees are loaded;
+  //default options is passed into the Select component in React DOM
+  //for prepopulation;
+  let defaultOptions;
 
+  //parsing transaction date to locale date string for field population
   const transaction_date = new Date(
     curExpense.transaction_date
   ).toLocaleDateString("en-CA");
+  //to include react select animations
+  const animatedComponents = makeAnimated();
 
   const dispatch = useDispatch();
   const { closeModal } = useModal();
+
   const [name, setName] = useState(curExpense.name);
   const [amount, setAmount] = useState(parseFloat(curExpense.amount));
   const [type, setType] = useState(curExpense.type);
   const [date, setDate] = useState(transaction_date);
-  const [errors, setErrors] = useState({});
-  const [validationError, setValidationError] = useState({});
-  const [showErrors, setShowErrors] = useState(false);
+  //state to reload component when users and existing payees gets fetched from the store
+  const [userLoaded, setUserLoaded] = useState(false);
+  const [existingPayeesLoaded, setExistingPayeesLoaded] = useState(false);
+  //state to store selected users within the react select component
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const constructSelectOptions = (userList, payees) => {
+    const initialOptions = [];
+    const allOptions = Object.keys(userList).length
+      ? [...Object.values(userList)].reduce((acc, user) => {
+          const option = {
+            value: user.email,
+            label: `${user.first_name} ${user.last_name}`,
+          };
+          acc.push(option);
+          if (payees.includes(user.email)) initialOptions.push(option);
+          return acc;
+        }, [])
+      : [];
+    return [allOptions, initialOptions];
+  };
+
+  const getExistingEmails = (usersObj) => {
+    return Object.keys(usersObj).length
+      ? Object.values(usersObj).reduce((acc, user) => {
+          acc.push(user.email);
+          return acc;
+        }, [])
+      : [];
+  };
 
   useEffect(() => {
-    const errs = {};
+    dispatch(getListOfPayees()).then(() => setUserLoaded(true));
+    dispatch(getExpensePayees(expenseId)).then(() =>
+      setExistingPayeesLoaded(true)
+    );
+  }, [dispatch, expenseId]);
 
-    if (name.length <= 0 || name.length > 20)
-      errs.name = "Name must not be empty or more than 20 characters long";
-    if (amount < 0) errs.amount = "Expense cost should be greater than 0";
-    //type is from a drop down list; there shouldn't be errors;
-    setValidationError(errs);
-    //TODO: add date validator
-  }, [name, amount, date]);
+  if (userLoaded && existingPayeesLoaded) {
+    ogPayees = getExistingEmails(existingPayees);
+    [selectOptions, defaultOptions] = constructSelectOptions(
+      userList,
+      ogPayees
+    );
+  }
 
   if (!curExpense) return <h2>Something went wrong. </h2>;
 
+  const handleChange = (e) => {
+    setSelectedUsers(e.map((e) => e.value));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.keys(validationError).length > 0) {
-      e.stopPropagation();
-      return setShowErrors(true);
-    }
+    const payeeCount = selectedUsers.length
+      ? selectedUsers.length
+      : defaultOptions.length;
+
+    const split_amount = amount / payeeCount;
+    const existingEmails = defaultOptions.map((e) => e.value);
+
+    const childExpensePayload = {
+      existing_payees: defaultOptions.reduce((acc, el) => {
+        if (selectedUsers.includes(el.value)) {
+          acc.push({
+            email: el.value,
+            split_amount,
+          });
+        }
+        return acc;
+      }, []),
+      new_payees: selectedUsers.reduce((acc, el) => {
+        if (!existingEmails.includes(el)) {
+          acc.push({
+            email: el,
+            split_amount,
+          });
+        }
+        return acc;
+      }, []),
+    };
+
     const newExpense = {
       owner_id: sessionUser.id,
       name,
@@ -62,26 +147,32 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
         newDate.getFullYear();
       newExpense.transaction_date = formatDate;
     }
-    setErrors({});
-    dispatch(updateAnExpense(expenseId, newExpense))
+    dispatch(updateAnExpense(expenseId, newExpense));
+    dispatch(addExpensePayees(expenseId, childExpensePayload))
       .then(() => {
         setReload(reload + 1);
       })
       .then(closeModal);
-    // const serverResponse = dispatch(updateAnExpense(expenseId, newExpense));
-
-    // if (serverResponse) {
-    //   setErrors(serverResponse);
-    //   console.log(errors);
-    // } else {
-    //   setReload(reload + 1);
-    //   closeModal;
-    // }
   };
 
+  //short curcuiting component if user list not loaded
+  if (!userLoaded || !existingPayeesLoaded) return <h2>loading</h2>;
   return (
     <form onSubmit={handleSubmit}>
-      <h1>Add an expense</h1>
+      <h1>Update expense</h1>
+      <Select
+        closeMenuOnSelect={true}
+        components={animatedComponents}
+        isMulti
+        onChange={(e) => {
+          handleChange(e);
+          // console.log(e);
+        }}
+        options={selectOptions}
+        defaultValue={(() => {
+          return defaultOptions;
+        })()}
+      />
       <label>
         <input
           type="text"
@@ -91,9 +182,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
           required
         />
       </label>
-      {validationError.name && showErrors && (
-        <p className="validation-error">{validationError.name}</p>
-      )}
+
       <label>
         <input
           type="number"
@@ -104,9 +193,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
           required
         />
       </label>
-      {validationError.amount && showErrors && (
-        <p className="validation-error">{validationError.amount}</p>
-      )}
+
       <label>
         <select onChange={(e) => setType(e.target.value)}>
           {EXPENSE_TYPE.map((type) => (
@@ -116,9 +203,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
           ))}
         </select>
       </label>
-      {validationError.type && showErrors && (
-        <p className="validation-error">{validationError.type}</p>
-      )}
+
       <label>
         <input
           type="date"
@@ -126,9 +211,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
           onChange={(e) => setDate(e.target.value)}
         ></input>
       </label>
-      {validationError.date && showErrors && (
-        <p className="validation-error">{validationError.date}</p>
-      )}
+
       <button type="submit">Save</button>
     </form>
   );

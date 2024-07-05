@@ -184,7 +184,7 @@ export const deleteAnExpense = (expenseId) => async (dispatch) => {
 };
 
 export const getListOfPayees = () => async (dispatch) => {
-  const response = await fetch(`/api/users`);
+  const response = await fetch(`/api/users/`);
   if (response.ok) {
     const payees = await response.json();
     dispatch(getPayees(payees));
