@@ -18,8 +18,9 @@ function CreateExpenseModal() {
     const [type, setType] = useState(EXPENSE_TYPE[0])
     const [date, setDate] = useState("")
     const [errors, setErrors] = useState({});
-    const [selectUser, setSelectUser] = useState("")
+    const [selectUser, setSelectUser] = useState([])
     const selectedUsers = [];
+    const showSelectedUsers = [];
 
     const sessionUser = useSelector(state => state.session.user);
     const payees = useSelector(state => state.expense.payees)
@@ -31,8 +32,10 @@ function CreateExpenseModal() {
     const handleSelect = (e) => {
         e.preventDefault();
         console.log(selectUser)
+        showSelectedUsers.push(payees[selectUser])
         selectedUsers.push(selectUser)
         console.log(selectedUsers)
+        console.log(showSelectedUsers)
     }
 
     const handleSubmit =  async (e) => {
@@ -64,17 +67,21 @@ function CreateExpenseModal() {
 
     return (
         <>
-                        {selectedUsers.map(user => {
-                    <p>{user.first_name}</p>
-                })}
+            <p>Selected Users: {selectedUsers.join(', ')}</p>
             <form onSubmit={(handleSelect)}>
             <label>
                     <select
-                    onChange={(e) => setSelectUser(e.target.value)}>
+                    multiple={true}
+                    value={selectedUsers}
+                    onChange={(e) => {
+                        const options = [...e.target.selectedOptions];
+                        const values = options.map(option => option.values)
+                        setSelectUser(values)
+                    }}>
                         {payees.map(payee => (
                             <option
                             key={payee.id}
-                            value={payee}>
+                            value={payee.id}>
                                 {payee.first_name}
                             </ option>
                         ))}
