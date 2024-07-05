@@ -1,6 +1,20 @@
 div#comment-modal {
   padding: 0 40px;
 
+  & > textarea#post-comment-area {
+    width: 500px;
+    height: 150px;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    resize: none;
+  }
+
+  & > h1 {
+    display: flex;
+    justify-content: center;
+  }
+
   & > .comment-modal-buttons {
     display: flex;
     justify-content: space-between;
@@ -11,6 +25,7 @@ div#comment-modal {
       border: none;
       border-radius: 5px;
       font-size: 20px;
+      background-color: grey;
     }
 
     & > .delete {

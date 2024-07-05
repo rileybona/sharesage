@@ -1,13 +1,9 @@
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
-import SubmitCommentModal from "../CommentModals/SubmitCommentModal";
+import PostCommentModal from "../CommentModals/PostCommentModal";
+import UpdateCommentModal from "../CommentModals/UpdateCommentModal";
 import DeleteCommentModal from "../CommentModals/DeleteCommentModal";
 import { useEffect, useState } from "react";
-import {
-  thunkGetComments,
-  thunkPostComment,
-  thunkUpdateComment,
-  thunkDeleteComment,
-} from "../../redux/comment";
+import { thunkGetComments } from "../../redux/comment";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import "./Comments.css";
@@ -27,20 +23,6 @@ function Comments() {
     setUserCommented(userComments?.find((c) => c.user_id == userSession.id));
   }, [userComments]);
 
-  // function handlePost(expenseId, commentText) {
-  //   dispatch(thunkPostComment(expenseId, commentText));
-  //   console.log("my post posted", expenseId);
-  // }
-
-  // function handleUpdate(commentId, commentText) {
-  //   dispatch(thunkUpdateComment(commentId, commentText));
-  //   console.log("my post updated", commentId);
-  // }
-
-  // function handleDelete(commentId) {
-  //   dispatch(thunkDeleteComment(commentId));
-  // }
-
   return (
     <div id="comments">
       <h1>Comments</h1>
@@ -48,7 +30,7 @@ function Comments() {
         <OpenModalButton
           className="post-comment-button"
           buttonText="Post your comment"
-          modalComponent={<SubmitCommentModal props={expenseId} />}
+          modalComponent={<PostCommentModal expenseId={expenseId} />}
         />
       )}
       {userComments?.map((comment, i) => (
@@ -62,11 +44,11 @@ function Comments() {
             <div className="comment-buttons">
               <OpenModalButton
                 buttonText="Update"
-                modalComponent={<SubmitCommentModal props={comment?.user_id} />}
+                modalComponent={<UpdateCommentModal commentId={comment?.id} />}
               />
               <OpenModalButton
                 buttonText="Delete"
-                modalComponent={<DeleteCommentModal props={comment?.user_id} />}
+                modalComponent={<DeleteCommentModal commentId={comment?.id} />}
               />
             </div>
           )}
