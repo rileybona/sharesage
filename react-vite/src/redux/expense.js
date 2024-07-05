@@ -3,7 +3,8 @@ const GET_ALL_EXPENSES = "expenses/GET_ALL_EXPENSES";
 const GET_EXPENSE_DETAILS = "expenses/GET_EXPENSE_DETAILS";
 const ADD_EXPENSE = "expense/ADD_EXPENSE";
 const DELETE_EXPENSE = "expense/DELETE_EXPENSE";
-const UPDATE_PAYEES = "expense/UPDATE_PAYEES";
+const GET_EXPENSE_PAYEES = "expense/GET_EXPENSE_PAYEES";
+const ADD_EXPENSE_PAYEES = "expense/ADD_EXPENSE_PAYEES";
 // ACTION CREATORS
 const loadExpenses = (expenses) => ({
   type: GET_ALL_EXPENSES,
@@ -26,6 +27,20 @@ const deleteExpense = (expenseId) => ({
   type: DELETE_EXPENSE,
   expenseId,
 });
+
+const getPayees = (payees) => {
+  return {
+    type: GET_EXPENSE_PAYEES,
+    payload: payees,
+  };
+};
+
+const addPayees = (expense) => {
+  return {
+    type: ADD_EXPENSE_PAYEES,
+    payload: expense,
+  };
+};
 // THUNKS - -  - -- - --  - - -- -
 export const getAllExpenses = () => async (dispatch) => {
   try {
@@ -59,7 +74,7 @@ export const getSingleExpense = (expenseId) => async (dispatch) => {
 };
 
 export const addAnExpense = (data) => async (dispatch) => {
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   const response = await fetch("/api/expenses/", {
     method: "POST",
     headers: {
@@ -76,6 +91,50 @@ export const addAnExpense = (data) => async (dispatch) => {
     return errorMessages;
   } else {
     return { server: "Something went wrong. Please try again" };
+  }
+};
+
+export const getExpensePayees = (expenseId) => async (dispatch) => {
+  const response = await fetch(`/api/expenses/${expenseId}/payees`)
+    .then((res) => res.json().then((res) => res.payees))
+    .catch((e) => console.log(e.message));
+  if (response.length) {
+    const payload = {};
+    payload.payees = response.reduce((acc, el) => {
+      acc[el.id] = el;
+      return acc;
+    }, {});
+    payload.expenseId = expenseId;
+    return dispatch(getPayees(payload));
+  } else {
+    return dispatch(getPayees({ expenseId, payees: null }));
+  }
+};
+
+export const addExpensePayees = (expenseId, payload) => async (dispatch) => {
+  const options = {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const response = await fetch(`/api/expenses/${expenseId}/payees`, options);
+  if (response.ok) {
+    const response = await fetch(`/api/expenses/${expenseId}/payees`)
+      .then((res) => res.json().then((res) => res.payees))
+      .catch((e) => console.log(e.message));
+    if (response.length) {
+      const payload = {};
+      payload.payees = response.reduce((acc, el) => {
+        acc[el.id] = el;
+        return acc;
+      }, {});
+      payload.expenseId = expenseId;
+      return dispatch(getPayees(payload));
+    } else {
+      return dispatch(getPayees({ expenseId, payees: null }));
+    }
   }
 };
 
@@ -120,7 +179,13 @@ const expenseReducer = (
       if (state.root_expenses[action.expenseId]) {
         delete state.root_expenses[action.expenseId];
       }
-      state.expense_details = {};
+      // state.expense_details[action.payload.id] = {};
+      return state;
+    }
+
+    case GET_EXPENSE_PAYEES: {
+      state.expense_details[action.payload.expenseId].payees =
+        action.payload.payees;
       return state;
     }
 
