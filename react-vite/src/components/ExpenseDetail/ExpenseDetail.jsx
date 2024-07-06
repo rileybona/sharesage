@@ -7,7 +7,9 @@ import ExpenseCardView from "./ExpenseCardView";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import DeleteExpenseModal from "../ExpenseModal/DeleteExpenseModal";
 import UpdateExpenseModal from "../ExpenseModal/UpdateExpenseModal";
-import Comments from "../Comments/Comments"
+import Comments from "../Comments/Comments";
+import PaymentModal from "../PaymentModal/PaymentModal";
+import ExpensePayments from "./ExpenseCardView/ExpensePayments";
 
 export default function ExpenseDetail() {
   // const navigate = useNavigate();
@@ -35,42 +37,43 @@ export default function ExpenseDetail() {
   else {
     return (
       <div className="expense-details-container">
-        {user.id == expense[expenseId].owner_id && (
-          <div className="expense-toolbar">
-            {/* <button
-              onClick={(e) => {
-                e.preventDefault();
-                setReload(reload + 1);
-              }}
-            >
-              Reload
-            </button> */}
+        <div className="expense-toolbar">
+          {user.id == expense[expenseId].owner_id ? (
+            <>
+              <OpenModalButton
+                className="edit-expense"
+                buttonText="Edit expense"
+                modalComponent={
+                  <UpdateExpenseModal
+                    expenseId={parseInt(expenseId)}
+                    setReload={setReload}
+                    reload={reload}
+                  />
+                }
+                // onModalClose={() => navigate("/expenses")}
+              />
+              <OpenModalButton
+                buttonText="Delete expense"
+                modalComponent={
+                  <DeleteExpenseModal expenseId={parseInt(expenseId)} />
+                }
+                // onModalClose={() => navigate("/expenses")}
+              />{" "}
+            </>
+          ) : (
             <OpenModalButton
-              className="edit-expense"
-              buttonText="Edit expense"
-              modalComponent={
-                <UpdateExpenseModal
-                  expenseId={parseInt(expenseId)}
-                  setReload={setReload}
-                  reload={reload}
-                />
-              }
-              // onModalClose={() => navigate("/expenses")}
+              buttonText="Settle up"
+              modalComponent={<PaymentModal expenseId={expenseId} />}
             />
-            <OpenModalButton
-              buttonText="Delete expense"
-              modalComponent={
-                <DeleteExpenseModal expenseId={parseInt(expenseId)} />
-              }
-              // onModalClose={() => navigate("/expenses")}
-            />
-          </div>
-        )}
+          )}
+        </div>
+
         {dispatchError.message && (
           <p className="error-message">dispatchError.message</p>
         )}
         <ExpenseCardView id={parseInt(expenseId)} />
         <br></br>
+        <ExpensePayments expenseId={expenseId} />
         <Comments />
       </div>
     );

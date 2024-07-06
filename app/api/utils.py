@@ -65,6 +65,7 @@ class ExpenseUtils:
             ChildExpenseUtils.get_child_expense_details_by_id(x)
             for x in child_expense_ids
         ]
+        expense["owner"] = UserUtils.get_user_by_id(expense["owner_id"])
         payeeIds = [
             child_expense["user_id"] for child_expense in expense["child_expenses"]
         ]
