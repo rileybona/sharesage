@@ -152,7 +152,7 @@ function RecentActivityPage() {
   }, [allDone, myDone, paymentState, payments2me]);
 
   // console.log("pre-return users = ", users);
-  if (!Object.keys(users).length) return <p>loading</p>;
+  if (!users || !Object.keys(users).length) return <p>loading</p>;
 
   return (
     <>
