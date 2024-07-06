@@ -8,6 +8,7 @@
 
 .expense-card {
     color: black;
+    background-color: rgba(255, 255, 255, 0.803);
     padding-right: 10px;
     padding-left: 10px;
     border: solid;
@@ -73,7 +74,7 @@
 
 
 .expense-card:hover {
-    background-color: rgba(252, 217, 223, 0.765);
+    background-color: white;
 }
 
 .expense-card:hover h4 {

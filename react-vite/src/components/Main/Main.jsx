@@ -5,7 +5,12 @@ import Sidebar from "../Sidebar/Sidebar";
 function Main() {
     // jk make a landing page slayage 
     return (
-        <h1>Welcome!</h1>
+        <>
+            <h1>Welcome!</h1>
+            {/* <img src="../../public/background.png"/> */}
+        </>
+        
+
         // <div className="main-content">
         //     <div className="left-bar">
         //        <Sidebar />
