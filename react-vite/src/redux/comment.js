@@ -152,7 +152,7 @@ function commentReducer(state = initialState, action) {
     case GET_COMMENTS:
       return { ...state, comments: action.comments };
     case POST_COMMENT:
-      return { ...state, comments: [...state?.comments, action.comment] };
+      return { ...state, comments: [...state.comments, action.comment] };
     case UPDATE_COMMENT: {
       const updatedComments = state.comments.map((comment) =>
         comment.id === action.commentId ? action.comment : comment

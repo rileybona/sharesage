@@ -44,15 +44,18 @@ export const getPaymentsToMe = (expensesIOwn) => async (dispatch) => {
       } else {
         throw new Error(`failed to fetch payments for expense ${expense.id}`);
       }
+
+      return dispatch(getInboundPayments(returnArray));
     } catch (err) {
       console.log(err);
       return err;
-    } finally {
-      // dispatch return array
-      console.log("return Arryay! = ", returnArray);
-      // eslint-disable-next-line no-unsafe-finally
-      return dispatch(getInboundPayments(returnArray));
     }
+    // finally {
+    //   // dispatch return array
+    //   console.log("return Arryay! = ", returnArray);
+    //   // eslint-disable-next-line no-unsafe-finally
+    //   return dispatch(getInboundPayments(returnArray));
+    // }
   });
 };
 

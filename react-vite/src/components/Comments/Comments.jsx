@@ -2,7 +2,7 @@ import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import PostCommentModal from "../CommentModals/PostCommentModal";
 import UpdateCommentModal from "../CommentModals/UpdateCommentModal";
 import DeleteCommentModal from "../CommentModals/DeleteCommentModal";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { thunkGetComments } from "../../redux/comment";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
