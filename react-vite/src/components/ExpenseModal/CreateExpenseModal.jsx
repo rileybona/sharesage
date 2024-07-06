@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal'
-import { addAnExpense, getListOfPayees } from '../../redux/expense';
+import { addAnExpense, addExpensePayees, getListOfPayees } from '../../redux/expense';
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 const EXPENSE_TYPE = [
     "Other",
@@ -18,28 +20,58 @@ function CreateExpenseModal() {
     const [type, setType] = useState(EXPENSE_TYPE[0])
     const [date, setDate] = useState("")
     const [errors, setErrors] = useState({});
-    const [selectUser, setSelectUser] = useState([])
-    const selectedUsers = [];
-    const showSelectedUsers = [];
+    const [selectedUsers, setSelectedUsers] = useState([])
+    const [userLoaded, setUserLoaded] = useState(false);
+    let selectOptions;
 
     const sessionUser = useSelector(state => state.session.user);
-    const payees = useSelector(state => state.expense.payees)
+    const userList = useSelector(state => state.expense.payees)
 
     useEffect(() => {
-        dispatch(getListOfPayees())
+        dispatch(getListOfPayees()).then(() => setUserLoaded(true))
     }, [dispatch])
 
+    // Select Components
+    const animatedComponents = makeAnimated();
+
+    const constructSelectOptions = (userList) => {
+        const allOptions = Object.keys(userList).length
+          ? [...Object.values(userList)].reduce((acc, user) => {
+              const option = {
+                value: user.email,
+                label: `${user.first_name} ${user.last_name}`,
+              };
+              acc.push(option);
+              return acc;
+            }, [])
+          : [];
+        return allOptions;
+      };
+
     const handleSelect = (e) => {
-        e.preventDefault();
-        console.log(selectUser)
-        showSelectedUsers.push(payees[selectUser])
-        selectedUsers.push(selectUser)
-        console.log(selectedUsers)
-        console.log(showSelectedUsers)
+        setSelectedUsers(e.map((e) => e.value));
     }
 
     const handleSubmit =  async (e) => {
         e.preventDefault();
+        const payeeCount = selectedUsers.length
+
+        const split_amount = amount / payeeCount;
+
+        
+    const childExpensePayload = {
+        existing_payees: [], 
+        new_payees: selectedUsers.reduce((acc, el) => {
+            acc.push({
+              email: el,
+              split_amount,
+            });
+          return acc;
+        }, []),
+      };
+
+      console.log(childExpensePayload)
+
         const newExpense = {
             owner_id: sessionUser.id,
             name,
@@ -53,44 +85,37 @@ function CreateExpenseModal() {
             newExpense.transaction_date = formatDate
         }
         setErrors({})
-        const serverResponse = await dispatch(
-            addAnExpense(newExpense)
-        )
+        console.log(newExpense)
+        try {
+            const return_expense = dispatch(addAnExpense(newExpense))
+            dispatch(return_expense.id, addExpensePayees(childExpensePayload))
+                .then(closeModal);
 
-        if (serverResponse) {
-            setErrors(serverResponse);
-            console.log(errors)
-          } else {
-            closeModal();
-          }
+        } catch (e) {
+            console.log(e)
+        }
     }
+
+    if (userLoaded) {
+        selectOptions = constructSelectOptions(userList)
+    }
+
+    if (!userLoaded) return <h2>Loading...</h2>
 
     return (
         <>
-            <p>Selected Users: {selectedUsers.join(', ')}</p>
-            <form onSubmit={(handleSelect)}>
-            <label>
-                    <select
-                    multiple={true}
-                    value={selectedUsers}
-                    onChange={(e) => {
-                        const options = [...e.target.selectedOptions];
-                        const values = options.map(option => option.values)
-                        setSelectUser(values)
-                    }}>
-                        {payees.map(payee => (
-                            <option
-                            key={payee.id}
-                            value={payee.id}>
-                                {payee.first_name}
-                            </ option>
-                        ))}
-                    </select>
-                    <button type="submit">Add User</button>
-                </label>
-            </form>
             <form onSubmit={(handleSubmit)}>
                 <h1>Add an expense</h1>
+                <Select
+                    closeMenuOnSelect={true}
+                    components={animatedComponents}
+                    isMulti
+                    onChange={(e) => {
+                        handleSelect(e);
+                    }}
+                    options={selectOptions}
+
+                />
                 <label>
                     <input
                     type="text"

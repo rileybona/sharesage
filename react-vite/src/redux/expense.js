@@ -85,7 +85,7 @@ export const getSingleExpense = (expenseId) => async (dispatch) => {
 };
 
 export const addAnExpense = (data) => async (dispatch) => {
-  // console.log(JSON.stringify(data));
+  console.log(JSON.stringify(data));
   const response = await fetch("/api/expenses/", {
     method: "POST",
     headers: {
