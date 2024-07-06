@@ -20,6 +20,10 @@ export default function ExpenseCardView({ id }) {
           </div>
           <p id="expense-amount">{`$${root_expense.amount}`}</p>
         </div>
+        <p id="expense-date">{`For ${root_expense.transaction_date.slice(
+          4,
+          17
+        )}`}</p>
         <p id="expense-desc">{`Added by ${user.first_name} ${
           user.last_name
         } on ${root_expense.created_at.slice(4, 17)}`}</p>

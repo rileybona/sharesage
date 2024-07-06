@@ -59,3 +59,9 @@ p#expense-desc {
   color: grey;
   font-size: 10pt;
 }
+
+p#expense-date {
+  /* color: grey; */
+  font-weight: bold;
+  font-size: 10pt;
+}

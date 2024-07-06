@@ -10,7 +10,33 @@ import {
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites"];
+import "./UpdateExpenseModal.css";
+
+const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites", "Home"];
+
+const EXPENSE_TYPE_OPTIONS = EXPENSE_TYPE.map((e) => ({
+  value: e,
+  label: e,
+}));
+
+// console.log(EXPENSE_TYPE_OPTIONS);
+
+Date.prototype.addDays = function (days) {
+  const date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+};
+
+const convertDateSubmit = (dateString) => {
+  const [month, day, year] = new Date(dateString)
+    .addDays(2)
+    .toLocaleDateString("en")
+    .split("/");
+  return `${month.padStart(2, "0")}/${day.padStart(2, "0")}/${year}`;
+};
+
+const convertDateDisplay = (dateString) =>
+  new Date(dateString).toLocaleDateString("en-CA");
 
 export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -33,10 +59,6 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   //for prepopulation;
   let defaultOptions;
 
-  //parsing transaction date to locale date string for field population
-  const transaction_date = new Date(
-    curExpense.transaction_date
-  ).toLocaleDateString("en-CA");
   //to include react select animations
   const animatedComponents = makeAnimated();
 
@@ -46,7 +68,9 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   const [name, setName] = useState(curExpense.name);
   const [amount, setAmount] = useState(parseFloat(curExpense.amount));
   const [type, setType] = useState(curExpense.type);
-  const [date, setDate] = useState(transaction_date);
+  const [date, setDate] = useState(
+    convertDateDisplay(curExpense.transaction_date)
+  );
   //state to reload component when users and existing payees gets fetched from the store
   const [userLoaded, setUserLoaded] = useState(false);
   const [existingPayeesLoaded, setExistingPayeesLoaded] = useState(false);
@@ -70,6 +94,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   };
 
   const getExistingEmails = (usersObj) => {
+    if (!usersObj) return [];
     return Object.keys(usersObj).length
       ? Object.values(usersObj).reduce((acc, user) => {
           acc.push(user.email);
@@ -108,45 +133,46 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
     const split_amount = amount / payeeCount;
     const existingEmails = defaultOptions.map((e) => e.value);
 
-    const childExpensePayload = {
-      existing_payees: defaultOptions.reduce((acc, el) => {
-        if (selectedUsers.includes(el.value)) {
-          acc.push({
-            email: el.value,
-            split_amount,
-          });
+    const childExpensePayload = selectedUsers.length
+      ? {
+          existing_payees: defaultOptions.reduce((acc, el) => {
+            if (selectedUsers.includes(el.value)) {
+              acc.push({
+                email: el.value,
+                split_amount,
+              });
+            }
+            return acc;
+          }, []),
+          new_payees: selectedUsers.reduce((acc, el) => {
+            if (!existingEmails.includes(el)) {
+              acc.push({
+                email: el,
+                split_amount,
+              });
+            }
+            return acc;
+          }, []),
         }
-        return acc;
-      }, []),
-      new_payees: selectedUsers.reduce((acc, el) => {
-        if (!existingEmails.includes(el)) {
-          acc.push({
-            email: el,
-            split_amount,
-          });
-        }
-        return acc;
-      }, []),
-    };
+      : {
+          existing_payees: defaultOptions.reduce((acc, el) => {
+            acc.push({
+              email: el.value,
+              split_amount,
+            });
 
+            return acc;
+          }, []),
+          new_payees: [],
+        };
     const newExpense = {
       owner_id: sessionUser.id,
       name,
       amount: Number(amount),
       expense_type: type,
+      transaction_date: convertDateSubmit(date),
     };
-
-    if (date) {
-      const newDate = new Date(date);
-      const formatDate =
-        newDate.getMonth() +
-        1 +
-        "/" +
-        newDate.getDate() +
-        "/" +
-        newDate.getFullYear();
-      newExpense.transaction_date = formatDate;
-    }
+    console.log(newExpense);
     dispatch(updateAnExpense(expenseId, newExpense));
     dispatch(addExpensePayees(expenseId, childExpensePayload))
       .then(() => {
@@ -158,61 +184,75 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   //short curcuiting component if user list not loaded
   if (!userLoaded || !existingPayeesLoaded) return <h2>loading</h2>;
   return (
-    <form onSubmit={handleSubmit}>
+    <form id="update-expense-modal" onSubmit={handleSubmit}>
       <h1>Update expense</h1>
-      <Select
-        closeMenuOnSelect={true}
-        components={animatedComponents}
-        isMulti
-        onChange={(e) => {
-          handleChange(e);
-          // console.log(e);
-        }}
-        options={selectOptions}
-        defaultValue={(() => {
-          return defaultOptions;
-        })()}
-      />
-      <label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Enter a description"
-          required
+      <div id="selector-container">
+        <Select
+          closeMenuOnSelect={true}
+          components={animatedComponents}
+          isMulti
+          onChange={(e) => {
+            handleChange(e);
+          }}
+          options={selectOptions}
+          defaultValue={(() => {
+            return defaultOptions;
+          })()}
         />
-      </label>
+      </div>
+      <div id="fields-container">
+        <label>
+          Name{"   "}
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter a description"
+            required
+          />
+        </label>
 
-      <label>
-        <input
-          type="number"
-          value={amount}
-          step="0.01"
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="0"
-          required
-        />
-      </label>
+        <label>
+          Expense cost{"   "}
+          <input
+            type="number"
+            value={amount}
+            step="0.01"
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="0"
+            required
+          />
+        </label>
 
-      <label>
-        <select onChange={(e) => setType(e.target.value)}>
-          {EXPENSE_TYPE.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
-      </label>
+        <label>
+          Expense type{"   "}
+          <Select
+            closeMenuOnSelect={true}
+            components={animatedComponents}
+            onChange={(e) => setType(e.value)}
+            options={EXPENSE_TYPE_OPTIONS}
+            defaultValue={{
+              value: curExpense.expense_type,
+              label: curExpense.expense_type,
+            }}
+          />
+        </label>
 
-      <label>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        ></input>
-      </label>
-
-      <button type="submit">Save</button>
+        <label>
+          Date{"   "}
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setDate(e.target.value);
+            }}
+          ></input>
+        </label>
+      </div>
+      <button className="modal-button" type="submit">
+        Save
+      </button>
     </form>
   );
 }

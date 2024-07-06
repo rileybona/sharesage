@@ -219,7 +219,7 @@ class ChildExpenseUtils:
                         ChildExpense.id == expense["id"]
                     ).first()
                     db.session.delete(expense)
-                    db.session.commit()
+                    # db.session.commit()
 
         # create new child expenses for new payees
         for newbie in payload["new_payees"]:
