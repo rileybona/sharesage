@@ -3,6 +3,7 @@ import "./Main.css";
 import Sidebar from "../Sidebar/Sidebar";
 
 function Main() {
+    // jk make a landing page slayage 
     return (
         <h1>Welcome!</h1>
         // <div className="main-content">

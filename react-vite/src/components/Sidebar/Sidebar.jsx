@@ -5,6 +5,11 @@ import './Sidebar.css';
 function Sidebar() {
   const sessionUser = useSelector(state => state.session.user);
 
+  
+  function hiddenClass() {
+    return sessionUser ? "" : "hidden";
+  }
+
   function Layout() {
     const dispatch = useDispatch();
     const [isLoaded, setIsLoaded] = useState(false);
@@ -23,17 +28,23 @@ function Sidebar() {
   }
 
   return (
-    <nav id="sidebar">
-        <ul>
+    <nav id="sidebar" className={hiddenClass()}>
+        <ul id='side-content'>
+            <NavLink to="/" className={'sidebar-navlink'}>
             <li>
-                <NavLink to="/">Dashboard</NavLink>
+                Dashboard
             </li>
+            </NavLink>
+            <NavLink to="/recentActivity" className={'sidebar-navlink'}>
             <li>
-                <NavLink to="/recentActivity">Activities</NavLink>
+                Activities
             </li>
+            </NavLink>
+            <NavLink to="/expenses" className={'sidebar-navlink'}>
             <li>
-                <NavLink to="/expenses">All Expenses</NavLink>
+                All Expenses
             </li>
+            </NavLink>
         </ul>
     </nav>
   );

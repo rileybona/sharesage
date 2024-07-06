@@ -69,9 +69,6 @@ function findMyExpenses(expenses, currentId) {
     return myExpenses;
 }
 
-function paidMeHelper () {
-    return true;
-}
 
 function RecentActivityPage() {
     const dispatch = useDispatch();
