@@ -1,7 +1,9 @@
+import _ from "underscore";
+
 const GET_PAYMENT = "payment/getPayment";
 const ADD_PAYMENT = "payment/addPayment";
 const GET_INBOUND_PAYMENTS = "payment/getInboundPayments";
-
+const GET_USER_PAYMENTS = "payment/getUserPayments";
 const addPayment = (payment) => {
   return {
     type: ADD_PAYMENT,
@@ -19,6 +21,13 @@ const getPayment = (payment) => {
 const getInboundPayments = (payments) => {
   return {
     type: GET_INBOUND_PAYMENTS,
+    payload: payments,
+  };
+};
+
+const getUserPayments = (payments) => {
+  return {
+    type: GET_USER_PAYMENTS,
     payload: payments,
   };
 };
@@ -47,7 +56,7 @@ export const getPaymentsToMe = (expensesIOwn) => async (dispatch) => {
 
       return dispatch(getInboundPayments(returnArray));
     } catch (err) {
-      console.log(err);
+      //   console.log(err);
       return err;
     }
     // finally {
@@ -78,6 +87,26 @@ export const getPayments = (expense_id) => async (dispatch) => {
   }
 };
 
+export const getCurrentUserPayments = (expenseIdsArr) => async (dispatch) => {
+  if (expenseIdsArr.length)
+    try {
+      const paymentPromises = expenseIdsArr.map((id) =>
+        fetch(`/api/expenses/${id}/payments`).then((response) => {
+          if (!response.ok) {
+            throw new Error(`Failed to fetch payments for expense ID ${id}`);
+          }
+          return response.json();
+        })
+      );
+
+      const payments = await Promise.all(paymentPromises);
+
+      dispatch(getUserPayments(payments));
+    } catch (error) {
+      console.error("Error fetching payments:", error);
+    }
+};
+
 export const addAPayment = (data, expense_id) => async (dispatch) => {
   console.log(JSON.stringify(data));
   const response = await fetch(`/api/expenses/${expense_id}/payments`, {
@@ -100,7 +129,7 @@ export const addAPayment = (data, expense_id) => async (dispatch) => {
 };
 
 // Reducer
-const initialState = { payments: [], payment: {} };
+const initialState = { payments: [], payment: {}, user_payments: [] };
 
 const paymentReducer = (state = initialState, action) => {
   let newState;
@@ -111,6 +140,17 @@ const paymentReducer = (state = initialState, action) => {
         payments: action.payment,
       };
       return newState;
+    case GET_USER_PAYMENTS: {
+      newState = { ...state };
+      for (const arr of action.payload) {
+        for (const i of arr) {
+          if (_.findWhere(newState.user_payments, i) == null) {
+            newState.user_payments.push(i);
+          }
+        }
+      }
+      return newState;
+    }
     case GET_INBOUND_PAYMENTS:
       newState = {
         ...state,

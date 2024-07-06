@@ -6,7 +6,7 @@ import configureStore from "./redux/store";
 import { router } from "./router";
 import * as sessionActions from "./redux/session";
 import * as expenseActions from "./redux/expense";
-
+import * as paymentActions from "./redux/payment";
 import "./index.css";
 
 const store = configureStore();
@@ -15,6 +15,7 @@ if (import.meta.env.MODE !== "production") {
   window.store = store;
   window.sessionActions = sessionActions;
   window.expenseActions = expenseActions;
+  window.paymentActions = paymentActions;
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(

@@ -325,6 +325,13 @@ class UserUtils:
         """Returns parsed user info by their email"""
         return User.query.filter(User.email == str(email)).first()
 
+    @staticmethod
+    def get_user_by_child_expense_id(id):
+        """Returns user info by associated child expense id"""
+        userId = ChildExpenseUtils.get_child_expense_details_by_id(id)["user_id"]
+
+        return UserUtils.get_user_by_id(userId)
+
 
 class AuthUtils:
     @staticmethod
@@ -455,4 +462,12 @@ class PaymentUtils:
     def get_payments_by_user():
         user_id = AuthUtils.get_current_user()["id"]
         all_payments = Payment.query.filter(Payment.user_id == user_id)
-        return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))
+
+        def addOwner(payment):
+            parsed_payment = PaymentUtils.parse_data(payment)
+            parsed_payment["recipient"] = UserUtils.get_user_by_child_expense_id(
+                parsed_payment["expense_id"]
+            )
+            return parsed_payment
+
+        return list(map(lambda x: addOwner(x), all_payments))

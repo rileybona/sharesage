@@ -1,17 +1,17 @@
-.outer-div-recent-activity {
-    display: flex; 
+/* .outer-div-recent-activity {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
 .left-activity {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .right-activity {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding-right: 30px;
@@ -25,4 +25,10 @@
 .right-activity a {
     text-decoration: none;
     color: black;
+} */
+
+div.recent-activity-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1em;
 }

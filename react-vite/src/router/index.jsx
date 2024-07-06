@@ -5,7 +5,7 @@ import Layout from "./Layout";
 import Main from "../components/Main/Main";
 import AllExpensePage from "../components/AllExpensePage/AllExpensePage";
 import ExpenseDetail from "../components/ExpenseDetail";
-import RecentActivityPage from "../components/RecentActivityPage/RecentActivityPage";
+import RecentActivityPage from "../components/RecentActivityPage/RecentActivityPage.jsx";
 import Test from "../components/Main/Test";
 // import Comments from "../components/Comments/Comments";
 import UserAccountPage from "../components/UserAccountPage";
