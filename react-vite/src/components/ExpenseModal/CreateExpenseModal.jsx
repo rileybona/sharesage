@@ -25,7 +25,8 @@ function CreateExpenseModal() {
     let selectOptions;
 
     const sessionUser = useSelector(state => state.session.user);
-    const userList = useSelector(state => state.expense.payees)
+    const userList = useSelector(state => state.expense.payees);
+    const currExpense = useSelector(state => state.expense.expense_details);
 
     useEffect(() => {
         dispatch(getListOfPayees()).then(() => setUserLoaded(true))
@@ -70,8 +71,6 @@ function CreateExpenseModal() {
         }, []),
       };
 
-      console.log(childExpensePayload)
-
         const newExpense = {
             owner_id: sessionUser.id,
             name,
@@ -85,15 +84,11 @@ function CreateExpenseModal() {
             newExpense.transaction_date = formatDate
         }
         setErrors({})
-        console.log(newExpense)
-        try {
-            const return_expense = dispatch(addAnExpense(newExpense))
-            dispatch(return_expense.id, addExpensePayees(childExpensePayload))
-                .then(closeModal);
+        await dispatch(addAnExpense(newExpense, childExpensePayload)).then(() => console.log())
 
-        } catch (e) {
-            console.log(e)
-        }
+        console.log("SUCCESS")
+        // dispatch(currExpense.id, addExpensePayees(childExpensePayload))
+        //     .then(closeModal);
     }
 
     if (userLoaded) {

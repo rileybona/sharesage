@@ -84,8 +84,7 @@ export const getSingleExpense = (expenseId) => async (dispatch) => {
   }
 };
 
-export const addAnExpense = (data) => async (dispatch) => {
-  console.log(JSON.stringify(data));
+export const addAnExpense = (data, payload2) => async (dispatch) => {
   const response = await fetch("/api/expenses/", {
     method: "POST",
     headers: {
@@ -96,6 +95,7 @@ export const addAnExpense = (data) => async (dispatch) => {
 
   if (response.ok) {
     const expense = await response.json();
+    dispatch(addExpensePayees(expense.id, payload2))
     return dispatch(addExpense(expense));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
