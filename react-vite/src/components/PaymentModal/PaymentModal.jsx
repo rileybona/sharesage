@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { addAPayment } from "../../redux/payment";
@@ -11,7 +11,7 @@ function PaymentModal({ expense_id }) {
   const [method, setMethod] = useState(PAYMENT_METHODS[0]);
   const [amount, setAmount] = useState(0.0);
   const [note, setNote] = useState("");
-  const [errors, setErrors] = useState({});
+  //   const [errors, setErrors] = useState({});
 
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -20,22 +20,21 @@ function PaymentModal({ expense_id }) {
     // TODO Change expense_id to passed in prop
     const newPayment = {
       user_id: sessionUser.id,
-      expense_id: 1,
+      expense_id: expense_id,
       method,
       amount: Number(amount),
       note,
     };
 
-    setErrors({});
-    const serverResponse = await dispatch(addAPayment(newPayment, 1)).then(
-      closeModal
-    );
+    // setErrors({});
+    // const serverResponse = await
+    dispatch(addAPayment(newPayment, 1)).then(closeModal);
 
-    if (serverResponse) {
-      setErrors(serverResponse);
-    } else {
-      closeModal();
-    }
+    // if (serverResponse) {
+    //   setErrors(serverResponse);
+    // } else {
+    //   closeModal();
+    // }
   };
 
   return (

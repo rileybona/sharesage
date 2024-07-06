@@ -14,6 +14,12 @@ function LoginFormPage() {
 
   if (sessionUser) return <Navigate to="/" replace={true} />;
 
+  const loginDemo = (e) => {
+    e.preventDefault();
+    dispatch(thunkLogin({ email: "demo@aa.io", password: "password" }));
+    navigate("/");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,6 +65,9 @@ function LoginFormPage() {
         {errors.password && <p>{errors.password}</p>}
         <button type="submit">Log In</button>
       </form>
+      <button id="demo-user" onClick={loginDemo}>
+        Demo User
+      </button>
     </>
   );
 }

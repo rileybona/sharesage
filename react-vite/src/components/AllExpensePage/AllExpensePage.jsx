@@ -87,7 +87,7 @@ function AllExpensePage() {
   }, [expenseState]);
 
   // return <h1>testing stuff sorry!</h1>
-
+  if (!done) return <h1>LOADING</h1>;
   return (
     <>
       {!(expenses.length > 0) ? (

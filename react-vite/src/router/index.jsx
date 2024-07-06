@@ -7,7 +7,7 @@ import AllExpensePage from "../components/AllExpensePage/AllExpensePage";
 import ExpenseDetail from "../components/ExpenseDetail";
 import RecentActivityPage from "../components/RecentActivityPage/RecentActivityPage";
 import Test from "../components/Main/Test";
-import Comments from "../components/Comments/Comments";
+// import Comments from "../components/Comments/Comments";
 import UserAccountPage from "../components/UserAccountPage";
 
 export const router = createBrowserRouter([
@@ -47,5 +47,9 @@ export const router = createBrowserRouter([
         element: <UserAccountPage />,
       },
     ],
+  },
+  {
+    path: "landing",
+    element: <LoginFormPage />,
   },
 ]);
