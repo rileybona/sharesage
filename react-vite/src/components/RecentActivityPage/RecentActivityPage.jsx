@@ -47,7 +47,7 @@ export default function RecentActivityPage() {
     <div className="recent-activity-container">
       <div className="received-container">
         <div className="div-title">
-          Payments Received{" "}
+          <p id="received-title">Payments Received</p>{" "}
           <button
             style={{ width: "min-content" }}
             className="modal-button"

@@ -18,9 +18,9 @@ function Navigation({ landing }) {
         </NavLink>
       </div>
       <div className="wizardDoodles">
-          <p>lil wizard1?</p>
+          <p id="navWiz1">lil wizard1?</p>
           <img src="../../public/navwiz2.png" id="navWiz2"/>
-          <p>lil wizard3?</p>
+          <p id="navWiz3">lil wizard3?</p>
       </div>
       <div id="navbar-right">{landing || <ProfileButton />}</div>
     </nav>

@@ -44,6 +44,8 @@
 
 #navbar-left h3{
   padding-bottom: 2px;
+  font-weight: 1000;
+  font-size: larger;
   color: RGB(72, 99, 155);
   text-shadow: -1.5px 1.5px 1px RGB(165, 224, 207);
 }
@@ -56,11 +58,17 @@
 .wizardDoodles p {
   color: lightgray;
 }
-
+#navWiz1 {
+  visibility: hidden;
+}
 #navWiz2 {
+  /* visibility: hidden; */
   height: 40px;
   padding-left: 40px;
   padding-right: 40px;
+}
+#navWiz3 {
+  visibility: hidden;
 }
 
 #navbar-right {
