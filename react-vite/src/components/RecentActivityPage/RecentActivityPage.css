@@ -44,6 +44,12 @@ p.div-title {
   background-color: rgb(177, 141, 90);
   border: ridge, rgb(93, 66, 41), 5px;
 }
+div.div-title {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  align-items: center;
+}
 
 div.payment-card {
   padding: 0.3em 1em;

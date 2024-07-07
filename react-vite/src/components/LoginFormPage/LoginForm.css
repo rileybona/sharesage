@@ -26,6 +26,9 @@ form#login-form label {
 form#login-form input {
   width: 100%;
   box-sizing: border-box;
+  padding: 1em;
+  border-radius: 1em;
+  border: 1px solid lightgrey;
 }
 
 button.modal-button {

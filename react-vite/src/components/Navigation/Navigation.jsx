@@ -1,13 +1,17 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
+import imgUrl from "./coin.png";  
 
 function Navigation({ landing }) {
   return (
     <nav id="navbar">
       <div id="navbar-left">
         <NavLink to="/">
-          <img src="../../public/logo.png" id="logo-img"/>
+          <img
+            style={{ height: "3em", padding: "0.5em" }}
+            src={imgUrl}
+          />
         </NavLink>
         <NavLink to="/">
           <h3>ShareSage</h3>

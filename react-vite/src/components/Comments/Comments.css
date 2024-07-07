@@ -12,9 +12,20 @@ div#comments {
     border-radius: 5px;
     /* background-color: rgba(255, 255, 255, 0.639); */
 
+    display: flex;
+    border: 1px solid #e0e0e04c;
+    padding: 0.6em;
+    margin: 0.5em 0;
+    justify-content: space-between;
+    /* align-items: center; */
+
+    display: flex;
+    flex-direction: column;
 
     & > div.comment-header {
       margin-bottom: 10px;
+
+      color: rgba(68, 66, 66, 0.528);
     }
 
     & > div.comment-buttons {
@@ -22,7 +33,7 @@ div#comments {
       justify-content: flex-end;
 
       & > button {
-        margin: 15px 0 0 15px;
+        margin: 1em 0 0 1em;
         width: 80px;
       }
     }
@@ -31,39 +42,23 @@ div#comments {
 
 #commenth1 {
   margin-top: 0;
-  /* background-image: url("../../../public/sign1.png");  */
   background-size: 160px, 240px;
   padding: 5px;
-  /* border-radius: 8px; */
   width: 180px;
   background-color: rgb(177, 141, 90);
   border: ridge, rgb(93, 66, 41), 5px;
-  /* color: rgb(35, 99, 162); */
 }
 
 
-/* #comments-sign-container {
-  text-align: center;
-  height: 150px;
-  max-width: 260px;
-  display: grid;
-  grid-template-columns: (1,1);
-  grid-template-rows: (1, 1);
+
+#comments button {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.3em;
+  padding: 0.3em;
+  cursor: pointer;
+  box-shadow: 0 0 2px lightgrey;
 }
-.sign-img-comments {
-  max-height: 150px;
-  width: 20px;
-  grid-column: 0;
-  grid-row: 0;
+#comments button:hover {
+  background-color: lightgrey;
 }
-#commenth1 {
-  margin: 0;
-  grid-column: 0;
-  grid-row: 0;
-} */
-
-/* div#comments h1 {
-  color: grey;
-}  */
-
-
