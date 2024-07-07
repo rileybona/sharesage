@@ -10,9 +10,6 @@ import {
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-<<<<<<< Updated upstream
-const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites"];
-=======
 // import "./UpdateExpenseModal.css";
 
 const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites", "Home"];
@@ -40,7 +37,6 @@ const convertDateSubmit = (dateString) => {
 
 const convertDateDisplay = (dateString) =>
   new Date(dateString).toLocaleDateString("en-CA");
->>>>>>> Stashed changes
 
 export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   const sessionUser = useSelector((state) => state.session.user);
