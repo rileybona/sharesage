@@ -32,3 +32,11 @@ div.recent-activity-container {
   flex-direction: column;
   padding: 0 1em;
 }
+
+p.div-title {
+  font-weight: 600;
+}
+
+div.payment-card {
+  padding: 0.3em 1em;
+}

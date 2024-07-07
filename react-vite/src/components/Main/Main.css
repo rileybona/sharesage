@@ -1,12 +1,14 @@
 div.main-content {
-    display: flex;
-    justify-content: center;
-    border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  border: 1px solid black;
 
-    & > div.main {
-        border: 1px solid black;
-        width: 600px;
-        min-height: 80vh;
-        margin: 0 20px;
-    }
+  & > div.main {
+    border: 1px solid black;
+    width: 600px;
+    min-height: 80vh;
+    margin: 0 20px;
+    border-radius: 1em;
+    background-color: white;
+  }
 }

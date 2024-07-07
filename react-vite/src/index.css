@@ -2,8 +2,24 @@
 body {
   margin: 0px;
   padding: 0px;
+  font: 1em "Roboto", sans-serif;
 }
 
 ul {
   list-style-type: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+  user-select: none;
+}
+
+a {
+  text-decoration: none;
+  color: #1e1e1e;
 }

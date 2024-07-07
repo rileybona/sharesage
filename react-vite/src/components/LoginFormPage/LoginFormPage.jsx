@@ -3,6 +3,7 @@ import { thunkLogin } from "../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
+import Navigation from "../Navigation/Navigation";
 
 function LoginFormPage() {
   const navigate = useNavigate();
@@ -38,11 +39,12 @@ function LoginFormPage() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
+    <div className="landing-page-container">
+      <Navigation landing={true} />
+      <h1>Welcome to ShareSage</h1>
       {errors.length > 0 &&
         errors.map((message) => <p key={message}>{message}</p>)}
-      <form onSubmit={handleSubmit}>
+      <form id="login-form" onSubmit={handleSubmit}>
         <label>
           Email
           <input
@@ -63,12 +65,14 @@ function LoginFormPage() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
+        <button className="modal-button" type="submit">
+          Log In
+        </button>
+        <button className="modal-button" id="demo-user" onClick={loginDemo}>
+          Demo User
+        </button>
       </form>
-      <button id="demo-user" onClick={loginDemo}>
-        Demo User
-      </button>
-    </>
+    </div>
   );
 }
 

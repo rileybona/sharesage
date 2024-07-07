@@ -45,23 +45,32 @@ export default function RecentActivityPage() {
   return (
     <div className="recent-activity-container">
       <div className="received-container">
-        <p>Payment Received</p>
+        <p className="div-title">Payments Received</p>
         {Inboundpayments.map((e, ind) => {
           return (
             <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <p>{`${users[e.id].first_name} ${
-                users[e.id].last_name
-              } sent me $${e.amount} on ${e.created_at}`}</p>
+              <p>
+                <span style={{ color: "	#006400" }}>{`${
+                  users[e.id].first_name
+                } ${users[e.id].last_name}`}</span>
+                {` sent me $${e.amount} on ${e.created_at}`}
+              </p>
             </div>
           );
         })}
       </div>
       <div className="paid-container">
-        <p>Payment Made</p>
+        <p className="div-title">Payments Made</p>
         {myPayments.map((e, ind) => {
           return (
             <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <p>{`I received $${e.amount} on ${e.created_at} from ${e.recipient.first_name} ${e.recipient.last_name}`}</p>
+              <p>
+                {`I paid`}
+                <span
+                  style={{ color: "	#006400" }}
+                >{` ${e.recipient.first_name} ${e.recipient.last_name} `}</span>
+                {`$${e.amount} on ${e.created_at}`}
+              </p>
             </div>
           );
         })}

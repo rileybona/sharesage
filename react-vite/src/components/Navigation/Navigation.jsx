@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 
-function Navigation() {
+function Navigation({ landing }) {
   return (
     <nav id="navbar">
       <div id="navbar-left">
@@ -12,12 +12,11 @@ function Navigation() {
       </div>
       <div id="navbar-right">
         <ul>
-          {/* <li>
-            <NavLink to="/">Home</NavLink>
-          </li> */}
-          <li>
-            <ProfileButton />
-          </li>
+          {landing || (
+            <li>
+              <ProfileButton />
+            </li>
+          )}
         </ul>
       </div>
     </nav>
