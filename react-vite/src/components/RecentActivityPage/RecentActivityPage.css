@@ -36,6 +36,12 @@ div.recent-activity-container {
 p.div-title {
   font-weight: 600;
 }
+div.div-title {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  align-items: center;
+}
 
 div.payment-card {
   padding: 0.3em 1em;

@@ -11,12 +11,17 @@
   color: black;
   padding-right: 10px;
   padding-left: 10px;
-  border: solid;
-  border-width: 1px;
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: 0.3em;
   margin-top: 20px;
   margin-right: 5px;
   margin-left: 5px;
+}
+
+hr.rounded {
+  width: 90%;
+  border-top: 1px solid #e0e0e0;
+  border-radius: 1em;
 }
 
 .ecard-navLink {
@@ -71,7 +76,11 @@
 }
 
 .expense-card:hover {
-  background-color: rgba(252, 217, 223, 0.765);
+  background-color: #427e93;
+  & * {
+    color: white;
+    border-color: transparent;
+  }
 }
 
 .expense-card:hover h4 {

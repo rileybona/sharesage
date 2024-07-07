@@ -1,9 +1,22 @@
 div.payment-card {
   display: flex;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e0e0e04c;
   border-radius: 0.3em;
   padding: 0.3em;
   margin: 0.5em 0;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(211, 211, 211, 0.135);
+}
+
+div.payment-note {
+  display: flex;
+  flex-direction: column;
+  color: darkgrey;
+  & > p {
+    margin: 0;
+    margin-bottom: 10px;
+  }
 }

@@ -7,7 +7,10 @@ function Navigation({ landing }) {
     <nav id="navbar">
       <div id="navbar-left">
         <NavLink to="/">
-          <h3>Logo Placeholder</h3>
+          <img
+            style={{ height: "3em", padding: "0.5em" }}
+            src="public/coin.png"
+          />
         </NavLink>
       </div>
       <div id="navbar-right">{landing || <ProfileButton />}</div>

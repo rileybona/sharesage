@@ -104,32 +104,38 @@ function AllExpensePage() {
             />
           </div>
           {expenses.map((expense) => (
-            <div className="expense-card" key={expense.id}>
-              <NavLink to={`/expenses/${expense.id}`} className="ecard-navLink">
-                <div className="ecard-left">
-                  <div className="ecard-date">
-                    <p className="mo">
-                      {monthFormatHelper(expense.transaction_date)}
-                    </p>
-                    <p className="day">
-                      {dayFormatHelper(expense.transaction_date)}
-                    </p>
-                  </div>
-                  <div className="ecard-img-container">
-                    {/* <img
+            <>
+              <div className="expense-card" key={expense.id}>
+                <NavLink
+                  to={`/expenses/${expense.id}`}
+                  className="ecard-navLink"
+                >
+                  <div className="ecard-left">
+                    <div className="ecard-date">
+                      <p className="mo">
+                        {monthFormatHelper(expense.transaction_date)}
+                      </p>
+                      <p className="day">
+                        {dayFormatHelper(expense.transaction_date)}
+                      </p>
+                    </div>
+                    <div className="ecard-img-container">
+                      {/* <img
                       src={typeImgUrls.get(expense.expense_type)}
                       className="ecard-img"
                     /> */}
-                    <ExpenseTypeImage allExpenses={true} />
+                      <ExpenseTypeImage allExpenses={true} />
+                    </div>
+                    <h4 className="ecard-title">{expense.name}</h4>
                   </div>
-                  <h4 className="ecard-title">{expense.name}</h4>
-                </div>
-                <div className="ecard-money">
-                  <p>Expense Total:</p>
-                  <p>{moneyFormatHelper(expense.amount)}</p>
-                </div>
-              </NavLink>
-            </div>
+                  <div className="ecard-money">
+                    <p>Expense Total:</p>
+                    <p>{moneyFormatHelper(expense.amount)}</p>
+                  </div>
+                </NavLink>
+              </div>
+              <hr className="rounded" />
+            </>
           ))}
         </div>
       )}

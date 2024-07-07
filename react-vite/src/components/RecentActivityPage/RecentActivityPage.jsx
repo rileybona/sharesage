@@ -12,6 +12,7 @@ export default function RecentActivityPage() {
   const [expenesesLoaded, setExpensesLoaded] = useState(false);
   const [child_expenses, setChild_expenses] = useState([]);
   const [inPaymentLoaded, setInPaymentLoaded] = useState(false);
+  const [reload, setReload] = useState(1);
 
   const myPayments = useSelector((state) => state.payment.payments);
   const Inboundpayments = useSelector((state) => state.payment.user_payments);
@@ -24,7 +25,7 @@ export default function RecentActivityPage() {
     dispatch(getPayments()).then(() => setPaymentLoaded(true));
     dispatch(getAllUsers()).then(() => setUsersLoaded(true));
     dispatch(getAllExpenses()).then(() => setExpensesLoaded(true));
-  }, [dispatch]);
+  }, [dispatch, reload]);
 
   useEffect(() => {
     setChild_expenses(
@@ -45,7 +46,16 @@ export default function RecentActivityPage() {
   return (
     <div className="recent-activity-container">
       <div className="received-container">
-        <p className="div-title">Payments Received</p>
+        <div className="div-title">
+          Payments Received{" "}
+          <button
+            style={{ width: "min-content" }}
+            className="modal-button"
+            onClick={() => setReload(reload + 1)}
+          >
+            Reload
+          </button>
+        </div>
         {Inboundpayments.map((e, ind) => {
           return (
             <div className="payment-card" key={`${e.id}` + `${ind}`}>
