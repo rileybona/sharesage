@@ -22,12 +22,19 @@ div.left-bar {
   flex-grow: 2;
   /* margin-left: 1em; */
   box-sizing: border-box;
+  & > nav#sidebar li {
+    display: flex;
+    flex-direction: row-reverse;
+  }
 }
 
 div.right-bar {
   flex-grow: 2;
   /* margin-right: 1em; */
   box-sizing: border-box;
+  & > nav#sidebar li {
+    display: flex;
+  }
 }
 
 nav#sidebar {
