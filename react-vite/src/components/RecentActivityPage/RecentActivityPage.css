@@ -35,6 +35,14 @@ div.recent-activity-container {
 
 p.div-title {
   font-weight: 600;
+  width: 160px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(177, 141, 90);
+  border: ridge, rgb(93, 66, 41), 5px;
 }
 div.div-title {
   display: flex;

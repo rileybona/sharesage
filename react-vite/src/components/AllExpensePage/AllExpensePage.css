@@ -16,6 +16,7 @@
   margin-top: 20px;
   margin-right: 5px;
   margin-left: 5px;
+  background-color: rgba(255, 255, 255, 0.59);
 }
 
 hr.rounded {
@@ -76,11 +77,7 @@ hr.rounded {
 }
 
 .expense-card:hover {
-  background-color: #427e93;
-  & * {
-    color: white;
-    border-color: transparent;
-  }
+  background-color: white;
 }
 
 .expense-card:hover h4 {
@@ -94,7 +91,7 @@ hr.rounded {
   }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 656px) {
   .expense-card {
     display: flex;
     flex-direction: column;

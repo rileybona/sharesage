@@ -2,13 +2,19 @@ div.main-content {
   display: flex;
   justify-content: center;
   width: 100%;
+
   & > div.main {
+    /* testing out background image */
+    background-image: url("../../public/background.png");
+    /* background-repeat: no-repeat; */
+    opacity: 85%;
+      
     border: 1px solid lightgrey;
     width: 600px;
     min-height: 80vh;
     margin: 0 20px;
     border-radius: 1em;
-    background-color: white;
+    background-color: rgba(18, 107, 68, 0.725);
     /* display: flex; */
     flex-direction: column;
     /* align-items: center; */
@@ -34,6 +40,7 @@ div.right-bar {
   /* margin-right: 1em; */
   box-sizing: border-box;
   & > nav#sidebar ul {
+    /* visibility: hidden; */
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -81,4 +88,17 @@ nav#sidebar {
 nav#sidebar li {
   margin: 0;
   padding: 0;
+}
+
+div.main h1 {
+    width: 200px;
+    text-align: center;
+    background-color: rgb(177, 141, 90);
+    border: ridge, rgb(93, 66, 41), 5px;
+}
+
+div.main h3 {
+    text-align: center;
+    width: 500px;
+    background-color: rgba(245, 245, 245, 0.645);
 }

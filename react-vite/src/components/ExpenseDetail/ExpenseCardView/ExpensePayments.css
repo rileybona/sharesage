@@ -5,10 +5,11 @@ div.payment-card {
   padding: 0.3em;
   margin: 0.5em 0;
   justify-content: space-between;
+
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.639);
   /* align-items: center; */
-  display: flex;
   flex-direction: column;
-  background-color: rgba(211, 211, 211, 0.135);
 }
 
 div.payment-note {

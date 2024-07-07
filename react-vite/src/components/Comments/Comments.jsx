@@ -20,7 +20,10 @@ function Comments() {
 
   return (
     <div id="comments">
-      <h1>Comments</h1>
+      <div id="comment-sign-container">
+        {/* <img src="../../../public/sign1.png" className="sign-img-comments"/> */}
+        <h1 id="commenth1">Comments</h1>
+      </div>
       <OpenModalButton
         className="post-comment-button"
         buttonText="Post your comment"

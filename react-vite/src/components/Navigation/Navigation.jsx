@@ -13,6 +13,14 @@ function Navigation({ landing }) {
             src={imgUrl}
           />
         </NavLink>
+        <NavLink to="/">
+          <h3>ShareSage</h3>
+        </NavLink>
+      </div>
+      <div className="wizardDoodles">
+          <p>lil wizard1?</p>
+          <img src="../../public/navwiz2.png" id="navWiz2"/>
+          <p>lil wizard3?</p>
       </div>
       <div id="navbar-right">{landing || <ProfileButton />}</div>
     </nav>
