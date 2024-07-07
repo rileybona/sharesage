@@ -40,7 +40,7 @@ function LoginFormPage() {
 
   return (
     <div className="landing-page-container">
-      <Navigation landing={true} />
+      {/* <Navigation landing={true} /> */}
       <h1>Welcome to ShareSage</h1>
       {errors.length > 0 &&
         errors.map((message) => <p key={message}>{message}</p>)}
