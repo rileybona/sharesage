@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
+import imgUrl from "./coin.png";  
 
 function Navigation({ landing }) {
   return (
@@ -9,7 +10,7 @@ function Navigation({ landing }) {
         <NavLink to="/">
           <img
             style={{ height: "3em", padding: "0.5em" }}
-            src="public/coin.png"
+            src={imgUrl}
           />
         </NavLink>
       </div>
