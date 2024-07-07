@@ -22,9 +22,10 @@ div.left-bar {
   flex-grow: 2;
   /* margin-left: 1em; */
   box-sizing: border-box;
-  & > nav#sidebar li {
+  & > nav#sidebar ul {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column;
+    align-items: end;
   }
 }
 
@@ -32,8 +33,10 @@ div.right-bar {
   flex-grow: 2;
   /* margin-right: 1em; */
   box-sizing: border-box;
-  & > nav#sidebar li {
+  & > nav#sidebar ul {
     display: flex;
+    flex-direction: column;
+    align-items: start;
   }
 }
 
@@ -53,7 +56,7 @@ nav#sidebar li {
   columns: #1e1e1e;
   border: 1px solid transparent;
 
-  width: 90%;
+  width: 10em;
   text-align: center;
   border-radius: 0.3em;
   font-weight: bold;
