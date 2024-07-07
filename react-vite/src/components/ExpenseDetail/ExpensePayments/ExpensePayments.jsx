@@ -11,7 +11,7 @@ export default function ExpensePaymentsView({ expenseId }) {
 
   const payments = Object.values(useSelector((state) => state.payment.payment));
 
-  console.log("payments: ", payments);
+  // console.log("payments: ", payments);
 
   const constructPaymentCard = (payment, index) => {
     return (

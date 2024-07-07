@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { addAnExpense } from "../../redux/expense";
 
-const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites"];
+const EXPENSE_TYPE = ["Other", "Food", "Travel", "Home", "Entertainment"];
 
 function CreateExpenseModal({ reload, setReload }) {
   const dispatch = useDispatch();

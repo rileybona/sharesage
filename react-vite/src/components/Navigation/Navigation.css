@@ -31,7 +31,36 @@
 }
 
 #navbar-left {
+  display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+}
+
+#logo-img {
+  height: 30px;
+  padding-left: 15px;
+}
+
+#navbar-left h3{
+  padding-bottom: 2px;
+  color: RGB(72, 99, 155);
+  text-shadow: -1.5px 1.5px 1px RGB(165, 224, 207);
+}
+
+.wizardDoodles {
+  display: flex;
+  flex-direction: row;
+}
+
+.wizardDoodles p {
+  color: lightgray;
+}
+
+#navWiz2 {
+  height: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 #navbar-right {
