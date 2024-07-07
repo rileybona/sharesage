@@ -10,7 +10,37 @@ import {
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
+<<<<<<< Updated upstream
 const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites"];
+=======
+// import "./UpdateExpenseModal.css";
+
+const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites", "Home"];
+
+const EXPENSE_TYPE_OPTIONS = EXPENSE_TYPE.map((e) => ({
+  value: e,
+  label: e,
+}));
+
+// console.log(EXPENSE_TYPE_OPTIONS);
+
+Date.prototype.addDays = function (days) {
+  const date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+};
+
+const convertDateSubmit = (dateString) => {
+  const [month, day, year] = new Date(dateString)
+    .addDays(2)
+    .toLocaleDateString("en")
+    .split("/");
+  return `${month.padStart(2, "0")}/${day.padStart(2, "0")}/${year}`;
+};
+
+const convertDateDisplay = (dateString) =>
+  new Date(dateString).toLocaleDateString("en-CA");
+>>>>>>> Stashed changes
 
 export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   const sessionUser = useSelector((state) => state.session.user);

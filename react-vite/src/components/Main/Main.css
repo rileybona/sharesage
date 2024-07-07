@@ -9,6 +9,7 @@ div.main-content {
         min-height: 80vh;
         margin: 0 20px;
         background-image: url("../../public/background.png");
+        background-repeat: no-repeat;
         opacity: 85%; 
         color: rgba(255, 255, 255, 0.885);
         

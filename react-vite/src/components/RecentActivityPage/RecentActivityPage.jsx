@@ -13,7 +13,7 @@ function inboundHelper2(payment, users, expenses) {
     let thing = expense.name;
     let name = users[payment.user_id].first_name;
     
-    string = `${name} paid you ${amount} for ${thing}`;
+    string = `${name} paid you $${amount} for ${thing}`;
     return string;
 }
 
@@ -21,7 +21,10 @@ function inboundPaymentHelper(payments, users, expenses) {
     let ul = (
         <ul>
             {payments.map(payment => {
-                return <li key={payment.id}><NavLink to={`/expenses/${payment.expense_id}`}>{inboundHelper2(payment, users, expenses)}</NavLink></li>
+                return <li key={payment.id}><NavLink to={`/expenses/${payment.expense_id}`}>
+                    <p className='payment-timestamp'>{payment.created_at}</p>
+                    {inboundHelper2(payment, users, expenses)}
+                    </NavLink></li>
             })}
         </ul>
     );
@@ -31,15 +34,15 @@ function inboundPaymentHelper(payments, users, expenses) {
 
 function helper2 (payment, users, expenses) {
     let string; 
-    let amount = payment.amount; 
-    let expense = expenses.find((expense) => expense.id == payment.expense_id);
+    let amount = payment?.amount; 
+    let expense = expenses?.find((expense) => expense?.id == payment?.expense_id);
     // console.log(".find returns: ", expense);
     // console.log("users reading as: ", users);
     // console.log(expenses);
     // console.log(expense.id);
     // console.log(payment.expense_id);
-    let thing = expense.name; 
-    let name = users[expense.owner_id].first_name; 
+    let thing = expense?.name; 
+    let name = users[expense?.owner_id]?.first_name; 
 
     string = `You paid ${name} $${amount} for ${thing}`
 
@@ -55,8 +58,11 @@ function helper (paymentArray, usersObj, expenseArr) {
 
     let ul = (
         <ul>
-            {payments.map(payment => {
-                return <li key={payment.id}><NavLink to={`/expenses/${payment.expense_id}`}>{helper2(payment, users, expenses)}</NavLink></li>
+            {payments?.map(payment => {
+                return <li key={payment?.id}><NavLink to={`/expenses/${payment?.expense_id}`}>
+                    <p className='payment-timestamp'>{payment.created_at}</p>
+                    {helper2(payment, users, expenses)}
+                    </NavLink></li>
             })}
         </ul>
     )

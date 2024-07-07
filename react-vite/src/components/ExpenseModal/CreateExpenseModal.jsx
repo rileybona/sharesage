@@ -7,7 +7,8 @@ const EXPENSE_TYPE = [
     "Other",
     "Food",
     "Travel",
-    "Utilites",
+    "Home",
+    "Entertainment"
 ];
 
 function CreateExpenseModal() {

@@ -44,8 +44,13 @@ function AllExpensePage() {
     // TEMPORARY IMAGE HARDCODE ------
     // define type images - example method
     const typeImgUrls = new Map();
-    typeImgUrls.set("Food", "https://static.vecteezy.com/system/resources/previews/009/430/604/original/icon-healthy-food-suitable-for-healthy-symbol-line-style-simple-design-editable-design-template-simple-illustration-vector.jpg");
-    typeImgUrls.set("Travel", "https://static.vecteezy.com/system/resources/previews/019/494/001/original/travel-icon-illustration-airplane-icon-with-earth-icon-related-to-transportation-tourism-travel-line-icon-style-simple-design-editable-vector.jpg");
+    typeImgUrls.set("Food", "../../public/food.png");
+    typeImgUrls.set("Travel", "../../public/travel.png");
+    typeImgUrls.set("Home", "../../public/home.png");
+    typeImgUrls.set("Entertainment", "../../public/entertainment.png");
+    typeImgUrls.set("Other", "../../public/other.png");
+
+
     // --------------------------------
 
     const expenseState = useSelector(state => state.expense.root_expenses);
