@@ -4,7 +4,10 @@ import "./Main.css";
 
 function Main() {
   return (
-    <h1>Welcome!</h1>
+    <>
+      <h1>Welcome!</h1>
+      <h3>Page under construction. Features coming soon!</h3>
+    </>
     // <div className="main-content">
     //     <div className="left-bar">
     //        <Sidebar />

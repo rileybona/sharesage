@@ -43,8 +43,12 @@ function ProfileButton() {
 
   return (
     <>
-      <button onClick={toggleMenu}>
-        <FaUserCircle />
+      <button id="profile-button" onClick={toggleMenu}>
+        <FaUserCircle
+          id="profile-icon"
+          size={30}
+          style={{ padding: "0.3em" }}
+        />
       </button>
       {showMenu && (
         <ul className={"profile-dropdown"} ref={ulRef}>

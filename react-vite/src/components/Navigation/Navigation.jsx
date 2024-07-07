@@ -10,15 +10,7 @@ function Navigation({ landing }) {
           <h3>Logo Placeholder</h3>
         </NavLink>
       </div>
-      <div id="navbar-right">
-        <ul>
-          {landing || (
-            <li>
-              <ProfileButton />
-            </li>
-          )}
-        </ul>
-      </div>
+      <div id="navbar-right">{landing || <ProfileButton />}</div>
     </nav>
   );
 }

@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 // import { useDispatch, useSelector } from 'react-redux';
 import "./Sidebar.css";
 
-function Sidebar() {
+function Sidebar({ hidden = false }) {
   // const sessionUser = useSelector(state => state.session.user);
 
   // function Layout() {
@@ -24,17 +24,19 @@ function Sidebar() {
 
   return (
     <nav id="sidebar">
-      <ul>
-        <li>
-          <NavLink to="/">Dashboard</NavLink>
-        </li>
-        <li>
-          <NavLink to="/recentActivity">Activities</NavLink>
-        </li>
-        <li>
-          <NavLink to="/expenses">All Expenses</NavLink>
-        </li>
-      </ul>
+      {hidden || (
+        <ul>
+          <li>
+            <NavLink to="/">Dashboard</NavLink>
+          </li>
+          <li>
+            <NavLink to="/recentActivity">Activities</NavLink>
+          </li>
+          <li>
+            <NavLink to="/expenses">All Expenses</NavLink>
+          </li>
+        </ul>
+      )}
     </nav>
   );
 }

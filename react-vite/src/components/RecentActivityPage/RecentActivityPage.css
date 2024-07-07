@@ -40,3 +40,7 @@ p.div-title {
 div.payment-card {
   padding: 0.3em 1em;
 }
+
+div.payment-card a {
+  width: 100%;
+}

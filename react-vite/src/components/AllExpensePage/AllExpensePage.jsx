@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getAllExpenses } from "../../redux/expense";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import CreateExpenseModal from "../ExpenseModal/CreateExpenseModal";
-
+import ExpenseTypeImage from "../ExpenseTypeImage/ExpenseTypeImage";
 function monthFormatHelper(dateString) {
   const date = new Date(dateString);
 
@@ -93,14 +93,16 @@ function AllExpensePage() {
       {!(expenses.length > 0) ? (
         <p>NOT LOADED</p>
       ) : (
-        <div className="out-div-all-expenses">
-          <OpenModalButton
-            buttonText="Add an expense"
-            // onButtonClick={closeMenu}
-            modalComponent={
-              <CreateExpenseModal reload={reload} setReload={setReload} />
-            }
-          />
+        <div id="out-div-all-expenses">
+          <div className="expense-toolbar" style={{ margin: "10px" }}>
+            <OpenModalButton
+              buttonText="Add an expense"
+              // onButtonClick={closeMenu}
+              modalComponent={
+                <CreateExpenseModal reload={reload} setReload={setReload} />
+              }
+            />
+          </div>
           {expenses.map((expense) => (
             <div className="expense-card" key={expense.id}>
               <NavLink to={`/expenses/${expense.id}`} className="ecard-navLink">
@@ -114,10 +116,11 @@ function AllExpensePage() {
                     </p>
                   </div>
                   <div className="ecard-img-container">
-                    <img
+                    {/* <img
                       src={typeImgUrls.get(expense.expense_type)}
                       className="ecard-img"
-                    />
+                    /> */}
+                    <ExpenseTypeImage allExpenses={true} />
                   </div>
                   <h4 className="ecard-title">{expense.name}</h4>
                 </div>

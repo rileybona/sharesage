@@ -49,12 +49,14 @@ export default function RecentActivityPage() {
         {Inboundpayments.map((e, ind) => {
           return (
             <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <p>
-                <span style={{ color: "	#006400" }}>{`${
-                  users[e.id].first_name
-                } ${users[e.id].last_name}`}</span>
-                {` sent me $${e.amount} on ${e.created_at}`}
-              </p>
+              <a href={`/expenses/${e.id}`}>
+                <p>
+                  <span style={{ color: "	#006400" }}>{`${
+                    users[e.id].first_name
+                  } ${users[e.id].last_name}`}</span>
+                  {` sent me $${e.amount} on ${e.created_at.slice(4, 17)}`}
+                </p>
+              </a>
             </div>
           );
         })}
@@ -64,13 +66,15 @@ export default function RecentActivityPage() {
         {myPayments.map((e, ind) => {
           return (
             <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <p>
-                {`I paid`}
-                <span
-                  style={{ color: "	#006400" }}
-                >{` ${e.recipient.first_name} ${e.recipient.last_name} `}</span>
-                {`$${e.amount} on ${e.created_at}`}
-              </p>
+              <a href={`/expenses/${e.expense_id}`}>
+                <p>
+                  {`I paid`}
+                  <span
+                    style={{ color: "	#006400" }}
+                  >{` ${e.recipient.first_name} ${e.recipient.last_name} `}</span>
+                  {`$${e.amount} on ${e.created_at.slice(4, 17)}`}
+                </p>
+              </a>
             </div>
           );
         })}

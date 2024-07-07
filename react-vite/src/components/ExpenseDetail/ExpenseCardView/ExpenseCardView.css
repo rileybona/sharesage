@@ -1,28 +1,31 @@
 div.expense-details {
-  display: flex;
-  box-sizing: border-box;
   width: 100%;
+  display: flex;
 }
 
-div.expense-type-image {
-  width: 20vw;
+div#expense-type-image {
+  width: 25%;
   display: flex;
   align-items: center;
   justify-content: center;
+  object-fit: contain;
+  margin-right: 1em;
 }
 
-div.expense-type-image > img {
-  width: 90%;
-  max-width: 160px;
+div#expense-type-image > img {
   border: 1px solid transparent;
   border-radius: 1em;
+  overflow: hidden;
+  width: 100%;
 }
 
 div.expense-details-info {
   display: flex;
   flex-direction: column;
+  width: 70%;
   flex-grow: 2;
 }
+
 div.expense-details-info > div {
   display: flex;
   align-items: center;

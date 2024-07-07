@@ -17,7 +17,7 @@ export default function ExpenseCardView({ id }) {
   }
   return (
     <div className="expense-details">
-      <div className="expense-type-image">
+      <div id="expense-type-image">
         <ExpenseTypeImage type={root_expense.expense_type} />
       </div>
       <div className="expense-details-info">
