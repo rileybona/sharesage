@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal'
-import { addAnExpense, getListOfPayees } from '../../redux/expense';
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
+import { addAnExpense, getListOfPayees } from "../../redux/expense";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
@@ -12,17 +12,17 @@ const EXPENSE_TYPE = [
     "Utilites",
 ];
 
-function CreateExpenseModal() {
-    const dispatch = useDispatch();
-    const { closeModal } = useModal();
-    const [name, setName] = useState("")
-    const [amount, setAmount] = useState(0.00)
-    const [type, setType] = useState(EXPENSE_TYPE[0])
-    const [date, setDate] = useState("")
-    const [errors, setErrors] = useState({});
-    const [selectedUsers, setSelectedUsers] = useState([])
-    const [userLoaded, setUserLoaded] = useState(false);
-    let selectOptions;
+function CreateExpenseModal({ reload, setReload }) {
+  const dispatch = useDispatch();
+  const { closeModal } = useModal();
+  const [name, setName] = useState("");
+  const [amount, setAmount] = useState(0.0);
+  const [type, setType] = useState(EXPENSE_TYPE[0]);
+  const [date, setDate] = useState("");
+  const [errors, setErrors] = useState({});
+  const [selectedUsers, setSelectedUsers] = useState([])
+  const [userLoaded, setUserLoaded] = useState(false);
+  let selectOptions;
 
     const sessionUser = useSelector(state => state.session.user);
     const userList = useSelector(state => state.expense.payees);

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal'
-import { addAPayment } from '../../redux/payment';
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
+import { addAPayment } from "../../redux/payment";
 
 const PAYMENT_METHODS = [
     "Cash",
@@ -10,13 +10,13 @@ const PAYMENT_METHODS = [
 ]
 
 
-function PaymentModal({expense_id}) {
-    const dispatch = useDispatch();
-    const { closeModal } = useModal();
-    const [method, setMethod] = useState(PAYMENT_METHODS[0])
-    const [amount, setAmount] = useState(0.00)
-    const [note, setNote] = useState("")
-    const [errors, setErrors] = useState({});
+function PaymentModal({ expense_id }) {
+  const dispatch = useDispatch();
+  const { closeModal } = useModal();
+  const [method, setMethod] = useState(PAYMENT_METHODS[0]);
+  const [amount, setAmount] = useState(0.0);
+  const [note, setNote] = useState("");
+  const [errors, setErrors] = useState({});
 
     const sessionUser = useSelector(state => state.session.user);
 
