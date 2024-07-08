@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { addAPayment } from "../../redux/payment";
@@ -12,26 +12,35 @@ function PaymentModal({ expenseId, reload, setReload }) {
   const [method, setMethod] = useState(PAYMENT_METHODS[0]);
   const [amount, setAmount] = useState(0.0);
   const [note, setNote] = useState("");
-  // const [errors, setErrors] = useState({});
+  const [validationErrors, setValidationErrors] = useState({});
+  const [showErrors, setShowErrors] = useState(false);
 
   const sessionUser = useSelector((state) => state.session.user);
 
+  useEffect(() => {
+    const errs = {};
+    if (amount < 1) errs.amount = "Payment must be greater than 0";
+    setValidationErrors(errs);
+  }, [name, amount]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO Change expense_id to passed in prop
-    const newPayment = {
-      user_id: sessionUser.id,
-      expense_id: expenseId,
-      method,
-      amount: Number(amount),
-      note,
-    };
-    setReload(reload + 1);
-    // setErrors({})
-    // console.log(err);
-    return dispatch(addAPayment(newPayment, expenseId)).then(() =>
-      closeModal()
-    );
+    setShowErrors(true);
+    if (!Object.keys(validationErrors).length) {
+      const newPayment = {
+        user_id: sessionUser.id,
+        expense_id: expenseId,
+        method,
+        amount: Number(amount),
+        note,
+      };
+      setReload(reload + 1);
+      // setErrors({})
+      // console.log(err);
+      return dispatch(addAPayment(newPayment, expenseId)).then(() =>
+        closeModal()
+      );
+    }
   };
 
   return (
@@ -47,6 +56,9 @@ function PaymentModal({ expenseId, reload, setReload }) {
         </select>
       </label>
       <label>
+      {showErrors && validationErrors.amount && (
+          <p className="validation-error">{validationErrors.amount}</p>
+        )}
         <input
           type="number"
           value={amount}
