@@ -24,8 +24,8 @@ function CreateExpenseModal({ reload, setReload }) {
   const [userLoaded, setUserLoaded] = useState(false);
   let selectOptions;
 
-    const sessionUser = useSelector(state => state.session.user);
-    const userList = useSelector(state => state.expense.payees);
+  const sessionUser = useSelector(state => state.session.user);
+  const userList = useSelector(state => state.expense.payees);
 
     useEffect(() => {
         dispatch(getListOfPayees()).then(() => setUserLoaded(true))

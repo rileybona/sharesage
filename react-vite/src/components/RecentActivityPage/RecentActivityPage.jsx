@@ -7,13 +7,13 @@ import { getAllExpenses } from '../../redux/expense'
 import { getAllUsers } from '../../redux/session'
 
 function inboundHelper2(payment, users, expenses) {
-    let string; 
-    let amount = payment.amount; 
+    let string;
+    let amount = payment.amount;
     let expense = expenses.find((expense) => expense.id == payment.expense_id);
     let thing = expense.name;
     let name = users[payment.user_id].first_name;
-    
-    string = `${name} paid you ${amount} for ${thing}`;
+
+    string = `${name} paid you $${amount} for ${thing}`;
     return string;
 }
 
@@ -30,16 +30,16 @@ function inboundPaymentHelper(payments, users, expenses) {
 
 
 function helper2 (payment, users, expenses) {
-    let string; 
-    let amount = payment.amount; 
+    let string;
+    let amount = payment.amount;
     let expense = expenses.find((expense) => expense.id == payment.expense_id);
     // console.log(".find returns: ", expense);
     // console.log("users reading as: ", users);
     // console.log(expenses);
     // console.log(expense.id);
     // console.log(payment.expense_id);
-    let thing = expense.name; 
-    let name = users[expense.owner_id].first_name; 
+    let thing = expense.name;
+    let name = users[expense.owner_id].first_name;
 
     string = `You paid ${name} $${amount} for ${thing}`
 
@@ -75,7 +75,7 @@ function paidMeHelper () {
 
 function RecentActivityPage() {
     const dispatch = useDispatch();
-    // const currentuser = 
+    // const currentuser =
     const [myDone, setMyDone] = useState(false);
     const [allDone, setAllDone] = useState(false);
     const [myPayments, setMyPayments] = useState([]);
@@ -85,28 +85,29 @@ function RecentActivityPage() {
     const [payments2me, setPayments2me] = useState([]);
 
     const currentUser = useSelector(state => state.session.user);
-    const paymentState = useSelector(state => state.payment); 
+    const paymentState = useSelector(state => state.payment);
     const expenseState = useSelector(state => state.expense.root_expenses);
     const userState = useSelector(state => state.session.users);
 
 
     useEffect(() => {
-        dispatch(getPayments()); 
+        dispatch(getPayments());
         dispatch(getAllExpenses());
         dispatch(getAllUsers());
-    }, [dispatch]); 
+    }, [dispatch]);
 
 
     useEffect(() => {
         if (Object.keys(expenseState).length  > 0 && !allDone) {
             setExpenses(Object.values(expenseState));
-            setUsers(userState);
+            // ! setUsers(userState);
             // then query for payments2me info?
             if (expenses.length > 0) {
                 setAllDone(true);
-            } 
+            }
         }
-    },[expenseState, userState]);
+    },[expenseState]);
+    // },[expenseState, userState]);
 
     useEffect(() => {
         // setTimeout(() => {
@@ -133,11 +134,11 @@ function RecentActivityPage() {
                     // console.log(paymentState);
                 }
         }
-        
+
     }, [myDone, allDone]);
 
     useEffect(() => {
-        if (myDone && allDone && paymentState.inboundPayments.length > 0) {
+        if (myDone && allDone && paymentState?.inboundPayments?.length > 0) {
             setPayments2me(paymentState.inboundPayments);
             console.log("payments2me = ", payments2me);
         }
@@ -145,7 +146,7 @@ function RecentActivityPage() {
 
 
     // console.log("pre-return users = ", users);
-    if (!Object.keys(users).length) return (<p>loading</p>);
+    if (!userState || !expenseState) return (<p>loading</p>);
 
     return (
         <>
@@ -154,16 +155,16 @@ function RecentActivityPage() {
                     <h3>My Payments</h3>
                     {!myDone && !allDone ? <p>loading</p> :
                         <div className='out-div-my-payments'>
-                        {helper(myPayments, users, expenses)}
+                        {helper(myPayments, userState, expenses)}
                         </div>
                     }
                 </div>
-                
+
                 <div className='right-activity'>
                     <h3>Paid to Me</h3>
-                    {!(payments2me.length > 0) ? <p>no recent payments made to you </p> : 
+                    {!(payments2me.length > 0) ? <p>no recent payments made to you </p> :
                         <div className='inbound-payments-div'>
-                            {inboundPaymentHelper(payments2me, users, findMyExpenses(expenses, currentUser.id))}
+                            {inboundPaymentHelper(payments2me, userState, findMyExpenses(expenses, currentUser.id))}
                         </div>
                     }
                 </div>
