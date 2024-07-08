@@ -3,6 +3,8 @@ import { thunkLogin } from "../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import SignupFormModal from "../SignupFormModal";
 // import Navigation from "../Navigation/Navigation";
 
 function LoginFormPage() {
@@ -68,6 +70,11 @@ function LoginFormPage() {
         <button className="modal-button" type="submit">
           Log In
         </button>
+        <OpenModalButton
+          className="modal-button"
+          buttonText="Sign Up"
+          modalComponent={<SignupFormModal />}
+        />
         <button className="modal-button" id="demo-user" onClick={loginDemo}>
           Demo User
         </button>
