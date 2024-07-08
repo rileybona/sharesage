@@ -4,7 +4,7 @@ import { useModal } from "../../context/Modal";
 import { addAnExpense, getListOfPayees } from "../../redux/expense";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import './CreateExpenseModal.css';
+import "./CreateExpenseModal.css";
 
 const EXPENSE_TYPE = ["Other", "Food", "Travel", "Home", "Entertainment"];
 

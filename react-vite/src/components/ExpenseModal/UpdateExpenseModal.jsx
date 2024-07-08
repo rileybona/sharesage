@@ -77,6 +77,16 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
   //state to store selected users within the react select component
   const [selectedUsers, setSelectedUsers] = useState([]);
 
+  const [validationErrors, setValidationErrors] = useState({});
+  const [showErrors, setShowErrors] = useState(false);
+  useEffect(() => {
+    const errs = {};
+    if (name.length < 1) errs.name = "Please fill in a name";
+    if (name.length > 20) errs.name = "Expense name too long";
+    if (amount < 1) errs.amount = "Please enter a valid bill amount";
+    setValidationErrors(errs);
+  }, [name, amount]);
+
   const constructSelectOptions = (userList, payees) => {
     const initialOptions = [];
     const allOptions = Object.keys(userList).length
@@ -126,59 +136,62 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payeeCount = selectedUsers.length
-      ? selectedUsers.length
-      : defaultOptions.length;
+    setShowErrors(true);
+    if (!Object.keys(validationErrors).length) {
+      const payeeCount = selectedUsers.length
+        ? selectedUsers.length
+        : defaultOptions.length;
 
-    const split_amount = amount / payeeCount;
-    const existingEmails = defaultOptions.map((e) => e.value);
+      const split_amount = amount / payeeCount;
+      const existingEmails = defaultOptions.map((e) => e.value);
 
-    const childExpensePayload = selectedUsers.length
-      ? {
-          existing_payees: defaultOptions.reduce((acc, el) => {
-            if (selectedUsers.includes(el.value)) {
+      const childExpensePayload = selectedUsers.length
+        ? {
+            existing_payees: defaultOptions.reduce((acc, el) => {
+              if (selectedUsers.includes(el.value)) {
+                acc.push({
+                  email: el.value,
+                  split_amount,
+                });
+              }
+              return acc;
+            }, []),
+            new_payees: selectedUsers.reduce((acc, el) => {
+              if (!existingEmails.includes(el)) {
+                acc.push({
+                  email: el,
+                  split_amount,
+                });
+              }
+              return acc;
+            }, []),
+          }
+        : {
+            existing_payees: defaultOptions.reduce((acc, el) => {
               acc.push({
                 email: el.value,
                 split_amount,
               });
-            }
-            return acc;
-          }, []),
-          new_payees: selectedUsers.reduce((acc, el) => {
-            if (!existingEmails.includes(el)) {
-              acc.push({
-                email: el,
-                split_amount,
-              });
-            }
-            return acc;
-          }, []),
-        }
-      : {
-          existing_payees: defaultOptions.reduce((acc, el) => {
-            acc.push({
-              email: el.value,
-              split_amount,
-            });
 
-            return acc;
-          }, []),
-          new_payees: [],
-        };
-    const newExpense = {
-      owner_id: sessionUser.id,
-      name,
-      amount: Number(amount),
-      expense_type: type,
-      transaction_date: convertDateSubmit(date),
-    };
-    console.log(newExpense);
-    dispatch(updateAnExpense(expenseId, newExpense));
-    dispatch(addExpensePayees(expenseId, childExpensePayload))
-      .then(() => {
-        setReload(reload + 1);
-      })
-      .then(closeModal);
+              return acc;
+            }, []),
+            new_payees: [],
+          };
+      const newExpense = {
+        owner_id: sessionUser.id,
+        name,
+        amount: Number(amount),
+        expense_type: type,
+        transaction_date: convertDateSubmit(date),
+      };
+      console.log(newExpense);
+      dispatch(updateAnExpense(expenseId, newExpense));
+      dispatch(addExpensePayees(expenseId, childExpensePayload))
+        .then(() => {
+          setReload(reload + 1);
+        })
+        .then(closeModal);
+    }
   };
 
   //short curcuiting component if user list not loaded
@@ -201,6 +214,9 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
         />
       </div>
       <div id="fields-container">
+        {showErrors && validationErrors.name && (
+          <p className="validation-error">{validationErrors.name}</p>
+        )}
         <label>
           Name{"   "}
           <input
@@ -211,7 +227,9 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
             required
           />
         </label>
-
+        {showErrors && validationErrors.amount && (
+          <p className="validation-error">{validationErrors.amount}</p>
+        )}
         <label>
           Expense cost{"   "}
           <input
@@ -250,7 +268,13 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
           ></input>
         </label>
       </div>
-      <button className="modal-button" type="submit">
+      <button
+        disabled={validationErrors.length ? true : false}
+        className={
+          validationErrors.length ? "modal-button disabled" : "modal-button"
+        }
+        type="submit"
+      >
         Save
       </button>
     </form>
