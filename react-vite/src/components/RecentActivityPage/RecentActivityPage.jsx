@@ -82,7 +82,7 @@ export default function RecentActivityPage() {
         {myPayments.map((e, ind) => {
           return (
             <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <NavLink href={`/expenses/${e.expense_id}`}>
+              <NavLink to={`/expenses/${e.expense_id}`}>
                 <p>
                   {`I paid`}
                   <span
