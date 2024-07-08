@@ -47,3 +47,15 @@ button.modal-button:hover {
   background-color: lightgrey;
   cursor: pointer;
 }
+
+form#login-form button {
+  padding: 0.5em 0.7em;
+  background-repeat: no-repeat;
+  background-color: white;
+  border: 0.5px solid lightgrey;
+  font-size: 1em;
+  border-radius: 1em;
+  box-shadow: 0 0 5px rgba(211, 211, 211, 0.292);
+  border: ridge, rgb(165, 104, 42), 3px;
+  background-color: rgb(227, 180, 132);
+}

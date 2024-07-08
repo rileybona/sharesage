@@ -72,6 +72,7 @@ function LoginFormPage() {
         </button>
         <OpenModalButton
           className="modal-button"
+          id='landing-signup-button'
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
         />
