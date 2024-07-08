@@ -11,7 +11,7 @@ function PaymentModal({ expense_id }) {
   const [method, setMethod] = useState(PAYMENT_METHODS[0]);
   const [amount, setAmount] = useState(0.0);
   const [note, setNote] = useState("");
-  const [errors, setErrors] = useState({});
+  // const [errors, setErrors] = useState({});
 
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -26,9 +26,10 @@ function PaymentModal({ expense_id }) {
       note,
     };
 
-        setErrors({})
-        return dispatch(addAPayment(newPayment, 1)).then(() => closeModal())
-    }
+    // setErrors({})
+    // console.log(err);
+    return dispatch(addAPayment(newPayment, 1)).then(() => closeModal());
+  };
 
   return (
     <form onSubmit={handleSubmit}>

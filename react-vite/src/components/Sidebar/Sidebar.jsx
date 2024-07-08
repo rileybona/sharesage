@@ -4,7 +4,7 @@ import "./Sidebar.css";
 import { useEffect, useState } from "react";
 import * as sessionActions from "../../redux/session";
 
-function Sidebar({ hidden = false }) {
+function Sidebar() {
   const user = useSelector((state) => state.session.user);
 
   // function Layout() {

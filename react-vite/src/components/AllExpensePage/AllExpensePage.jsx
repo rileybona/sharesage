@@ -7,6 +7,7 @@ import { getAllExpenses } from "../../redux/expense";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import CreateExpenseModal from "../ExpenseModal/CreateExpenseModal";
 import ExpenseTypeImage from "../ExpenseTypeImage/ExpenseTypeImage";
+import { NavLink } from "react-router-dom";
 function monthFormatHelper(dateString) {
   const date = new Date(dateString);
 
@@ -103,7 +104,10 @@ function AllExpensePage() {
           {expenses.map((expense) => (
             <>
               <div className="expense-card" key={expense.id}>
-                <a href={`/expenses/${expense.id}`} className="ecard-navLink">
+                <NavLink
+                  to={`/expenses/${expense.id}`}
+                  className="ecard-navLink"
+                >
                   <div className="ecard-left">
                     <div className="ecard-date">
                       <p className="mo">
@@ -125,7 +129,7 @@ function AllExpensePage() {
                     <p>Expense Total:</p>
                     <p>{moneyFormatHelper(expense.amount)}</p>
                   </div>
-                </a>
+                </NavLink>
               </div>
               <hr className="rounded" />
             </>
