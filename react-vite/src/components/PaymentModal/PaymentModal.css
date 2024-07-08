@@ -1,0 +1,32 @@
+.settle-up-form {
+    display: flex; 
+    flex-direction: column;
+    margin: 10px;
+    
+}
+.settle-up-form h1 {
+    margin-top: 0;
+    align-self: center;
+}
+
+.settle-up-form select {
+    margin-bottom: 5px;
+}
+
+.settle-up-form input {
+    margin-bottom: 5px;
+}
+
+.settle-up-form textarea {
+    margin-bottom: 5px;
+}
+
+.settle-up-form button {
+    border-radius: 8px;
+    border-color: RGB(232, 167, 88);
+}
+
+.settle-up-form button:hover {
+   background-color: RGB(165, 224, 207);
+}
+

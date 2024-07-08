@@ -45,6 +45,10 @@ hr.rounded {
   align-items: center;
 }
 
+.ecard-left h4{
+  padding-left: 5px;
+}
+
 .ecard-date {
   display: flex;
   flex-direction: column;
@@ -69,7 +73,7 @@ hr.rounded {
 .expense-type-image {
   max-height: 38px;
   max-width: 40px;
-  padding-right: 5px;
+  border-radius: 8px;
 }
 
 .ecard-money p {
