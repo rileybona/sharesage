@@ -1,10 +1,11 @@
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 // import { useDispatch, useSelector } from 'react-redux';
 import "./Sidebar.css";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
-function Sidebar({ hidden = false }) {
-  const user = useSelector((state) => state.session.user);
+// { hidden = false }
+function Sidebar() {
+  // const user = useSelector((state) => state.session.user);
 
   // function Layout() {
   //   const dispatch = useDispatch();
