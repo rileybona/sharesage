@@ -17,6 +17,11 @@ function PaymentModal({ expenseId, reload, setReload }) {
 
   const sessionUser = useSelector((state) => state.session.user);
 
+  useEffect(() => {
+    const errs = {};
+    if (amount < 1) errs.amount = "Expense cost must be greater than 0";
+    setValidationErrors(errs);
+  }, [amount]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
