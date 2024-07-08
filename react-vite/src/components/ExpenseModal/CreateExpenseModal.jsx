@@ -15,9 +15,9 @@ function CreateExpenseModal({ reload, setReload }) {
   const [type, setType] = useState(EXPENSE_TYPE[0]);
   const [date, setDate] = useState("");
   const [errors, setErrors] = useState({});
-    const [selectedUsers, setSelectedUsers] = useState([])
-    const [userLoaded, setUserLoaded] = useState(false);
-    let selectOptions;
+  const [selectedUsers, setSelectedUsers] = useState([])
+  const [userLoaded, setUserLoaded] = useState(false);
+  let selectOptions;
 
   const sessionUser = useSelector((state) => state.session.user);
     const userList = useSelector(state => state.expense.payees);
