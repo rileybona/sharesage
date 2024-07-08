@@ -22,6 +22,7 @@ export default function Layout() {
     if (user?.id) setIsLoggedIn(true);
   }, [user]);
 
+  if (!isLoaded) return <h1>Loading</h1>;
   return (
     <>
       <ModalProvider>
@@ -36,9 +37,7 @@ export default function Layout() {
               <div className="main">
                 <Outlet />
               </div>
-              <div className="right-bar">
-                <Sidebar />
-              </div>
+              <div className="right-bar">{/* <Sidebar /> */}</div>
             </>
           )}
         </div>

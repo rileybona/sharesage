@@ -8,17 +8,6 @@ function Main() {
       <h1>Welcome!</h1>
       <h3>Page under construction. Features coming soon!</h3>
     </>
-    // <div className="main-content">
-    //     <div className="left-bar">
-    //        <Sidebar />
-    //     </div>
-    //     <div className="main">
-    //         <h1>Welcome!</h1>
-    //     </div>
-    //     <div className="right-bar">
-    //     <Sidebar />
-    //     </div>
-    // </div>
   );
 }
 

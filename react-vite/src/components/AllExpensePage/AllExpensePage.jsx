@@ -57,12 +57,12 @@ function AllExpensePage() {
 
   // TEMPORARY IMAGE HARDCODE ------
   // define type images - example method
-//   const typeImgUrls = new Map();
-//     typeImgUrls.set("Food", "../../public/food.png");
-//     typeImgUrls.set("Travel", "../../public/travel.png");
-//     typeImgUrls.set("Home", "../../public/home.png");
-//     typeImgUrls.set("Entertainment", "../../public/entertainment.png");
-//     typeImgUrls.set("Other", "../../public/other.png");
+  //   const typeImgUrls = new Map();
+  //     typeImgUrls.set("Food", "../../public/food.png");
+  //     typeImgUrls.set("Travel", "../../public/travel.png");
+  //     typeImgUrls.set("Home", "../../public/home.png");
+  //     typeImgUrls.set("Entertainment", "../../public/entertainment.png");
+  //     typeImgUrls.set("Other", "../../public/other.png");
   // --------------------------------
 
   const expenseState = useSelector((state) => state.expense.root_expenses);
@@ -103,10 +103,7 @@ function AllExpensePage() {
           {expenses.map((expense) => (
             <>
               <div className="expense-card" key={expense.id}>
-                <NavLink
-                  to={`/expenses/${expense.id}`}
-                  className="ecard-navLink"
-                >
+                <a href={`/expenses/${expense.id}`} className="ecard-navLink">
                   <div className="ecard-left">
                     <div className="ecard-date">
                       <p className="mo">
@@ -117,7 +114,10 @@ function AllExpensePage() {
                       </p>
                     </div>
                     <div className="ecard-img-container">
-                      <ExpenseTypeImage allExpenses={true} type={expense.expense_type}/>
+                      <ExpenseTypeImage
+                        allExpenses={true}
+                        type={expense.expense_type}
+                      />
                     </div>
                     <h4 className="ecard-title">{expense.name}</h4>
                   </div>
@@ -125,7 +125,7 @@ function AllExpensePage() {
                     <p>Expense Total:</p>
                     <p>{moneyFormatHelper(expense.amount)}</p>
                   </div>
-                </NavLink>
+                </a>
               </div>
               <hr className="rounded" />
             </>
