@@ -4,6 +4,7 @@ import { useModal } from "../../context/Modal";
 import { addAnExpense, getListOfPayees } from "../../redux/expense";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import './CreateExpenseModal.css';
 
 const EXPENSE_TYPE = ["Other", "Food", "Travel", "Home", "Entertainment"];
 
@@ -101,10 +102,11 @@ function CreateExpenseModal({ reload, setReload }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="create-exp-form">
         <h1>Add an expense</h1>
         <Select
           closeMenuOnSelect={true}
+          className="select-users"
           components={animatedComponents}
           isMulti
           onChange={(e) => {
