@@ -41,10 +41,10 @@ export default function RecentActivityPage() {
     );
   }, [dispatch, child_expenses]);
 
-  function preventDefault (e) {
-    e.preventDefault();
-    return;
-  }
+  // function preventDefault(e) {
+  //   e.preventDefault();
+  //   return;
+  // }
 
   if (!paymentLoaded || !usersLoaded || !expenesesLoaded || !inPaymentLoaded)
     return <h2>Loading</h2>;
@@ -81,7 +81,7 @@ export default function RecentActivityPage() {
         {myPayments.map((e, ind) => {
           return (
             <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <a href={`/expenses/${e.expense_id}`} onclick="event.preventDefault()">
+              <a href={`/expenses/${e.expense_id}`}>
                 <p>
                   {`I paid`}
                   <span
