@@ -21,7 +21,7 @@ function PaymentModal({ expenseId, reload, setReload }) {
     const errs = {};
     if (amount < 1) errs.amount = "Payment must be greater than 0";
     setValidationErrors(errs);
-  }, [name, amount]);
+  }, [amount]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

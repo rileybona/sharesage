@@ -52,7 +52,7 @@ function AllExpensePage() {
 
   // define state variables & react hooks
   const dispatch = useDispatch();
-  const [done, setDone] = useState(false);
+  // const [done, setDone] = useState(false);
   const [expenses, setExpenses] = useState([]);
 
   // TEMPORARY IMAGE HARDCODE ------
@@ -78,17 +78,27 @@ function AllExpensePage() {
     setTimeout(() => {
       if (Object.keys(expenseState).length > 0) {
         setExpenses(Object.values(expenseState));
-        setDone(true);
+        // setDone(true);
       }
     }, 20);
   }, [expenseState]);
 
   // return <h1>testing stuff sorry!</h1>
-  if (!done) return <h1>LOADING</h1>;
+  // if (!done) return <h1>LOADING</h1>;
   return (
     <>
       {!(expenses.length > 0) ? (
-        <p>NOT LOADED</p>
+        <div id="out-div-all-expenses">
+          <div className="expense-toolbar" style={{ margin: "10px" }}>
+            <OpenModalButton
+              buttonText="Add an expense"
+              // onButtonClick={closeMenu}
+              modalComponent={
+                <CreateExpenseModal reload={reload} setReload={setReload} />
+              }
+            />
+          </div>
+        </div>
       ) : (
         <div id="out-div-all-expenses">
           <div className="expense-toolbar" style={{ margin: "10px" }}>
