@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { addAPayment } from "../../redux/payment";
+import "./PaymentModal.css"
 
 const PAYMENT_METHODS = ["Cash", "Paypal", "Venmo"];
 
@@ -34,7 +35,7 @@ function PaymentModal({ expenseId, reload, setReload }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="settle-up-form">
       <h1>Settle up</h1>
       <label>
         <select onChange={(e) => setMethod(e.target.value)}>
