@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { addAPayment } from "../../redux/payment";
@@ -17,11 +17,6 @@ function PaymentModal({ expenseId, reload, setReload }) {
 
   const sessionUser = useSelector((state) => state.session.user);
 
-  useEffect(() => {
-    const errs = {};
-    if (amount < 1) errs.amount = "Payment must be greater than 0";
-    setValidationErrors(errs);
-  }, [amount]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
