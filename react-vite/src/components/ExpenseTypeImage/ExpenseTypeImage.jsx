@@ -1,8 +1,8 @@
-import food from "/public/food.png";
-import travel from "/public/travel.png";
-import home from "/public/home.png";
-import entertainment from "/public/entertainment.png";
-import other from "/public/other.png";
+import food from "./food.png";
+import travel from "./travel.png";
+import home from "./home.png";
+import entertainment from "./entertainment.png";
+import other from "./other.png";
 
 export default function ExpenseTypeImage({ type, allExpenses = false }) {
   const types_url = new Map();
