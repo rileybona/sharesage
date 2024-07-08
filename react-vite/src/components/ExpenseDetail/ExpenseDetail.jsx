@@ -22,7 +22,7 @@ export default function ExpenseDetail() {
   // NOTE: if current user != expense owner, expense toolbar won't show
   const user = useSelector((state) => state.session.user);
   const expense = useSelector((state) => state.expense.expense_details);
-  // console.log({ user, expense });
+
 
   useEffect(() => {
     dispatch(expenseActions.getSingleExpense(parseInt(expenseId)))
@@ -32,11 +32,14 @@ export default function ExpenseDetail() {
       });
   }, [dispatch, expenseId, reload]);
 
-  console.log(expense)
+  // console.log(expense)
 
   if (!loaded) return <h3>Loading</h3>;
   //for some reason, onModalClose triggers when on modal open...
   else {
+    const child_expense_id = expense[expenseId].child_expenses.find(
+      (e) => e.user_id == user.id
+    );
     return (
       <div className="expense-details-container">
         <div className="expense-toolbar">
@@ -67,7 +70,7 @@ export default function ExpenseDetail() {
               buttonText="Settle up"
               modalComponent={
                 <PaymentModal
-                  expenseId={expenseId}
+                  expenseId={child_expense_id.id}
                   reload={reload}
                   setReload={setReload}
                 />

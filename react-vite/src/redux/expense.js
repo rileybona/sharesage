@@ -105,7 +105,7 @@ export const addAnExpense = (data, payload2) => async (dispatch) => {
 };
 
 export const updateAnExpense = (id, expense) => async (dispatch) => {
-  console.log(JSON.stringify(expense));
+  // console.log(JSON.stringify(expense));
   const options = {
     method: "PUT",
     headers: {

@@ -18,7 +18,7 @@ export default function ExpensePayments({ expenseId }) {
     dispatch(getAllUsers()).then(() => setUsersLoaded(true));
   }, [dispatch, expenseId])
 
-  console.log(JSON.stringify(payments));
+  // console.log(JSON.stringify(payments));
 
   if (!paymentLoaded || !usersLoaded) return <h3>Loading</h3>;
   return (
