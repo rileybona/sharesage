@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserPayments, getPayments } from "../../redux/payment";
 import { getAllUsers } from "../../redux/session";
 import { getAllExpenses } from "../../redux/expense";
+import { NavLink } from "react-router-dom";
 
 export default function RecentActivityPage() {
   const dispatch = useDispatch();
@@ -64,14 +65,14 @@ export default function RecentActivityPage() {
         {Inboundpayments.map((e, ind) => {
           return (
             <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <a href={`/expenses/${e.id}`}>
+              <NavLink to={`/expenses/${e.id}`}>
                 <p>
                   <span style={{ color: "	#006400" }}>{`${
                     users[e.id].first_name
                   } ${users[e.id].last_name}`}</span>
                   {` sent me $${e.amount} on ${e.created_at.slice(4, 17)}`}
                 </p>
-              </a>
+              </NavLink>
             </div>
           );
         })}
@@ -81,7 +82,7 @@ export default function RecentActivityPage() {
         {myPayments.map((e, ind) => {
           return (
             <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <a href={`/expenses/${e.expense_id}`}>
+              <NavLink href={`/expenses/${e.expense_id}`}>
                 <p>
                   {`I paid`}
                   <span
@@ -89,7 +90,7 @@ export default function RecentActivityPage() {
                   >{` ${e.recipient.first_name} ${e.recipient.last_name} `}</span>
                   {`$${e.amount} on ${e.created_at.slice(4, 17)}`}
                 </p>
-              </a>
+              </NavLink>
             </div>
           );
         })}
