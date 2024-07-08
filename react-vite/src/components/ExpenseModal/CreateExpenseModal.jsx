@@ -9,7 +9,7 @@ const EXPENSE_TYPE = ["Other", "Food", "Travel", "Home", "Entertainment"];
 
 function CreateExpenseModal({ reload, setReload }) {
   const dispatch = useDispatch();
-  const { closeModal } = useModal()();
+  const { closeModal } = useModal();
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0.0);
   const [type, setType] = useState(EXPENSE_TYPE[0]);
