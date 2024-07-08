@@ -5,10 +5,10 @@ div.main-content {
 
   & > div.main {
     /* testing out background image */
-    background-image: url("../../public/background.png");
+    background-image: url("./background.png");
     /* background-repeat: no-repeat; */
     opacity: 85%;
-      
+
     border: 1px solid lightgrey;
     width: 600px;
     min-height: 80vh;
@@ -91,14 +91,14 @@ nav#sidebar li {
 }
 
 div.main h1 {
-    width: 200px;
-    text-align: center;
-    background-color: rgb(177, 141, 90);
-    border: ridge, rgb(93, 66, 41), 5px;
+  width: 200px;
+  text-align: center;
+  background-color: rgb(177, 141, 90);
+  border: ridge, rgb(93, 66, 41), 5px;
 }
 
 div.main h3 {
-    text-align: center;
-    width: 500px;
-    background-color: rgba(245, 245, 245, 0.645);
+  text-align: center;
+  width: 500px;
+  background-color: rgba(245, 245, 245, 0.645);
 }
