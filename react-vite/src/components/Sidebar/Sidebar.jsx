@@ -26,16 +26,18 @@ function Sidebar({ hidden = false }) {
   if (!isLoaded) return <h1>Loading</h1>;
   return (
     <nav id="sidebar">
-      {hidden || (
+      {user && (
         <ul>
-          <li style={{}}>
-            <NavLink to="/account/settings">
-              <img
-                style={{ borderRadius: "50%", width: "50px" }}
-                src={`https://eu.ui-avatars.com/api/?name=${user.first_name}+${user.last_name}&size=250`}
-              ></img>
-            </NavLink>
-          </li>
+          {user?.id && (
+            <li>
+              <NavLink to="/account/settings">
+                <img
+                  style={{ borderRadius: "50%", width: "50px" }}
+                  src={`https://eu.ui-avatars.com/api/?name=${user.first_name}+${user.last_name}&size=250`}
+                ></img>
+              </NavLink>
+            </li>
+          )}
           <li>
             <NavLink to="/">Dashboard</NavLink>
           </li>
