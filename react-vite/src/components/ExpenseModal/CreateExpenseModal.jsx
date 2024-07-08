@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal'
-import { addAnExpense, addExpensePayees, getListOfPayees } from '../../redux/expense';
+import { addAnExpense, getListOfPayees } from '../../redux/expense';
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
@@ -14,7 +14,7 @@ const EXPENSE_TYPE = [
 
 function CreateExpenseModal() {
     const dispatch = useDispatch();
-    const { closeModal } = useModal;
+    const { closeModal } = useModal();
     const [name, setName] = useState("")
     const [amount, setAmount] = useState(0.00)
     const [type, setType] = useState(EXPENSE_TYPE[0])
@@ -26,7 +26,6 @@ function CreateExpenseModal() {
 
     const sessionUser = useSelector(state => state.session.user);
     const userList = useSelector(state => state.expense.payees);
-    const currExpense = useSelector(state => state.expense.expense_details);
 
     useEffect(() => {
         dispatch(getListOfPayees()).then(() => setUserLoaded(true))
@@ -59,17 +58,20 @@ function CreateExpenseModal() {
 
         const split_amount = amount / payeeCount;
 
-        
-    const childExpensePayload = {
-        existing_payees: [], 
-        new_payees: selectedUsers.reduce((acc, el) => {
-            acc.push({
-              email: el,
-              split_amount,
-            });
-          return acc;
-        }, []),
-      };
+
+    let childExpensePayload = null;
+    if (selectedUsers.length) {
+        childExpensePayload = {
+            existing_payees: [],
+            new_payees: selectedUsers.reduce((acc, el) => {
+                acc.push({
+                    email: el,
+                    split_amount,
+                });
+                return acc;
+            }, []),
+        };
+    }
 
         const newExpense = {
             owner_id: sessionUser.id,
@@ -84,11 +86,8 @@ function CreateExpenseModal() {
             newExpense.transaction_date = formatDate
         }
         setErrors({})
-        await dispatch(addAnExpense(newExpense, childExpensePayload)).then(() => console.log())
-
-        console.log("SUCCESS")
-        // dispatch(currExpense.id, addExpensePayees(childExpensePayload))
-        //     .then(closeModal);
+        dispatch(addAnExpense(newExpense, childExpensePayload))
+        closeModal()
     }
 
     if (userLoaded) {

@@ -95,7 +95,9 @@ export const addAnExpense = (data, payload2) => async (dispatch) => {
 
   if (response.ok) {
     const expense = await response.json();
-    dispatch(addExpensePayees(expense.id, payload2))
+    if (payload2) {
+      dispatch(addExpensePayees(expense.id, payload2))
+    }
     return dispatch(addExpense(expense));
   } else if (response.status < 500) {
     const errorMessages = await response.json();

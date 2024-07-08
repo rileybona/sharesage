@@ -12,7 +12,7 @@ const PAYMENT_METHODS = [
 
 function PaymentModal({expense_id}) {
     const dispatch = useDispatch();
-    const { closeModal } = useModal;
+    const { closeModal } = useModal();
     const [method, setMethod] = useState(PAYMENT_METHODS[0])
     const [amount, setAmount] = useState(0.00)
     const [note, setNote] = useState("")
@@ -32,15 +32,7 @@ function PaymentModal({expense_id}) {
         }
 
         setErrors({})
-        const serverResponse = await dispatch(
-            addAPayment(newPayment, 1)
-        )
-
-        if (serverResponse) {
-            setErrors(serverResponse);
-          } else {
-            closeModal();
-          }
+        return dispatch(addAPayment(newPayment, 1)).then(() => closeModal())
     }
 
     return (
