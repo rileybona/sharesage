@@ -14,7 +14,7 @@ def seed_payments():
         created_at=db.func.now(),
     )
     payment2 = Payment(
-        user_id=1, expense_id=3, method="cash", amount=66.67, created_at=db.func.now()
+        user_id=2, expense_id=3, method="cash", amount=66.67, created_at=db.func.now()
     )
     payment3 = Payment(
         user_id=3,

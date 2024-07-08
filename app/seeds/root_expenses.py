@@ -17,27 +17,27 @@ def seed_root_expenses():
         owner_id=2, name="AirBnb", amount="800", expense_type="Travel"
     )
 
-    expense1 = RootExpense(
-        owner_id=1,
-        name="Lunch",
-        amount=100,
-        expense_type="Food",
-    )
-    expense2 = RootExpense(
-        owner_id=2,
-        name="Dinner",
-        amount=200,
-        expense_type="Food",
-    )
-    expense3 = RootExpense(
-        owner_id=3,
-        name="Gas",
-        amount=200,
-        expense_type="Travel",
-    )
-    expenses = [expense1, expense2, expense3]
-    for exp in expenses:
-        db.session.add(exp)
+    # expense1 = RootExpense(
+    #     owner_id=1,
+    #     name="Lunch",
+    #     amount=100,
+    #     expense_type="Food",
+    # )
+    # expense2 = RootExpense(
+    #     owner_id=2,
+    #     name="Dinner",
+    #     amount=200,
+    #     expense_type="Food",
+    # )
+    # expense3 = RootExpense(
+    #     owner_id=3,
+    #     name="Gas",
+    #     amount=200,
+    #     expense_type="Travel",
+    # )
+    # expenses = [expense1, expense2, expense3]
+    # for exp in expenses:
+    #     db.session.add(exp)
 
     db.session.add(small_expense)
     db.session.add(smaller_expense)
