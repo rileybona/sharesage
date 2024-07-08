@@ -68,8 +68,8 @@ export default function RecentActivityPage() {
               <NavLink to={`/expenses/${e.id}`}>
                 <p>
                   <span style={{ color: "	#006400" }}>{`${
-                    users[e.id].first_name
-                  } ${users[e.id].last_name}`}</span>
+                    users[e.user_id].first_name
+                  } ${users[e.user_id].last_name}`}</span>
                   {` sent me $${e.amount} on ${e.created_at.slice(4, 17)}`}
                 </p>
               </NavLink>
@@ -85,6 +85,7 @@ export default function RecentActivityPage() {
               <NavLink to={`/expenses/${e.expense_id}`}>
                 <p>
                   {`I paid`}
+                  {console.log(e)}
                   <span
                     style={{ color: "	#006400" }}
                   >{` ${e.recipient.first_name} ${e.recipient.last_name} `}</span>
