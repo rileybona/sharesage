@@ -9,10 +9,14 @@ export default function ExpensePayments({ expenseId }) {
   const payments = useSelector((state) => state.payment.payments);
   const users = useSelector((state) => state.session.users);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getPayments(expenseId)).then(() => setPaymentLoaded(true));
-    dispatch(getAllUsers()).then(() => setUsersLoaded(true));
   }, [dispatch, expenseId]);
+
+  useEffect(() => {
+    dispatch(getAllUsers()).then(() => setUsersLoaded(true));
+  }, [dispatch, expenseId])
 
   console.log(JSON.stringify(payments));
 

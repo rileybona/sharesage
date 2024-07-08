@@ -11,10 +11,10 @@ const addPayment = (payment) => {
   };
 };
 
-const getPayment = (payment) => {
+const getPayment = (payments) => {
   return {
     type: GET_PAYMENT,
-    payment,
+    payments,
   };
 };
 
@@ -77,8 +77,8 @@ export const getPayments = (expense_id) => async (dispatch) => {
   }
 
   if (response.ok) {
-    const payment = await response.json();
-    return dispatch(getPayment(payment));
+    const payments = await response.json();
+    return dispatch(getPayment(payments));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
     return errorMessages;
@@ -137,7 +137,7 @@ const paymentReducer = (state = initialState, action) => {
     case GET_PAYMENT:
       newState = {
         ...state,
-        payments: action.payment,
+        payments: action.payments,
       };
       return newState;
     case GET_USER_PAYMENTS: {
@@ -160,6 +160,7 @@ const paymentReducer = (state = initialState, action) => {
     case ADD_PAYMENT:
       newState = {
         ...state,
+        payments: [...state.payments, action.payment],
         payment: { [action.payment.id]: action.payment },
       };
       return newState;
