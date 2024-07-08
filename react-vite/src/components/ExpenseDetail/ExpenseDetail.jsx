@@ -63,7 +63,13 @@ export default function ExpenseDetail() {
           ) : (
             <OpenModalButton
               buttonText="Settle up"
-              modalComponent={<PaymentModal expenseId={parseInt(expenseId)} />}
+              modalComponent={
+                <PaymentModal
+                  expenseId={expenseId}
+                  reload={reload}
+                  setReload={setReload}
+                />
+              }
             />
           )}
         </div>

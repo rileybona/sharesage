@@ -5,7 +5,7 @@ import { addAPayment } from "../../redux/payment";
 
 const PAYMENT_METHODS = ["Cash", "Paypal", "Venmo"];
 
-function PaymentModal({ expenseId }) {
+function PaymentModal({ expenseId, reload, setReload }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [method, setMethod] = useState(PAYMENT_METHODS[0]);
@@ -25,10 +25,12 @@ function PaymentModal({ expenseId }) {
       amount: Number(amount),
       note,
     };
-
+    setReload(reload + 1);
     // setErrors({})
     // console.log(err);
-    return dispatch(addAPayment(newPayment, expenseId)).then(() => closeModal());
+    return dispatch(addAPayment(newPayment, expenseId)).then(() =>
+      closeModal()
+    );
   };
 
   return (
