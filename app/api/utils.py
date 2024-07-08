@@ -328,9 +328,10 @@ class UserUtils:
     @staticmethod
     def get_user_by_child_expense_id(id):
         """Returns user info by associated child expense id"""
-        userId = ChildExpenseUtils.get_child_expense_details_by_id(id)["user_id"]
+        root_expense_id = ChildExpenseUtils.get_child_expense_details_by_id(id)["root_expense_id"]
+        owner_id = ExpenseUtils.parse_data(ExpenseUtils.get_expense_by_id(root_expense_id))["owner_id"]
 
-        return UserUtils.get_user_by_id(userId)
+        return UserUtils.get_user_by_id(owner_id)
 
 
 class AuthUtils:
