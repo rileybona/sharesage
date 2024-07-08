@@ -39,7 +39,7 @@ function Test() {
       />
       {/* <div id = "payment">
                 {payments ? payments.map(payment => (
-                    <div>{payment.id}</div>
+                    <div key={payment.id}>{payment.id}</div>
                 )): <></>}
             </div> */}
     </>

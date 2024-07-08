@@ -81,8 +81,7 @@ export const getSingleExpense = (expenseId) => async (dispatch) => {
   }
 };
 
-export const addAnExpense = (data) => async (dispatch) => {
-  // console.log(JSON.stringify(data));
+export const addAnExpense = (data, payload2) => async (dispatch) => {
   const response = await fetch("/api/expenses/", {
     method: "POST",
     headers: {
@@ -93,6 +92,9 @@ export const addAnExpense = (data) => async (dispatch) => {
 
   if (response.ok) {
     const expense = await response.json();
+    if (payload2) {
+      dispatch(addExpensePayees(expense.id, payload2))
+    }
     return dispatch(addExpense(expense));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
@@ -195,7 +197,7 @@ export const getListOfPayees = () => async (dispatch) => {
 
 // REDUCER
 const expenseReducer = (
-  state = { root_expenses: {}, expense_details: {}, payees: [] },
+  state = { root_expenses: {}, expense_details: {}, payees: []},
   action
 ) => {
   switch (action.type) {
@@ -234,7 +236,6 @@ const expenseReducer = (
       state.payees = action.payees;
       return state;
     }
-
     default:
       return state;
   }

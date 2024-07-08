@@ -16,7 +16,9 @@ def get_all_expenses():
 @login_required
 def post_new_expense():
     req_body = request.get_json()
+    print(req_body)
     new_expense = ExpenseUtils.create_new_expense(req_body)
+    print(new_expense)
     if new_expense == 500:
         return jsonify({"message": "Expense creation failed"}), 500
     return jsonify(new_expense), 201
