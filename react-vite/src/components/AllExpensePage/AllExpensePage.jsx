@@ -38,7 +38,6 @@ function dayFormatHelper(dateString) {
   if (dayString.length == 1) {
     dayString = `0${dayString}`;
   }
-
   return dayString;
 }
 
