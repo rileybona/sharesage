@@ -11,12 +11,11 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
-
   const loginDemo = (e) => {
     e.preventDefault();
-    dispatch(thunkLogin({email: "demo@aa.io", password: "password"}));
+    dispatch(thunkLogin({ email: "demo@aa.io", password: "password" }));
     closeModal();
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,8 +36,8 @@ function LoginFormModal() {
 
   return (
     <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+      <form id="signin-form" onSubmit={handleSubmit}>
+        <h1>Log In</h1>
         <label>
           Email
           <input
@@ -59,8 +58,12 @@ function LoginFormModal() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
-        <button id="demo-user" onClick={loginDemo}>Demo User</button>
+        <button id="signin-button" type="submit">
+          Log In
+        </button>
+        <button id="demo-user" onClick={loginDemo}>
+          Demo User
+        </button>
       </form>
     </>
   );

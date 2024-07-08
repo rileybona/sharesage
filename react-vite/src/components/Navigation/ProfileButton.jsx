@@ -7,7 +7,7 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { useNavigate } from "react-router-dom";
 
-import './Navigation.css'
+import "./Navigation.css";
 
 function ProfileButton() {
   const navigate = useNavigate();
@@ -41,6 +41,7 @@ function ProfileButton() {
     e.preventDefault();
     dispatch(thunkLogout());
     navigate("/");
+    window.location.reload();
     closeMenu();
   };
 
@@ -84,7 +85,9 @@ function ProfileButton() {
                 </button>
               </li>
               <li className="logout-button-li">
-                <button onClick={logout} id="logout-button">Log Out</button>
+                <button onClick={logout} id="logout-button">
+                  Log Out
+                </button>
               </li>
             </>
           ) : (

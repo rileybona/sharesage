@@ -33,7 +33,7 @@ const getUserPayments = (payments) => {
 };
 
 export const getPaymentsToMe = (expensesIOwn) => async (dispatch) => {
-  console.log("getpayments2me thunk receiving expenses: ", expensesIOwn);
+  // console.log("getpayments2me thunk receiving expenses: ", expensesIOwn);
   // create return array
   let returnArray = [];
   // for each expense
@@ -108,7 +108,7 @@ export const getCurrentUserPayments = (expenseIdsArr) => async (dispatch) => {
 };
 
 export const addAPayment = (data, expense_id) => async (dispatch) => {
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   const response = await fetch(`/api/expenses/${expense_id}/payments`, {
     method: "POST",
     headers: {
