@@ -71,7 +71,14 @@ function ProfileButton() {
                   marginBottom: "0.3em",
                 }}
               >
-                <a href="/account/settings">your account</a>
+                <button
+                  onClick={() => {
+                    navigate("/account/settings");
+                    closeMenu();
+                  }}
+                >
+                  your account
+                </button>
               </li>
               <li>
                 <button onClick={logout}>Log Out</button>

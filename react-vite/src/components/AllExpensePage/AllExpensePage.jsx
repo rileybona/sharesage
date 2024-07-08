@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { clearComments } from "../../redux/comment";
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import "./AllExpensePage.css";
 import { useEffect, useState } from "react";
 import { getAllExpenses } from "../../redux/expense";
