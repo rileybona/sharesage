@@ -12,7 +12,7 @@ import makeAnimated from "react-select/animated";
 
 import "./UpdateExpenseModal.css";
 
-const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites", "Home"];
+const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites", "Home", "Entertainment"];
 
 const EXPENSE_TYPE_OPTIONS = EXPENSE_TYPE.map((e) => ({
   value: e,
@@ -83,7 +83,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
     const errs = {};
     if (name.length < 1) errs.name = "Please fill in a name";
     if (name.length > 20) errs.name = "Expense name too long";
-    if (amount < 1) errs.amount = "Please enter a valid bill amount";
+    if (amount < 1) errs.amount = "Expense cost must be greater than 0";
     setValidationErrors(errs);
   }, [name, amount]);
 

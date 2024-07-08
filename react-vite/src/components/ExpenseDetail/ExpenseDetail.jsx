@@ -32,6 +32,8 @@ export default function ExpenseDetail() {
       });
   }, [dispatch, expenseId, reload]);
 
+  console.log(expense)
+
   if (!loaded) return <h3>Loading</h3>;
   //for some reason, onModalClose triggers when on modal open...
   else {

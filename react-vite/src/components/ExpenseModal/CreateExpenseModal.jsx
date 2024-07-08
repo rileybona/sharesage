@@ -18,6 +18,8 @@ function CreateExpenseModal({ reload, setReload }) {
   const [errors, setErrors] = useState({});
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [userLoaded, setUserLoaded] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+  const [showErrors, setShowErrors] = useState(false);
   let selectOptions;
 
   const sessionUser = useSelector((state) => state.session.user);
@@ -26,6 +28,14 @@ function CreateExpenseModal({ reload, setReload }) {
   useEffect(() => {
     dispatch(getListOfPayees()).then(() => setUserLoaded(true));
   }, [dispatch]);
+
+  useEffect(() => {
+    const errs = {};
+    if (name.length < 1) errs.name = "Please fill in a name";
+    if (name.length > 20) errs.name = "Expense name too long";
+    if (amount < 1) errs.amount = "Expense cost must be greater than 0";
+    setValidationErrors(errs);
+  }, [name, amount]);
 
   // Select Components
   const animatedComponents = makeAnimated();
@@ -50,7 +60,9 @@ function CreateExpenseModal({ reload, setReload }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payeeCount = selectedUsers.length;
+    setShowErrors(true);
+    if (!Object.keys(validationErrors).length) {
+      const payeeCount = selectedUsers.length;
 
     const split_amount = amount / payeeCount;
 
@@ -81,7 +93,7 @@ function CreateExpenseModal({ reload, setReload }) {
         newDate.getMonth() +
         1 +
         "/" +
-        newDate.getDate() +
+        (newDate.getDate() + 1) +
         "/" +
         newDate.getFullYear();
       newExpense.transaction_date = formatDate;
@@ -92,6 +104,7 @@ function CreateExpenseModal({ reload, setReload }) {
       setReload(reload + 1)
     );
     closeModal();
+  }
   };
 
   if (userLoaded) {
@@ -115,6 +128,9 @@ function CreateExpenseModal({ reload, setReload }) {
           options={selectOptions}
         />
         <label>
+        {showErrors && validationErrors.name && (
+          <p className="validation-error">{validationErrors.name}</p>
+        )}
           <input
             type="text"
             value={name}
@@ -124,6 +140,9 @@ function CreateExpenseModal({ reload, setReload }) {
           />
         </label>
         <label>
+        {showErrors && validationErrors.amount && (
+          <p className="validation-error">{validationErrors.amount}</p>
+        )}
           <input
             type="number"
             value={amount}
