@@ -84,3 +84,39 @@
   border: 1px solid transparent;
   border-radius: 1em;
 }
+
+button#logout-button {
+  background: none;
+  padding: 0.4em 0.6em;
+  border: 1px solid lightgrey;
+  border-radius: 1em;
+  font-size: 0.8em;
+  box-sizing: border-box;
+  cursor: pointer;
+  box-shadow: 0 0 5px lightgrey;
+
+  align-self: center;
+}
+
+button#logout-button:hover {
+  box-shadow: none;
+}
+
+.logout-button-li {
+  display: flex; 
+  flex-direction: row;
+  justify-content: center;
+}
+
+button#account-button {
+  background: none;
+  padding: 0.4em 0.6em;
+  border: none;
+  /* border-radius: 1em; */
+  font-size: 0.8em;
+  box-sizing: border-box;
+  cursor: pointer;
+  /* box-shadow: 0 0 5px lightgrey; */
+
+  align-self: center;
+}

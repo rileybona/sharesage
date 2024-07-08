@@ -7,6 +7,8 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { useNavigate } from "react-router-dom";
 
+import './Navigation.css'
+
 function ProfileButton() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -76,12 +78,13 @@ function ProfileButton() {
                     navigate("/account/settings");
                     closeMenu();
                   }}
+                  id="account-button"
                 >
-                  your account
+                  account details
                 </button>
               </li>
-              <li>
-                <button onClick={logout}>Log Out</button>
+              <li className="logout-button-li">
+                <button onClick={logout} id="logout-button">Log Out</button>
               </li>
             </>
           ) : (
