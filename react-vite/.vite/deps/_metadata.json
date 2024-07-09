@@ -1,0 +1,56 @@
+{
+  "hash": "0b6b605b",
+  "browserHash": "b6161018",
+  "optimized": {
+    "react": {
+      "src": "../../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "77b5e88f",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "be887519",
+      "needsInterop": true
+    },
+    "underscore": {
+      "src": "../../../node_modules/underscore/modules/index-all.js",
+      "file": "underscore.js",
+      "fileHash": "d7d12022",
+      "needsInterop": false
+    },
+    "react-dom": {
+      "src": "../../../node_modules/react-dom/index.js",
+      "file": "react-dom.js",
+      "fileHash": "641e2e97",
+      "needsInterop": true
+    },
+    "react-select": {
+      "src": "../../../node_modules/react-select/dist/react-select.esm.js",
+      "file": "react-select.js",
+      "fileHash": "6cfec85d",
+      "needsInterop": false
+    },
+    "react-select/animated": {
+      "src": "../../../node_modules/react-select/animated/dist/react-select-animated.esm.js",
+      "file": "react-select_animated.js",
+      "fileHash": "6fafab6f",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-YNKRTVGE": {
+      "file": "chunk-YNKRTVGE.js"
+    },
+    "chunk-TQA5PKRN": {
+      "file": "chunk-TQA5PKRN.js"
+    },
+    "chunk-QDZWVUHN": {
+      "file": "chunk-QDZWVUHN.js"
+    },
+    "chunk-5WWUZCGV": {
+      "file": "chunk-5WWUZCGV.js"
+    }
+  }
+}

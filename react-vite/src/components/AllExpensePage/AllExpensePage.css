@@ -1,0 +1,122 @@
+#outer-div-all-expenses {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  background-color: black;
+  width: 100%;
+}
+
+.expense-card {
+  color: black;
+  padding-right: 10px;
+  padding-left: 10px;
+  border: 1px solid transparent;
+  border-radius: 0.3em;
+  margin-top: 20px;
+  margin-right: 5px;
+  margin-left: 5px;
+  background-color: rgba(255, 255, 255, 0.59);
+}
+
+hr.rounded {
+  width: 90%;
+  border-top: 1px solid #e0e0e0;
+  border-radius: 1em;
+}
+
+.ecard-navLink {
+  width: 100%;
+  text-decoration: none;
+  color: black;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.ecard-left {
+  width: 33%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.ecard-left h4{
+  padding-left: 5px;
+}
+
+.ecard-date {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding-right: 5px;
+}
+.ecard-date p {
+  margin: 0;
+}
+.mo {
+  font-size: small;
+}
+
+.ecard-image-container {
+  height: 98%;
+  /* object-fit: contain; */
+  /* overflow: hidden; */
+}
+
+.expense-type-image {
+  max-height: 38px;
+  max-width: 40px;
+  border-radius: 8px;
+}
+
+.ecard-money p {
+  margin: 0;
+}
+
+.expense-card:hover {
+  background-color: white;
+}
+
+.expense-card:hover h4 {
+  text-decoration: underline;
+}
+
+@media screen and (min-width: 755px) {
+  .expense-card {
+    max-width: 90%;
+    margin-left: 20px;
+  }
+}
+
+@media screen and (max-width: 656px) {
+  .expense-card {
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+  }
+  .ecard-navLink {
+    flex-direction: column;
+  }
+
+  .ecard-left {
+    width: 100%;
+    justify-content: space-around;
+  }
+  .ecard-money {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: smaller;
+  }
+
+  .ecard-money p {
+    padding-right: 5px;
+  }
+}

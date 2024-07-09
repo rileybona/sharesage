@@ -1,0 +1,74 @@
+div.expense-details {
+  width: 100%;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.639);
+  border-radius: 8px;
+  padding-left: 10px;
+  margin-top: 20px;
+}
+
+div#expense-type-image {
+  width: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: contain;
+  margin-right: 1em;
+}
+
+div#expense-type-image > img {
+  border: 1px solid transparent;
+  border-radius: 1em;
+  overflow: hidden;
+  width: 100%;
+}
+
+div.expense-details-info {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  flex-grow: 2;
+}
+
+div.expense-details-info > div {
+  display: flex;
+  align-items: center;
+}
+
+div.expense-name-type {
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  box-sizing: border-box;
+}
+
+p#expense-name {
+  font-weight: 600;
+  font-size: 15pt;
+}
+
+p#expense-type {
+  color: whitesmoke;
+  background-color: #1e1e1e;
+  margin-left: 1em;
+  padding: 0px 10px;
+  border-radius: 1em;
+  box-sizing: border-box;
+}
+
+p#expense-amount {
+  width: 100%;
+  text-align: center;
+  font-size: 20pt;
+}
+
+p#expense-desc {
+  color: rgb(88, 87, 87);
+  font-size: 10pt;
+}
+
+p#expense-date {
+  /* color: grey; */
+  font-weight: bold;
+  font-size: 10pt;
+}

@@ -3,6 +3,7 @@ from app.models import db, RootExpense, ChildExpense, User, Comment, Payment
 from flask_login import current_user
 from flask import Response
 from datetime import datetime
+import json
 
 
 class ExpenseUtils:
@@ -41,9 +42,11 @@ class ExpenseUtils:
         ).all()
         child_exp_user = ChildExpenseUtils.get_expense_by_user()
         for exp in child_exp_user:
-            rt_exp_id = exp["root_expense_id"]
-            all_expenses.append(ExpenseUtils.get_expense_by_id(rt_exp_id))
-        return list(map(lambda x: ExpenseUtils.parse_data(x), all_expenses))
+            if exp not in all_expenses:
+                rt_exp_id = exp["root_expense_id"]
+                all_expenses.append(ExpenseUtils.get_expense_by_id(rt_exp_id))
+        all_expenses = list(map(lambda x: ExpenseUtils.parse_data(x), all_expenses))
+        return list({x["id"]: x for x in all_expenses}.values())
 
     @staticmethod
     def get_expense_by_id(id):
@@ -62,6 +65,15 @@ class ExpenseUtils:
             ChildExpenseUtils.get_child_expense_details_by_id(x)
             for x in child_expense_ids
         ]
+        expense["owner"] = UserUtils.get_user_by_id(expense["owner_id"])
+        payeeIds = [
+            child_expense["user_id"] for child_expense in expense["child_expenses"]
+        ]
+        # return payeeIds
+        if (AuthUtils.get_current_user()["id"] not in payeeIds) and not (
+            AuthUtils.get_current_user()["id"] == expense["owner_id"]
+        ):
+            return 401
         return expense
 
     @staticmethod
@@ -85,24 +97,17 @@ class ExpenseUtils:
             return ExpenseUtils.parse_data(new_expense)
 
         except:
-            return Response(response="Internal Server Error", status=500)
+            return 500
 
     @staticmethod
     def update_expense_by_id(id, details):
         """Update an existing expense by id"""
-        # retrieve expense obj from db
         expense = ExpenseUtils.get_expense_by_id(int(id))
 
-        # validate auth
         current_user = AuthUtils.get_current_user()["id"]
         if not (current_user == expense.owner_id):
-            return Response(
-                response="You are not authorized to edit this expense", status=403
-            )
+            return 403
 
-        # TO-DO expense details validator for POST & PUT
-
-        # [try] Update db obj and commit changes
         try:
             if "name" in details:
                 expense.name = details["name"]
@@ -117,7 +122,7 @@ class ExpenseUtils:
                 )
             db.session.commit()
         except Exception:
-            return Response(response="Internal Server Error", status=500)
+            return 500
 
         # grab updated obj from db and return it
         updated_expense = ExpenseUtils.get_expense_by_id(int(id))
@@ -193,28 +198,8 @@ class ChildExpenseUtils:
     @staticmethod
     def add_payee_to_expense(id, payload):
         """Returns updated child expenses and their associated users"""
-        """payload structure
-        {
-            "existing_payees": [
-                {
-                    "email": "example1@gmail.com",
-                    "split_amount": 14.24
-                },
-                {
-                    "email": "example2@gmail.com",
-                    "split_amount": 21.22
-                }
-            ],
-
-            "new_payees": [
-                {
-                    "email": "example3@aol.com",
-                    "split_amount": 12.34
-                }
-            ]
-        }
-        """
-        # grab old child expenses from the database
+        if isinstance(payload, str):
+            payload = json.loads(payload)
         db_expenses = ChildExpenseUtils.get_payees_by_expense_id(id)
 
         if not len(db_expenses) == 0 and not len(db_expenses[0]) == 0:
@@ -235,6 +220,7 @@ class ChildExpenseUtils:
                         ChildExpense.id == expense["id"]
                     ).first()
                     db.session.delete(expense)
+                    # db.session.commit()
 
         # create new child expenses for new payees
         for newbie in payload["new_payees"]:
@@ -251,6 +237,8 @@ class ChildExpenseUtils:
 
         # returns all updated / added child expenses and their users
         updated_children = ChildExpenseUtils.get_payees_by_expense_id(id)
+        if len(updated_children[0]) == len(updated_children[1]) == 0:
+            return 500
         return updated_children
 
     @staticmethod
@@ -305,8 +293,15 @@ class PaymentUtils:
     def get_payments_by_user():
         user_id = AuthUtils.get_current_user()["id"]
         all_payments = Payment.query.filter(Payment.user_id == user_id)
-        return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))
 
+        def addOwner(payment):
+            parsed_payment = PaymentUtils.parse_data(payment)
+            parsed_payment["recipient"] = UserUtils.get_user_by_child_expense_id(
+                parsed_payment["expense_id"]
+            )
+            return parsed_payment
+
+        return list(map(lambda x: addOwner(x), all_payments))
 
 class UserUtils:
     @staticmethod
@@ -336,6 +331,16 @@ class UserUtils:
     def get_user_by_email(email):
         """Returns parsed user info by their email"""
         return User.query.filter(User.email == str(email)).first()
+
+    @staticmethod
+    def get_user_by_child_expense_id(id):
+        """Returns user info by associated child expense id"""
+        root_expense_id = ChildExpenseUtils.get_child_expense_details_by_id(id)["root_expense_id"]
+        print(ChildExpenseUtils.get_child_expense_details_by_id(id))
+        owner_id = ExpenseUtils.parse_data(ExpenseUtils.get_expense_by_id(root_expense_id))["owner_id"]
+        print(ExpenseUtils.parse_data(ExpenseUtils.get_expense_by_id(root_expense_id)))
+
+        return UserUtils.get_user_by_id(owner_id)
 
 
 class AuthUtils:
@@ -423,48 +428,3 @@ class CommentUtils:
             raise e
 
         return {"message": "Deletion succeeded"}
-
-
-class PaymentUtils:
-    @staticmethod
-    def parse_data(payment_obj):
-        try:
-            return {
-                "id": payment_obj.id,
-                "note": payment_obj.note,
-                "expense_id": payment_obj.expense_id,
-                "user_id": payment_obj.user_id,
-                "method": payment_obj.method,
-                "amount": payment_obj.amount,
-                "created_at": payment_obj.created_at,
-            }
-        except:
-            raise Exception("Invalid Payment Object from query")
-
-    @staticmethod
-    def get_all_payments(expense_id):
-        all_payments = Payment.query.filter(Payment.expense_id == expense_id)
-
-        return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))
-
-    @staticmethod
-    def create_new_payment(details, expense_id):
-        new_payment = Payment(
-            note=details.get("note"),
-            method=details.get("method"),
-            amount=details.get("amount"),
-            expense_id=expense_id,
-            user_id=AuthUtils.get_current_user()["id"],
-        )
-        try:
-            db.session.add(new_payment)
-            db.session.commit()
-            return PaymentUtils.parse_data(new_payment)
-        except Exception as e:
-            raise e
-
-    @staticmethod
-    def get_payments_by_user():
-        user_id = AuthUtils.get_current_user()["id"]
-        all_payments = Payment.query.filter(Payment.user_id == user_id)
-        return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))

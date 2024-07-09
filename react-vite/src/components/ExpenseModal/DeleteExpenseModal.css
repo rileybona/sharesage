@@ -1,0 +1,39 @@
+a.modal-button {
+  padding: 0.5em;
+  border: 1px solid darkgrey;
+  border-radius: 1em;
+  box-sizing: border-box;
+}
+
+div#delete-expense-modal {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  padding-top: 0;
+  column-gap: 1em;
+  row-gap: 1em;
+  align-items: center;
+}
+
+div#delete-expense-modal p {
+  font-weight: bold;
+}
+
+div#delete-expense-modal > div {
+  display: flex;
+  column-gap: 1em;
+}
+
+a.modal-button:hover {
+  cursor: pointer;
+}
+
+a.modal-button.delete:hover {
+  background-color: brown;
+  color: whitesmoke;
+}
+
+a.modal-button.cancel:hover {
+  background-color: green;
+  color: whitesmoke;
+}

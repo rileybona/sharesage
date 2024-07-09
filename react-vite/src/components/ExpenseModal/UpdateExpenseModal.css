@@ -1,0 +1,93 @@
+div#selector-container {
+  width: 100%;
+}
+
+form#update-expense-modal {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  padding-top: 0;
+  column-gap: 1em;
+  row-gap: 1em;
+  align-items: center;
+  /* background-color: black; */
+  font: 1em "Roboto", sans-serif;
+}
+
+div#fields-container {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  row-gap: 0.5em;
+}
+div#fields-container label {
+  box-sizing: border-box;
+  width: 100%;
+}
+div#fields-container label > input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.7em;
+  border-radius: 0.2em;
+  border: 0.5px solid lightgrey;
+}
+
+button#submit {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+button#submit {
+  padding: 0.5em 1em;
+  border: 1px solid lightgrey;
+  border-radius: 1em;
+  font-size: 1em;
+  box-sizing: border-box;
+  cursor: pointer;
+  box-shadow: 0 0 5px lightgrey;
+}
+
+button#submit {
+  padding: 0.5em 1em;
+  border: 1px solid lightgrey;
+  border-radius: 1em;
+  font-size: 1em;
+  box-sizing: border-box;
+  cursor: pointer;
+  box-shadow: 0 0 5px lightgrey;
+}
+
+button#submit:hover {
+  box-shadow: none;
+  background-color: lightgrey;
+}
+
+button.modal-button {
+  padding: 0.5em 0.7em;
+  background-repeat: no-repeat;
+  background-color: white;
+  border: 0.5px solid lightgrey;
+  font-size: 1em;
+  border-radius: 1em;
+  box-shadow: 0 0 5px lightgrey;
+}
+button.modal-button.disabled {
+  padding: 0.5em 0.7em;
+  background-repeat: no-repeat;
+  background-color: grey;
+  border: 0.5px solid lightgrey;
+  font-size: 1em;
+  border-radius: 1em;
+  box-shadow: 0 0 5px lightgrey;
+}
+
+p.validation-error {
+  color: red;
+  margin: 0;
+}

@@ -1,0 +1,71 @@
+/* .outer-div-recent-activity {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left-activity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.right-activity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 30px;
+}
+
+.left-activity a {
+    text-decoration: none;
+    color: black;
+}
+
+.right-activity a {
+    text-decoration: none;
+    color: black;
+} */
+
+div.recent-activity-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1em;
+}
+
+p.div-title {
+  font-weight: 600;
+  width: 160px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(177, 141, 90);
+  border: ridge, rgb(93, 66, 41), 5px;
+}
+div.div-title {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  align-items: center;
+  
+}
+#received-title {
+    width: 160px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(177, 141, 90);
+    border: ridge, rgb(93, 66, 41), 5px;
+}
+
+div.payment-card {
+  padding: 0.3em 1em;
+}
+
+div.payment-card a {
+  width: 100%;
+}

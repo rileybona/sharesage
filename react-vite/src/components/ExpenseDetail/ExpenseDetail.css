@@ -1,0 +1,42 @@
+div.expense-details-container {
+  display: flex;
+  width: 100%;
+  padding: 1em;
+  flex-direction: column;
+  font: 1em "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+
+div.expense-toolbar {
+  display: flex;
+  flex-direction: row-reverse;
+  column-gap: 1em;
+}
+
+div.expense-toolbar button {
+  padding: 0.5em 0.7em;
+  background-repeat: no-repeat;
+  background-color: white;
+  border: 0.5px solid lightgrey;
+  font-size: 1em;
+  border-radius: 1em;
+  box-shadow: 0 0 5px lightgrey;
+}
+
+div.expense-toolbar button:hover {
+  box-shadow: none;
+}
+
+#comments button {
+  padding: 0.5em 0.7em;
+  background-repeat: no-repeat;
+  background-color: white;
+  border: 0.5px solid lightgrey;
+  font-size: 1em;
+  border-radius: 1em;
+  box-shadow: 0 0 5px lightgrey;
+}
+
+#comments button:hover {
+  box-shadow: none;
+}

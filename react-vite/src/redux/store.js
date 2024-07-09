@@ -6,9 +6,15 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
+import commentReducer from "./comment";
+import expenseReducer from "./expense";
+import paymentReducer from "./payment";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
+  comment: commentReducer,
+  expense: expenseReducer,
+  payment: paymentReducer
 });
 
 let enhancer;

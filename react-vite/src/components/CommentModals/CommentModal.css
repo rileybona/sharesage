@@ -1,0 +1,41 @@
+div#comment-modal {
+  padding: 0 40px;
+
+  & .error {
+    color: red;
+    font-size: 20px;
+  }
+
+  & > textarea#post-comment-area {
+    width: 500px;
+    height: 150px;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    resize: none;
+  }
+
+  & > h1 {
+    display: flex;
+    justify-content: center;
+  }
+
+  & > .comment-modal-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    & > .modal-button {
+      width: 48%;
+      height: 35px;
+      border: none;
+      border-radius: 5px;
+      font-size: 20px;
+      background-color: grey;
+      margin: 15px 0;
+    }
+
+    & > .delete {
+      background-color: red;
+    }
+  }
+}
