@@ -1,3 +1,5 @@
+import { initial } from "underscore";
+
 const GET_ALL_EXPENSES = "expenses/GET_ALL_EXPENSES";
 const GET_EXPENSE_DETAILS = "expenses/GET_EXPENSE_DETAILS";
 const ADD_EXPENSE = "expense/ADD_EXPENSE";
@@ -6,6 +8,7 @@ const GET_PAYEES = "/expense/GET_PAYEES";
 const GET_EXPENSE_PAYEES = "expense/GET_EXPENSE_PAYEES";
 //add payees to expense doesn't need its own store action.
 const UPDATE_EXPENSE = "expenses/UPDATE_EXPENSE";
+const CLEAR_EXPENSE = "expeneses/CLEAR_EXPENSE"
 
 const loadExpenses = (expenses) => ({
   type: GET_ALL_EXPENSES,
@@ -49,6 +52,13 @@ const updateExpense = (expense) => {
     payload: expense,
   };
 };
+
+const clearExpense = (expense) => {
+  return {
+    type: CLEAR_EXPENSE,
+    payload: expense
+  }
+}
 
 export const getAllExpenses = () => async (dispatch) => {
   try {
@@ -195,6 +205,10 @@ export const getListOfPayees = () => async (dispatch) => {
   }
 };
 
+export const clearAllExpense = () => async (dispatch) => {
+  return dispatch(clearExpense(true))
+}
+
 // REDUCER
 const expenseReducer = (
   state = { root_expenses: {}, expense_details: {}, payees: []},
@@ -235,6 +249,10 @@ const expenseReducer = (
     case GET_PAYEES: {
       state.payees = action.payees;
       return state;
+    }
+    case CLEAR_EXPENSE: {
+      const newState = { root_expenses: {}, expense_details: {}, payees: []}
+      return newState
     }
     default:
       return state;

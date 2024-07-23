@@ -4,6 +4,8 @@ const GET_PAYMENT = "payment/getPayment";
 const ADD_PAYMENT = "payment/addPayment";
 const GET_INBOUND_PAYMENTS = "payment/getInboundPayments";
 const GET_USER_PAYMENTS = "payment/getUserPayments";
+const CLEAR_PAYMENT = "payment/clearPayments"
+
 const addPayment = (payment) => {
   return {
     type: ADD_PAYMENT,
@@ -31,6 +33,13 @@ const getUserPayments = (payments) => {
     payload: payments,
   };
 };
+
+const clearPayments = (payments) => {
+  return {
+    type: CLEAR_PAYMENT,
+    payload: payments
+  }
+}
 
 export const getPaymentsToMe = (expensesIOwn) => async (dispatch) => {
   // console.log("getpayments2me thunk receiving expenses: ", expensesIOwn);
@@ -128,6 +137,10 @@ export const addAPayment = (data, expense_id) => async (dispatch) => {
   }
 };
 
+export const clearAllPayments = () => async (dispatch) => {
+  return dispatch(clearPayments(true))
+}
+
 // Reducer
 const initialState = { payments: [], payment: {}, user_payments: [] };
 
@@ -164,6 +177,9 @@ const paymentReducer = (state = initialState, action) => {
         payment: { [action.payment.id]: action.payment },
       };
       return newState;
+    case CLEAR_PAYMENT:
+      newState = initialState;
+      return newState
     default:
       return state;
   }
