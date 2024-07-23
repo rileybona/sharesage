@@ -17,6 +17,35 @@ ShareSage is a refined platform designed to help users effortlessly split their 
 
 Through this collaborative project, we will enhance our team cohesion by fostering open communication and mutual support. This project will strengthen our expertise as full-stack software developers by allowing us to master both front-end and back-end technologies and integrate best practices. By working together, we will deliver a high-quality, innovative solution that exceeds expectations, ultimately advancing our technical skills, problem-solving abilities, and collaborative effectiveness.
 
+## 💻 Tech Stack
+### 📚 Languages
+[![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?logo=javascript&logoColor=%23F7DF1E)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Python](https://img.shields.io/badge/python-3670A0?logo=python&logoColor=ffdd54)](https://www.python.org/)
+[![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
+[![CSS3](https://img.shields.io/badge/CSS3-%231572B6.svg?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?logo=markdown&logoColor=white)](https://www.markdownguide.org/)
+
+### 🔍 Frameworks and Libraries
+[![npm](https://img.shields.io/badge/npm-%23CB3837.svg?logo=npm&logoColor=white)](https://www.npmjs.com/)
+[![NodeJS](https://img.shields.io/badge/node.js-6DA55F?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/react-%2320232a.svg?logo=react&logoColor=%2361DAFB)](https://reactjs.org/)
+[![Redux](https://img.shields.io/badge/redux-%23593d88.svg?logo=redux&logoColor=white)](https://redux.js.org/)
+[![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![pip3](https://img.shields.io/badge/pip3-%2314354C.svg?logo=pypi&logoColor=white)](https://pypi.org/project/pip/)
+[![Flask](https://img.shields.io/badge/flask-%23000.svg?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+
+### 🪛 Tools and Platforms
+[![Render](https://img.shields.io/badge/Render-%46E3B7.svg?logo=render&logoColor=white)](https://render.com/)
+[![Git](https://img.shields.io/badge/git-%23F05033.svg?logo=git&logoColor=white)](https://git-scm.com/)
+[![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=white)](https://www.postman.com/)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white)](https://www.docker.com/)
+[![ESLint](https://img.shields.io/badge/ESLint-4B3263?logo=eslint&logoColor=white)](https://eslint.org/)
+
+### 🗂️ Databases
+[![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?logo=sqlite&logoColor=white)](https://www.sqlite.org/index.html)
+[![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+
+
 ## 📚 More on ShareSage
 
 - ### 💾 [Installation and Setup](./docs/setup.md)
