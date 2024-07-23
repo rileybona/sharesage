@@ -10,7 +10,7 @@ from flask_login import UserMixin
 #     db.metadata,
 #     db.Column("user1_id", db.Integer, db.ForeignKey("users.id"), primary_key=True),
 #     db.Column("user2_id", db.Integer, db.ForeignKey("users.id"), primary_key=True)
-# )
+# ) orioiwejfoi
 
 
 class User(db.Model, UserMixin):
