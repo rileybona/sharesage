@@ -51,3 +51,19 @@
 2. **Deploy on Render.com:**
 
    - Refer to Render.com's deployment articles for more detailed instructions about getting started, creating a production database, and deployment debugging tips.
+
+3. **Create the application on Render.com:**
+
+   - From the Render [Dashboard](https://dashboard.render.com/), click on the "New +" button in the navigation bar, and select "Web Service" to create the application.
+   - Select "Build and deploy from a Git repository" and click "Next".
+   - Find and connect your GitHub repo.
+
+4. **Configure your app:**
+
+   - Fill out the form with the following:
+     - **Name:** Give your application a name.
+     - **Region:** Set to the location closest to you.
+     - **Branch:** Set to "main".
+     - **Runtime:** Set to "Docker".
+     - **Root Directory:** Leave blank (commands run from the root directory).
+     - **Instance Type:** Select "Free".
