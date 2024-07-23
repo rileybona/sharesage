@@ -1,0 +1,42 @@
+.create-exp-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.create-exp-form h1 {
+    padding-left: 15px;
+    padding-right: 15px; 
+    margin-top: 0;
+}
+
+
+.select-users {
+    padding-bottom: 10px;
+}
+
+
+.create-exp-form input {
+    margin-bottom: 10px;
+}
+
+.create-exp-form select {
+    margin-bottom: 10px;
+}
+
+.create-exp-form button {
+    padding: 0.5em 1em;
+    border: 1px solid lightgrey;
+    border-radius: 1em;
+    font-size: 1em;
+    box-sizing: border-box;
+    cursor: pointer;
+    box-shadow: 0 0 5px lightgrey;
+}
+
+.create-exp-form button:hover {
+    box-shadow: none;
+    background-color: lightgrey;
+}

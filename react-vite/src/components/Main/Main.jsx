@@ -1,22 +1,19 @@
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./Main.css";
-import Sidebar from "../Sidebar/Sidebar";
+import LoginFormPage from "../LoginFormPage";
+// import Sidebar from "../Sidebar/Sidebar";
 
 function Main() {
-    return (
-        <h1>Welcome!</h1>
-        // <div className="main-content">
-        //     <div className="left-bar">
-        //        <Sidebar />
-        //     </div>
-        //     <div className="main">
-        //         <h1>Welcome!</h1>
-        //     </div>
-        //     <div className="right-bar">
-        //     <Sidebar />
-        //     </div>
-        // </div>
-    )
+  const user = useSelector((state) => state.session.user);
+  if (!user?.id) return <LoginFormPage />;
+
+  return (
+    <>
+      <h1>Welcome!</h1>
+      <h3>Page under construction. Features coming soon!</h3>
+    </>
+  );
 }
 
 export default Main;

@@ -1,4 +1,3 @@
-// LABELS
 const GET_ALL_EXPENSES = "expenses/GET_ALL_EXPENSES";
 const GET_EXPENSE_DETAILS = "expenses/GET_EXPENSE_DETAILS";
 const ADD_EXPENSE = "expense/ADD_EXPENSE";
@@ -8,7 +7,6 @@ const GET_EXPENSE_PAYEES = "expense/GET_EXPENSE_PAYEES";
 //add payees to expense doesn't need its own store action.
 const UPDATE_EXPENSE = "expenses/UPDATE_EXPENSE";
 
-// ACTION CREATORS
 const loadExpenses = (expenses) => ({
   type: GET_ALL_EXPENSES,
   payload: expenses,
@@ -52,7 +50,6 @@ const updateExpense = (expense) => {
   };
 };
 
-// THUNKS - -  - -- - --  - - -- -
 export const getAllExpenses = () => async (dispatch) => {
   try {
     const response = await fetch("/api/expenses/");
@@ -108,7 +105,7 @@ export const addAnExpense = (data, payload2) => async (dispatch) => {
 };
 
 export const updateAnExpense = (id, expense) => async (dispatch) => {
-  console.log(JSON.stringify(expense));
+  // console.log(JSON.stringify(expense));
   const options = {
     method: "PUT",
     headers: {

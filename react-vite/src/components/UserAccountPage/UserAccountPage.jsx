@@ -15,9 +15,9 @@ export default function UserAccountPage() {
         </div>
       </div>
       <div className="account-right-container">
-        <div>{`${user.first_name} ${user.last_name}`}</div>
-        <div>{`${user.username}`}</div>
-        <div>{`${user.email}`}</div>
+        <div>Name: {`${user.first_name} ${user.last_name}`}</div>
+        <div>Username: {`${user.username}`}</div>
+        <div>Email: {`${user.email}`}</div>
       </div>
     </div>
   );

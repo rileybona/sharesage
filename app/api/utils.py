@@ -65,6 +65,7 @@ class ExpenseUtils:
             ChildExpenseUtils.get_child_expense_details_by_id(x)
             for x in child_expense_ids
         ]
+        expense["owner"] = UserUtils.get_user_by_id(expense["owner_id"])
         payeeIds = [
             child_expense["user_id"] for child_expense in expense["child_expenses"]
         ]
@@ -219,7 +220,7 @@ class ChildExpenseUtils:
                         ChildExpense.id == expense["id"]
                     ).first()
                     db.session.delete(expense)
-                    db.session.commit()
+                    # db.session.commit()
 
         # create new child expenses for new payees
         for newbie in payload["new_payees"]:
@@ -292,8 +293,15 @@ class PaymentUtils:
     def get_payments_by_user():
         user_id = AuthUtils.get_current_user()["id"]
         all_payments = Payment.query.filter(Payment.user_id == user_id)
-        return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))
 
+        def addOwner(payment):
+            parsed_payment = PaymentUtils.parse_data(payment)
+            parsed_payment["recipient"] = UserUtils.get_user_by_child_expense_id(
+                parsed_payment["expense_id"]
+            )
+            return parsed_payment
+
+        return list(map(lambda x: addOwner(x), all_payments))
 
 class UserUtils:
     @staticmethod
@@ -323,6 +331,16 @@ class UserUtils:
     def get_user_by_email(email):
         """Returns parsed user info by their email"""
         return User.query.filter(User.email == str(email)).first()
+
+    @staticmethod
+    def get_user_by_child_expense_id(id):
+        """Returns user info by associated child expense id"""
+        root_expense_id = ChildExpenseUtils.get_child_expense_details_by_id(id)["root_expense_id"]
+        print(ChildExpenseUtils.get_child_expense_details_by_id(id))
+        owner_id = ExpenseUtils.parse_data(ExpenseUtils.get_expense_by_id(root_expense_id))["owner_id"]
+        print(ExpenseUtils.parse_data(ExpenseUtils.get_expense_by_id(root_expense_id)))
+
+        return UserUtils.get_user_by_id(owner_id)
 
 
 class AuthUtils:
@@ -410,48 +428,3 @@ class CommentUtils:
             raise e
 
         return {"message": "Deletion succeeded"}
-
-
-class PaymentUtils:
-    @staticmethod
-    def parse_data(payment_obj):
-        try:
-            return {
-                "id": payment_obj.id,
-                "note": payment_obj.note,
-                "expense_id": payment_obj.expense_id,
-                "user_id": payment_obj.user_id,
-                "method": payment_obj.method,
-                "amount": payment_obj.amount,
-                "created_at": payment_obj.created_at,
-            }
-        except:
-            raise Exception("Invalid Payment Object from query")
-
-    @staticmethod
-    def get_all_payments(expense_id):
-        all_payments = Payment.query.filter(Payment.expense_id == expense_id)
-
-        return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))
-
-    @staticmethod
-    def create_new_payment(details, expense_id):
-        new_payment = Payment(
-            note=details.get("note"),
-            method=details.get("method"),
-            amount=details.get("amount"),
-            expense_id=expense_id,
-            user_id=AuthUtils.get_current_user()["id"],
-        )
-        try:
-            db.session.add(new_payment)
-            db.session.commit()
-            return PaymentUtils.parse_data(new_payment)
-        except Exception as e:
-            raise e
-
-    @staticmethod
-    def get_payments_by_user():
-        user_id = AuthUtils.get_current_user()["id"]
-        all_payments = Payment.query.filter(Payment.user_id == user_id)
-        return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))

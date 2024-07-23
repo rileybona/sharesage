@@ -22,13 +22,14 @@ class RootExpense(db.Model):
 
     # comment : root_expense relationship
     comment_expenses = db.relationship(
-        "Comment",
-        back_populates="expense_comments",
+        "Comment", back_populates="expense_comments", cascade="all, delete-orphan"
     )
 
     # child_expense : root_expense relationship
     child_expense_root_expenses = db.relationship(
-        "ChildExpense", back_populates="root_expense_child_expenses"
+        "ChildExpense",
+        back_populates="root_expense_child_expenses",
+        cascade="all, delete-orphan",
     )
 
     # user : root_expense relationship
