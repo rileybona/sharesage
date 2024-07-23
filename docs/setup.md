@@ -4,10 +4,10 @@
 
 ## Getting Started
 
-1. **Clone this repository (only this branch):**
+1. **Clone this repository:**
 
    ```bash
-   git clone -b main https://github.com/rileybona/sharesage.git
+   git clone https://github.com/rileybona/sharesage.git
    ```
 
 2. **Install dependencies:**
