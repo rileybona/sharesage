@@ -12,3 +12,7 @@ ShareSage is a refined platform designed to help users effortlessly split their 
 - **Balances and Settlements**: View how much you owe or are owed by others, and settle balances with integrated payment options.
 - **Notifications**: Receive notifications for new expenses, updates to existing expenses, and reminders to settle up.
 - **Reports and Summaries**: Generate detailed reports and summaries of your expenses to see where your money is going and how much you’ve spent.
+
+## 🎯 Project Mission
+
+Through this collaborative project, we will enhance our team cohesion by fostering open communication and mutual support. This project will strengthen our expertise as full-stack software developers by allowing us to master both front-end and back-end technologies and integrate best practices. By working together, we will deliver a high-quality, innovative solution that exceeds expectations, ultimately advancing our technical skills, problem-solving abilities, and collaborative effectiveness.
