@@ -1,6 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+
 # from sqlalchemy import MetaData
 #
 # metadata_obj = MetaData()
@@ -62,7 +63,14 @@ class User(db.Model, UserMixin):
     # payment : user relationship
     payment_users = db.relationship(
         "Payment",
-        back_populates="user_payments"
+        foreign_keys="[Payment.user_id]",
+        back_populates="payer"
+    )
+
+    user_recipients = db.relationship(
+        "Payment",
+        foreign_keys="[Payment.recipient_id]",
+        back_populates='recipient'
     )
 
     # user : root_expense relationship

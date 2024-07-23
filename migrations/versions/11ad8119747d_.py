@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 24522b40b0ad
+Revision ID: 11ad8119747d
 Revises: 
-Create Date: 2024-07-08 05:09:33.268226
+Create Date: 2024-07-23 16:25:27.205403
 
 """
 from alembic import op
@@ -12,8 +12,10 @@ import os
 environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
+
+
 # revision identifiers, used by Alembic.
-revision = '24522b40b0ad'
+revision = '11ad8119747d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -56,6 +58,7 @@ def upgrade():
     sa.Column('root_expense_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('split_amount', sa.Float(), nullable=False),
+    sa.Column('balance', sa.Float(), nullable=False),
     sa.ForeignKeyConstraint(['root_expense_id'], ['root_expenses.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -78,12 +81,16 @@ def upgrade():
     op.create_table('payments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('recipient_id', sa.Integer(), nullable=True),
     sa.Column('expense_id', sa.Integer(), nullable=False),
+    sa.Column('root_expense_id', sa.Integer(), nullable=False),
     sa.Column('method', sa.String(length=31), nullable=False),
     sa.Column('amount', sa.Float(), nullable=False),
     sa.Column('note', sa.String(length=255), nullable=True),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.ForeignKeyConstraint(['expense_id'], ['child_expenses.id'], ),
+    sa.ForeignKeyConstraint(['recipient_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['root_expense_id'], ['root_expenses.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
