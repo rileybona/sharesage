@@ -67,3 +67,27 @@
      - **Runtime:** Set to "Docker".
      - **Root Directory:** Leave blank (commands run from the root directory).
      - **Instance Type:** Select "Free".
+
+5. **Add environment variables:**
+
+   - Secure your environment variables in the Render GUI form:
+     - `SECRET_KEY` (click "Generate" for a secure key)
+     - `FLASK_ENV`: production
+     - `FLASK_APP`: app
+     - `SCHEMA`: your unique schema name in snake_case
+     - `DATABASE_URL`: Copy value from the **Internal Database URL** field in your Postgres instance on the Render dashboard.
+
+   **Note:** Ensure the region of your web service and database are the same. Add any other keys and values from your local `.env` file as needed.
+
+6. **Deploy:**
+
+   - Click "Create Web Service" to deploy your project.
+   - Monitor the logs to see your Dockerfile commands being executed and any errors that occur.
+   - Deployment typically takes 5-10 minutes if everything works as expected.
+   - When complete, find the URL for your site just below the name of the Web Service at the top of the page.
+
+   **Note:** Render's default setting is Auto-Deploy, which will re-deploy your application every time you push to main, keeping it up to date.
+
+---
+
+For more details on the deployment process, refer to your [Render.com deployment articles](https://docs.render.com/deploys).
