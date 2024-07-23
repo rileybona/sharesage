@@ -1,4 +1,4 @@
-# 📑 MyTube Installation and Setup
+# 📑 ShareSage Installation and Setup
 
 ### [⇦ Back to Project Overview](../README.md)
 
@@ -15,3 +15,7 @@
    ```bash
    pipenv install -r requirements.txt
    ```
+
+3. **Create a `.env` file** based on the example with proper settings for your development environment.
+
+4. **Ensure the SQLite3 database connection URL is in the `.env` file.**
