@@ -19,3 +19,24 @@
 3. **Create a `.env` file** based on the example with proper settings for your development environment.
 
 4. **Ensure the SQLite3 database connection URL is in the `.env` file.**
+
+5. **Set the `SCHEMA` environment variable** with a unique name using the snake_case convention.
+
+6. **Initialize your pipenv, migrate your database, seed your database, and run your Flask app:**
+
+   ```bash
+   pipenv shell
+   flask db upgrade
+   flask seed all
+   flask run
+   ```
+
+7. **Run the React frontend in development:**
+
+   ```bash
+   cd react-vite
+   npm install
+   npm run dev
+   ```
+
+   The starter has modified the `npm run build` command to include the `--watch` flag. This flag will rebuild the **dist** folder whenever you change your code, keeping the production version up to date.
