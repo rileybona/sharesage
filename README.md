@@ -16,3 +16,11 @@ ShareSage is a refined platform designed to help users effortlessly split their 
 ## 🎯 Project Mission
 
 Through this collaborative project, we will enhance our team cohesion by fostering open communication and mutual support. This project will strengthen our expertise as full-stack software developers by allowing us to master both front-end and back-end technologies and integrate best practices. By working together, we will deliver a high-quality, innovative solution that exceeds expectations, ultimately advancing our technical skills, problem-solving abilities, and collaborative effectiveness.
+
+## 📚 More on ShareSage
+
+- ### 💾 [Installation and Setup](./docs/setup.md)
+
+- ### 📑 [ShareSage Documentation](https://github.com/rileybona/sharesage/wiki)
+
+- ### ✨ [ShareSage in action!](https://sharesage.onrender.com/)
