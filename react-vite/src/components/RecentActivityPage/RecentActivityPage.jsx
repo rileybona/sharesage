@@ -1,101 +1,74 @@
-import "./RecentActivityPage.css";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCurrentUserPayments, getPayments } from "../../redux/payment";
+import "./RecentActivityPage.css";
+import { useState } from "react";
+import { useEffect } from "react";
+import {
+  getUserInboundPayments,
+  getUserOutboundPayments,
+} from "../../redux/payment";
 import { getAllUsers } from "../../redux/session";
-import { getAllExpenses } from "../../redux/expense";
 import { NavLink } from "react-router-dom";
+
+function PaymentCard({ payment, inbound, otherUser }) {
+  return (
+    <NavLink to={`/expenses/${payment.root_expense_id}`}>
+      {inbound ? (
+        <p>{`${otherUser.first_name} ${otherUser.last_name} paid me $${payment.amount}`}</p>
+      ) : (
+        <p>{`I paid ${otherUser.first_name} ${otherUser.last_name} ${payment.amount}`}</p>
+      )}
+      <p>click to view expense details</p>
+    </NavLink>
+  );
+}
+
+const constructPaymentsView = (payments, users, inbound = true) => {
+  return (
+    <div>
+      <p>{inbound ? "Payments received" : "Payments made"} </p>
+      {payments.map((e) => (
+        <PaymentCard
+          key={e.id}
+          payment={e}
+          inbound={inbound}
+          otherUser={inbound ? users[e.user_id] : users[e.recipient_id]}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default function RecentActivityPage() {
   const dispatch = useDispatch();
+
+  const payments = useSelector((state) => state.payment?.user_payments);
+  const allUsers = useSelector((state) => state.session?.users);
+
   const [paymentLoaded, setPaymentLoaded] = useState(false);
-  const [usersLoaded, setUsersLoaded] = useState(false);
-  const [expenesesLoaded, setExpensesLoaded] = useState(false);
-  const [child_expenses, setChild_expenses] = useState([]);
-  const [inPaymentLoaded, setInPaymentLoaded] = useState(false);
-  const [reload, setReload] = useState(1);
-
-  const myPayments = useSelector((state) => state.payment.payments);
-  const Inboundpayments = useSelector((state) => state.payment.user_payments);
-
-  const sessionUser = useSelector((state) => state.session.user);
-  const users = useSelector((state) => state.session.users);
-  const allExpenses = useSelector((state) => state.expense.root_expenses);
+  const [users, setUsers] = useState({});
+  const [inbound, setInbound] = useState([]);
+  const [outbound, setOutbound] = useState([]);
+  useEffect(() => {
+    dispatch(getAllUsers());
+    dispatch(getUserInboundPayments());
+    dispatch(getUserOutboundPayments());
+    dispatch(getAllUsers());
+    setPaymentLoaded(true);
+  }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getPayments()).then(() => setPaymentLoaded(true));
-    dispatch(getAllUsers()).then(() => setUsersLoaded(true));
-    dispatch(getAllExpenses()).then(() => setExpensesLoaded(true));
-  }, [dispatch, reload]);
+    if (payments) {
+      setInbound(payments.inbound);
+      setOutbound(payments.outbound);
+    }
+    if (allUsers) setUsers(allUsers);
+  }, [payments, allUsers]);
 
-  useEffect(() => {
-    setChild_expenses(
-      Object.values(allExpenses)
-        .filter((e) => e.owner_id == sessionUser.id)
-        .map((e) => e.id)
-    );
-  }, [allExpenses, expenesesLoaded, sessionUser.id]);
-
-  useEffect(() => {
-    dispatch(getCurrentUserPayments(child_expenses)).then(() =>
-      setInPaymentLoaded(true)
-    );
-  }, [dispatch, child_expenses]);
-
-  // function preventDefault(e) {
-  //   e.preventDefault();
-  //   return;
-  // }
-
-  if (!paymentLoaded || !usersLoaded || !expenesesLoaded || !inPaymentLoaded)
-    return <h2>Loading</h2>;
+  if (!paymentLoaded) return <h1>loading...</h1>;
   return (
     <div className="recent-activity-container">
-      <div className="received-container">
-        <div className="div-title">
-          <p id="received-title">Payments Received</p>{" "}
-          <button
-            style={{ width: "min-content" }}
-            className="modal-button"
-            onClick={() => setReload(reload + 1)}
-          >
-            Reload
-          </button>
-        </div>
-        {Inboundpayments.map((e, ind) => {
-          return (
-            <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <NavLink to={`/expenses/${e.id}`}>
-                <p>
-                  <span style={{ color: "	#006400" }}>{`${
-                    users[e.user_id].first_name
-                  } ${users[e.user_id].last_name}`}</span>
-                  {` sent me $${e.amount} on ${e.created_at.slice(4, 17)}`}
-                </p>
-              </NavLink>
-            </div>
-          );
-        })}
-      </div>
-      <div className="paid-container">
-        <p className="div-title">Payments Made</p>
-        {myPayments.map((e, ind) => {
-          return (
-            <div className="payment-card" key={`${e.id}` + `${ind}`}>
-              <NavLink to={`/expenses/${e.expense_id}`}>
-                <p>
-                  {`I paid`}
-                  {console.log(e)}
-                  <span
-                    style={{ color: "	#006400" }}
-                  >{` ${e.recipient.first_name} ${e.recipient.last_name} `}</span>
-                  {`$${e.amount} on ${e.created_at.slice(4, 17)}`}
-                </p>
-              </NavLink>
-            </div>
-          );
-        })}
-      </div>
+      {constructPaymentsView(inbound, users)}
+      {constructPaymentsView(outbound, users, false)}
     </div>
   );
 }

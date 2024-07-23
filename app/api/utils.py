@@ -250,6 +250,12 @@ class ChildExpenseUtils:
         expense["payments"] = PaymentUtils.get_all_payments(int(id))
         return expense
 
+    @staticmethod
+    def get_root_expense_id(id):
+        expense = ChildExpenseUtils.parse_data(
+            ChildExpense.query.filter(ChildExpense.id == int(id)).first()
+        )
+        return expense['root_expense_id']
 
 class PaymentUtils:
     @staticmethod
@@ -263,6 +269,7 @@ class PaymentUtils:
                 "method": payment_obj.method,
                 "amount": payment_obj.amount,
                 "created_at": payment_obj.created_at,
+                "recipient_id": payment_obj.recipient_id
             }
         except:
             raise Exception("Invalid Payment Object from query")
@@ -281,6 +288,7 @@ class PaymentUtils:
             amount=details.get("amount"),
             expense_id=expense_id,
             user_id=AuthUtils.get_current_user()["id"],
+            recipient_id = details.get("recipient_id")
         )
         try:
             db.session.add(new_payment)
@@ -299,9 +307,22 @@ class PaymentUtils:
             parsed_payment["recipient"] = UserUtils.get_user_by_child_expense_id(
                 parsed_payment["expense_id"]
             )
+            parsed_payment['root_expense_id'] = ChildExpenseUtils.get_root_expense_id(parsed_payment["expense_id"])
             return parsed_payment
 
         return list(map(lambda x: addOwner(x), all_payments))
+    
+    @staticmethod
+    def get_payments_to_user():
+        user_id = AuthUtils.get_current_user()["id"]
+        payments = Payment.query.filter(Payment.recipient_id == user_id)
+        
+        def addPayee(payment): 
+            parsed_payment = PaymentUtils.parse_data(payment)
+            parsed_payment['root_expense_id'] = ChildExpenseUtils.get_root_expense_id(parsed_payment["expense_id"])
+            return parsed_payment
+            
+        return list(map(lambda x: addPayee(x), payments))
 
 class UserUtils:
     @staticmethod
