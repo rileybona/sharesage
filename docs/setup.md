@@ -40,3 +40,14 @@
    ```
 
    The starter has modified the `npm run build` command to include the `--watch` flag. This flag will rebuild the **dist** folder whenever you change your code, keeping the production version up to date.
+
+## Deployment through Render.com
+
+1. **Prepare for deployment:**
+
+   - Run `npm run build` in your **react-vite** folder.
+   - Ensure the **dist** folder is located in the root of your **react-vite** folder before pushing to GitHub.
+
+2. **Deploy on Render.com:**
+
+   - Refer to Render.com's deployment articles for more detailed instructions about getting started, creating a production database, and deployment debugging tips.
