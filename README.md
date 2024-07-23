@@ -1,7 +1,3 @@
-# Flask React Project
-
-This is the starter for the Flask React project.
-
 ## Getting started
 
 1. Clone this repository (only this branch).
@@ -12,13 +8,13 @@ This is the starter for the Flask React project.
    pipenv install -r requirements.txt
    ```
 
-3. Create a __.env__ file based on the example with proper settings for your
+3. Create a **.env** file based on the example with proper settings for your
    development environment.
 
-4. Make sure the SQLite3 database connection URL is in the __.env__ file.
+4. Make sure the SQLite3 database connection URL is in the **.env** file.
 
 5. This starter organizes all tables inside the `flask_schema` schema, defined
-   by the `SCHEMA` environment variable.  Replace the value for
+   by the `SCHEMA` environment variable. Replace the value for
    `SCHEMA` with a unique name, **making sure you use the snake_case
    convention.**
 
@@ -41,26 +37,26 @@ This is the starter for the Flask React project.
    flask run
    ```
 
-7. The React frontend has no styling applied. Copy the __.css__ files from your
+7. The React frontend has no styling applied. Copy the **.css** files from your
    Authenticate Me project into the corresponding locations in the
-   __react-vite__ folder to give your project a unique look.
+   **react-vite** folder to give your project a unique look.
 
-8. To run the React frontend in development, `cd` into the __react-vite__
+8. To run the React frontend in development, `cd` into the **react-vite**
    directory and run `npm i` to install dependencies. Next, run `npm run build`
    to create the `dist` folder. The starter has modified the `npm run build`
-   command to include the `--watch` flag. This flag will rebuild the __dist__
+   command to include the `--watch` flag. This flag will rebuild the **dist**
    folder whenever you change your code, keeping the production version up to
    date.
 
 ## Deployment through Render.com
 
 First, recall that Vite is a development dependency, so it will not be used in
-production. This means that you must already have the __dist__ folder located in
-the root of your __react-vite__ folder when you push to GitHub. This __dist__
+production. This means that you must already have the **dist** folder located in
+the root of your **react-vite** folder when you push to GitHub. This **dist**
 folder contains your React code and all necessary dependencies minified and
 bundled into a smaller footprint, ready to be served from your Python API.
 
-Begin deployment by running `npm run build` in your __react-vite__ folder and
+Begin deployment by running `npm run build` in your **react-vite** folder and
 pushing any changes to GitHub.
 
 Refer to your Render.com deployment articles for more detailed instructions
@@ -75,7 +71,7 @@ Select that you want to "Build and deploy from a Git repository" and click
 deploy and click the "Connect" button to the right of the name.
 
 Now you need to fill out the form to configure your app. Most of the setup will
-be handled by the __Dockerfile__, but you do need to fill in a few fields.
+be handled by the **Dockerfile**, but you do need to fill in a few fields.
 
 Start by giving your application a name.
 
@@ -88,7 +84,7 @@ Select "Free" as your Instance Type.
 ### Add environment variables
 
 In the development environment, you have been securing your environment
-variables in a __.env__ file, which has been removed from source control (i.e.,
+variables in a **.env** file, which has been removed from source control (i.e.,
 the file is gitignored). In this step, you will need to input the keys and
 values for the environment variables you need for production into the Render
 GUI.
@@ -108,8 +104,8 @@ Add the following keys and values:
 - DATABASE_URL (copy value from the **External Database URL** field)
 
 **Note:** Add any other keys and values that may be present in your local
-__.env__ file. As you work to further develop your project, you may need to add
-more environment variables to your local __.env__ file. Make sure you add these
+**.env** file. As you work to further develop your project, you may need to add
+more environment variables to your local **.env** file. Make sure you add these
 environment variables to the Render GUI as well for the next deployment.
 
 ### Deploy
