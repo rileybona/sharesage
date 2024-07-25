@@ -43,6 +43,7 @@ Through this collaborative project, we will enhance our team cohesion by fosteri
 
 ### 🗂️ Databases
 [![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?logo=sqlite&logoColor=white)](https://www.sqlite.org/index.html)
+[![Sequelize](https://img.shields.io/badge/Sequelize-52B0E7?logo=Sequelize&logoColor=white)](https://sequelize.org/)
 [![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 
