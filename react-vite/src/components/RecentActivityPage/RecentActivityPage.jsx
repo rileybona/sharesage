@@ -8,23 +8,26 @@ import {
 } from "../../redux/payment";
 import { getAllUsers } from "../../redux/session";
 import { NavLink } from "react-router-dom";
+import "./RecentActivityPage.css";
 
 function PaymentCard({ payment, inbound, otherUser }) {
   return (
-    <NavLink to={`/expenses/${payment.root_expense_id}`}>
-      {inbound ? (
-        <p>{`${otherUser.first_name} ${otherUser.last_name} paid me $${payment.amount}`}</p>
-      ) : (
-        <p>{`I paid ${otherUser.first_name} ${otherUser.last_name} ${payment.amount}`}</p>
-      )}
-      <p>click to view expense details</p>
-    </NavLink>
+    <div className="payment-card">
+      <NavLink to={`/expenses/${payment.root_expense_id}`}>
+        {inbound ? (
+          <p>{`${otherUser.first_name} ${otherUser.last_name} paid me $${payment.amount}`}</p>
+        ) : (
+          <p>{`I paid ${otherUser.first_name} ${otherUser.last_name} ${payment.amount}`}</p>
+        )}
+        <p className="hint">click to view expense details</p>
+      </NavLink>
+    </div>
   );
 }
 
 const constructPaymentsView = (payments, users, inbound = true) => {
   return (
-    <div>
+    <div className="payment-container">
       <p>{inbound ? "Payments received" : "Payments made"} </p>
       {payments.map((e) => (
         <PaymentCard

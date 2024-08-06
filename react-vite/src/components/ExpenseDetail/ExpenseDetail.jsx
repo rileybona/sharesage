@@ -23,7 +23,6 @@ export default function ExpenseDetail() {
   const user = useSelector((state) => state.session.user);
   const expense = useSelector((state) => state.expense.expense_details);
 
-
   useEffect(() => {
     dispatch(expenseActions.getSingleExpense(parseInt(expenseId)))
       .then(() => setLoaded(true))
@@ -72,7 +71,7 @@ export default function ExpenseDetail() {
                 <PaymentModal
                   expenseId={child_expense.id}
                   rootExpId={child_expense.root_expense_id}
-                  balance={child_expense.balance}
+                  balance={child_expense.balance.toFixed(2)}
                   splitAmount={child_expense.split_amount}
                   ownerId={expense[expenseId].owner_id}
                   reload={reload}
