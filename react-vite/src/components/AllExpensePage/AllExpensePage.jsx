@@ -110,8 +110,8 @@ function AllExpensePage() {
               }
             />
           </div>
-          {expenses.map((expense) => (
-            <>
+          {expenses.map((expense, i) => (
+            <div key={i}>
               <div className="expense-card" key={expense.id}>
                 <NavLink
                   to={`/expenses/${expense.id}`}
@@ -141,7 +141,7 @@ function AllExpensePage() {
                 </NavLink>
               </div>
               <hr className="rounded" />
-            </>
+            </div>
           ))}
         </div>
       )}
