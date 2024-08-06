@@ -50,7 +50,7 @@ function PaymentModal({ expenseId, rootExpId, balance, splitAmount, ownerId, rel
   return (
     <form onSubmit={handleSubmit} className="settle-up-form">
       <h1>Settle up</h1>
-      <p>balance: {splitAmount - balance}</p>
+      <p>balance: {(splitAmount - balance).toFixed(2)}</p>
       <label>
         <select onChange={(e) => setMethod(e.target.value)}>
           {PAYMENT_METHODS.map((method) => (
