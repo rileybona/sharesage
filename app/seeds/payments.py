@@ -6,7 +6,7 @@ from alembic import op
 def seed_payments():
 
     payment1 = Payment(
-        user_id=3,
+        user_id=2,
         expense_id=1,
         root_expense_id=1,
         recipient_id = 1,

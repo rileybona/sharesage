@@ -6,7 +6,7 @@ import "./PaymentModal.css"
 
 const PAYMENT_METHODS = ["Cash", "Paypal", "Venmo"];
 
-function PaymentModal({ expenseId, reload, setReload }) {
+function PaymentModal({ expenseId, rootExpId, balance, splitAmount, ownerId, reload, setReload }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [method, setMethod] = useState(PAYMENT_METHODS[0]);
@@ -30,10 +30,14 @@ function PaymentModal({ expenseId, reload, setReload }) {
       const newPayment = {
         user_id: sessionUser.id,
         expense_id: expenseId,
+        root_expense_id: rootExpId,
+        recipient_id: ownerId,
         method,
         amount: Number(amount),
         note,
       };
+      console.log("~PaymentModal new Payment");
+      console.log(newPayment);
       setReload(reload + 1);
       // setErrors({})
       // console.log(err);
@@ -46,6 +50,7 @@ function PaymentModal({ expenseId, reload, setReload }) {
   return (
     <form onSubmit={handleSubmit} className="settle-up-form">
       <h1>Settle up</h1>
+      <p>balance: {splitAmount - balance}</p>
       <label>
         <select onChange={(e) => setMethod(e.target.value)}>
           {PAYMENT_METHODS.map((method) => (
