@@ -66,7 +66,7 @@ Through this collaborative project, we will enhance our team cohesion by fosteri
 
 ## 🌐 Contributors' LinkedIns
 
-- [![David Liu](https://img.shields.io/badge/David_Liu-%230077B5.svg?logo=linkedin&logoColor=white)](#)
+- [![David Liu](https://img.shields.io/badge/David_Liu-%230077B5.svg?logo=linkedin&logoColor=white)](www.linkedin.com/in/davidlcodingnow)
 - [![Phillip Nguyen](https://img.shields.io/badge/Phillip_Nguyen-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/phillnguyen/)
 - [![Riley Bona](https://img.shields.io/badge/Riley_Bona-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/riley-bona/)
 - [![Timothy Macfarlane](https://img.shields.io/badge/Timothy_Macfarlane-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/timothy-macfarlane/)
