@@ -31,7 +31,7 @@ const constructPaymentsView = (payments, users, inbound = true) => {
           key={e.id}
           payment={e}
           inbound={inbound}
-          otherUser={!inbound ? users[e.user_id] : users[e.recipient_id]}
+          otherUser={inbound ? users[e.user_id] : users[e.recipient_id]}
         />
       ))}
     </div>

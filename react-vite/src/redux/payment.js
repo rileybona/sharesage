@@ -177,7 +177,7 @@ const paymentReducer = (state = initialState, action) => {
     case CLEAR_PAYMENT:
       newState = initialState;
       return newState;
-    case GET_INBOUND_PAYMENTS:
+    case GET_OUTBOUND_PAYMENTS:
       newState = {
         ...state,
         user_payments: {
@@ -186,7 +186,7 @@ const paymentReducer = (state = initialState, action) => {
         },
       };
       return newState;
-    case GET_OUTBOUND_PAYMENTS:
+    case GET_INBOUND_PAYMENTS:
       newState = {
         ...state,
         user_payments: {
