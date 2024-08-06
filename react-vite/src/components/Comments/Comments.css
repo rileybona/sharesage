@@ -28,6 +28,10 @@ div#comments {
       color: rgba(68, 66, 66, 0.528);
     }
 
+    & > div.comment-body {
+      word-break: break-word;
+    }
+
     & > div.comment-buttons {
       display: flex;
       justify-content: flex-end;
@@ -48,8 +52,6 @@ div#comments {
   background-color: rgb(177, 141, 90);
   border: ridge, rgb(93, 66, 41), 5px;
 }
-
-
 
 #comments button {
   background-color: white;
