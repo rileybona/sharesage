@@ -16,7 +16,7 @@ export default function ExpensePayments({ expenseId }) {
 
   useEffect(() => {
     dispatch(getAllUsers()).then(() => setUsersLoaded(true));
-  }, [dispatch, expenseId])
+  }, [dispatch, expenseId]);
 
   // console.log(JSON.stringify(payments));
 
