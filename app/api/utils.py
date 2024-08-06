@@ -257,6 +257,16 @@ class ChildExpenseUtils:
             ChildExpense.query.filter(ChildExpense.id == int(id)).first()
         )
         return expense['root_expense_id']
+    
+    @staticmethod 
+    def add_to_balance(id, amount):
+        """Add specified amount to the 'balance' (amount paid) of a child expense """
+        expense = ChildExpense.query.filter(
+            ChildExpense.id == int(id)
+        ).first()
+
+        expense.balance += amount
+        db.session.commit()
 
 class PaymentUtils:
     @staticmethod
@@ -288,12 +298,17 @@ class PaymentUtils:
             method=details.get("method"),
             amount=details.get("amount"),
             expense_id=expense_id,
+            root_expense_id=details.get("root_expense_id"),
             user_id=AuthUtils.get_current_user()["id"],
             recipient_id = details.get("recipient_id")
         )
         try:
             db.session.add(new_payment)
             db.session.commit()
+
+            # UPDATE BALANCE 
+            ChildExpenseUtils.add_to_balance(expense_id, amount=(details.get("amount")))
+
             return PaymentUtils.parse_data(new_payment)
         except Exception as e:
             raise e
