@@ -142,7 +142,8 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
         ? selectedUsers.length
         : defaultOptions.length;
 
-      const split_amount = amount / payeeCount;
+      const split_amount = + (amount / (payeeCount + 1)).toFixed(2);
+      console.log("~updateExpense s.amount = ", split_amount);
       const existingEmails = defaultOptions.map((e) => e.value);
 
       const childExpensePayload = selectedUsers.length
