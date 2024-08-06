@@ -15,6 +15,8 @@ def get_payments(expense_id):
 @login_required
 def post_new_payment(expense_id):
     req_body = request.get_json()
+    print("entering create payment route !")
+    print(req_body)
     return PaymentUtils.create_new_payment(req_body, expense_id)
 
 

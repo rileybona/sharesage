@@ -127,7 +127,8 @@ export const getPayments = (expense_id) => async (dispatch) => {
 };
 
 export const addAPayment = (data, expense_id) => async (dispatch) => {
-  // console.log(JSON.stringify(data));
+  console.log("~addPayment thunk");
+  console.log(JSON.stringify(data));
   const response = await fetch(`/api/expenses/${expense_id}/payments`, {
     method: "POST",
     headers: {

@@ -155,6 +155,7 @@ class ChildExpenseUtils:
                 "root_expense_id": obj.root_expense_id,
                 "user_id": obj.user_id,
                 "split_amount": obj.split_amount,
+                "balance": obj.balance
             }
         except:
             raise Exception("Invalid Child Expense Object from query")
