@@ -128,16 +128,16 @@ export const updateAnExpense = (id, expense) => async (dispatch) => {
     const expense = await response.json();
     return dispatch(updateExpense(expense));
   } else {
-    const error = await response.json();
-    // console.log(error);
     return { message: "Something went wrong" };
   }
 };
 
 export const getExpensePayees = (expenseId) => async (dispatch) => {
-  const response = await fetch(`/api/expenses/${expenseId}/payees`).then(
-    (res) => res.json().then((res) => res.payees)
-  );
+  const response = await fetch(`/api/expenses/${expenseId}/payees`)
+    .then((res) => res.json().then((res) => res.payees))
+    .catch((e) => {
+      throw new Error(e);
+    });
   // .catch((e) => console.log(e.message));
   if (response.length) {
     const payload = {};
@@ -162,10 +162,11 @@ export const addExpensePayees = (expenseId, payload) => async (dispatch) => {
   };
   const response = await fetch(`/api/expenses/${expenseId}/payees`, options);
   if (response.ok) {
-    const response = await fetch(`/api/expenses/${expenseId}/payees`).then(
-      (res) => res.json().then((res) => res.payees)
-    );
-    // .catch((e) => console.log(e.message));
+    const response = await fetch(`/api/expenses/${expenseId}/payees`)
+      .then((res) => res.json().then((res) => res.payees))
+      .catch((e) => {
+        throw new Error(e);
+      });
     if (response.length) {
       const payload = {};
       payload.payees = response.reduce((acc, el) => {

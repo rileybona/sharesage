@@ -19,17 +19,13 @@ export default function DeleteExpenseModal({ expenseId }) {
   // console.log({ user, expense });
 
   const deleteExpense = (expenseId) => {
-    try {
-      if (user.id !== expense.owner_id) {
-        closeModal;
-      } else {
-        console.log(`dispatching deletion`);
-        dispatch(expenseActions.deleteAnExpense(parseInt(expenseId)))
-          .then(() => navigate("/expenses"))
-          .then(closeModal);
-      }
-    } catch (err) {
-      console.log(err);
+    if (user.id !== expense.owner_id) {
+      closeModal;
+    } else {
+      // console.log(`dispatching deletion`);
+      dispatch(expenseActions.deleteAnExpense(parseInt(expenseId)))
+        .then(() => navigate("/expenses"))
+        .then(closeModal);
     }
   };
 

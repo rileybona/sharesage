@@ -2,11 +2,19 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { addAPayment } from "../../redux/payment";
-import "./PaymentModal.css"
+import "./PaymentModal.css";
 
 const PAYMENT_METHODS = ["Cash", "Paypal", "Venmo"];
 
-function PaymentModal({ expenseId, rootExpId, balance, splitAmount, ownerId, reload, setReload }) {
+function PaymentModal({
+  expenseId,
+  rootExpId,
+  balance,
+  splitAmount,
+  ownerId,
+  reload,
+  setReload,
+}) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [method, setMethod] = useState(PAYMENT_METHODS[0]);
@@ -36,8 +44,8 @@ function PaymentModal({ expenseId, rootExpId, balance, splitAmount, ownerId, rel
         amount: Number(amount),
         note,
       };
-      console.log("~PaymentModal new Payment");
-      console.log(newPayment);
+      // console.log("~PaymentModal new Payment");
+      // console.log(newPayment);
       setReload(reload + 1);
       // setErrors({})
       // console.log(err);
@@ -61,7 +69,7 @@ function PaymentModal({ expenseId, rootExpId, balance, splitAmount, ownerId, rel
         </select>
       </label>
       <label>
-      {showErrors && validationErrors.amount && (
+        {showErrors && validationErrors.amount && (
           <p className="validation-error">{validationErrors.amount}</p>
         )}
         <input
