@@ -148,7 +148,7 @@ function RecentActivityPage() {
   useEffect(() => {
     if (myDone && allDone && paymentState.inboundPayments?.length > 0) {
       setPayments2me(paymentState.inboundPayments);
-      console.log("payments2me = ", payments2me);
+      // console.log("payments2me = ", payments2me);
     }
   }, [allDone, myDone, paymentState, payments2me]);
 
