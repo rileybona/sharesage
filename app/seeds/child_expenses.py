@@ -10,7 +10,7 @@ def seed_child_expenses():
 
     dinner_expense2 = ChildExpense(root_expense_id=1, user_id=3, split_amount=83.34)
 
-    grocery_expense = ChildExpense(root_expense_id=2, user_id=2, split_amount=40, balance=66.67)
+    grocery_expense = ChildExpense(root_expense_id=2, user_id=3, split_amount=40, balance=66.67)
 
     travel_expense1 = ChildExpense(root_expense_id=3, user_id=1, split_amount=266.67)
 

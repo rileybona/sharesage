@@ -10,7 +10,7 @@ def seed_root_expenses():
     )
 
     smaller_expense = RootExpense(
-        owner_id=1, name="Groceries", amount="80", expense_type="Groceries"
+        owner_id=1, name="Groceries", amount="80", expense_type="Food"
     )
 
     big_expense = RootExpense(
