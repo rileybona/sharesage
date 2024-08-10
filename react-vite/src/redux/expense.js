@@ -1,4 +1,4 @@
-import { initial } from "underscore";
+// import { initial } from "underscore";
 
 const GET_ALL_EXPENSES = "expenses/GET_ALL_EXPENSES";
 const GET_EXPENSE_DETAILS = "expenses/GET_EXPENSE_DETAILS";

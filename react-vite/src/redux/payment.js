@@ -1,9 +1,9 @@
-import _ from "underscore";
+// import _ from "underscore";
 
 const GET_PAYMENT = "payment/getPayment";
 const ADD_PAYMENT = "payment/addPayment";
 const GET_INBOUND_PAYMENTS = "payment/getInboundPayments";
-const GET_USER_PAYMENTS = "payment/getUserPayments";
+// const GET_USER_PAYMENTS = "payment/getUserPayments";
 const CLEAR_PAYMENT = "payment/clearPayments";
 const GET_OUTBOUND_PAYMENTS = "payment/getOutboundPayments";
 
@@ -57,12 +57,12 @@ export const getUserOutboundPayments = () => async (dispatch) => {
   }
 };
 
-const getUserPayments = (payments) => {
-  return {
-    type: GET_USER_PAYMENTS,
-    payload: payments,
-  };
-};
+// const getUserPayments = (payments) => {
+//   return {
+//     type: GET_USER_PAYMENTS,
+//     payload: payments,
+//   };
+// };
 
 const clearPayments = (payments) => {
   return {
