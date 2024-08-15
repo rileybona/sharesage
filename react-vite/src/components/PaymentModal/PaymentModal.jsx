@@ -28,7 +28,8 @@ function PaymentModal({
   useEffect(() => {
     const errs = {};
     if (amount < 1) errs.amount = "Expense cost must be greater than 0";
-    if (amount > ((splitAmount - balance).toFixed(2))) errs.amount = "Payment may not exceed balance."
+    console.log("Balance calc is reading : ", (splitAmount - balance).toFixed(2));
+    if (parseInt(amount) > ((splitAmount - balance).toFixed(2))) errs.amount = "Payment may not exceed balance."
     setValidationErrors(errs);
   }, [amount]);
 
@@ -51,8 +52,8 @@ function PaymentModal({
       // setErrors({})
       // console.log(err);
       return dispatch(addAPayment(newPayment, expenseId)).then(() =>
-        closeModal(),
-        setReload(reload + 1)
+        setReload(reload + 1),
+        closeModal()
       );
     }
   };
