@@ -64,7 +64,7 @@ function CreateExpenseModal({ reload, setReload }) {
     if (!Object.keys(validationErrors).length) {
       const payeeCount = selectedUsers.length;
 
-    const split_amount = amount / payeeCount;
+    const split_amount = + (amount / (payeeCount + 1)).toFixed(2);
 
     let childExpensePayload = null;
     if (selectedUsers.length) {

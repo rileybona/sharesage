@@ -14,7 +14,15 @@ function OpenModalButton({
     if (typeof onButtonClick === "function") onButtonClick();
   };
 
-  return <button onClick={onClick}>{buttonText}</button>;
+  return (
+    <button
+      className="border-2 p-2 rounded-full"
+      type="button"
+      onClick={onClick}
+    >
+      {buttonText}
+    </button>
+  );
 }
 
 export default OpenModalButton;

@@ -19,7 +19,7 @@ function Test() {
     dispatch(getPayments(expenseId));
   }, [dispatch, expenseId]);
 
-  console.log(payments);
+  // console.log(payments);
 
   if (!payments) {
     return <div>Loading...</div>;

@@ -1,9 +1,12 @@
-import _ from "underscore";
+// import _ from "underscore";
 
 const GET_PAYMENT = "payment/getPayment";
 const ADD_PAYMENT = "payment/addPayment";
 const GET_INBOUND_PAYMENTS = "payment/getInboundPayments";
-const GET_USER_PAYMENTS = "payment/getUserPayments";
+// const GET_USER_PAYMENTS = "payment/getUserPayments";
+const CLEAR_PAYMENT = "payment/clearPayments";
+const GET_OUTBOUND_PAYMENTS = "payment/getOutboundPayments";
+
 const addPayment = (payment) => {
   return {
     type: ADD_PAYMENT,
@@ -18,16 +21,52 @@ const getPayment = (payments) => {
   };
 };
 
-const getInboundPayments = (payments) => {
-  return {
-    type: GET_INBOUND_PAYMENTS,
-    payload: payments,
-  };
+const getInboundPayments = (payments) => ({
+  type: GET_INBOUND_PAYMENTS,
+  payments,
+});
+
+const getOutboundPayments = (payments) => ({
+  type: GET_OUTBOUND_PAYMENTS,
+  payments,
+});
+
+export const getUserInboundPayments = () => async (dispatch) => {
+  const response = await fetch("/api/payments/inbound");
+  if (response.ok) {
+    const payments = await response.json();
+    return dispatch(getInboundPayments(payments));
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
 };
 
-const getUserPayments = (payments) => {
+export const getUserOutboundPayments = () => async (dispatch) => {
+  const response = await fetch("/api/payments/outbound");
+  if (response.ok) {
+    const payments = await response.json();
+    return dispatch(getOutboundPayments(payments));
+  } else if (response.status < 500) {
+    const errorMessages = await response.json();
+    return errorMessages;
+  } else {
+    return { server: "Something went wrong. Please try again" };
+  }
+};
+
+// const getUserPayments = (payments) => {
+//   return {
+//     type: GET_USER_PAYMENTS,
+//     payload: payments,
+//   };
+// };
+
+const clearPayments = (payments) => {
   return {
-    type: GET_USER_PAYMENTS,
+    type: CLEAR_PAYMENT,
     payload: payments,
   };
 };
@@ -70,6 +109,7 @@ export const getPaymentsToMe = (expensesIOwn) => async (dispatch) => {
 
 export const getPayments = (expense_id) => async (dispatch) => {
   let response;
+  // console.log("~getPaymentsThunk: receiving ExpenseID of ", expense_id);
   if (expense_id) {
     response = await fetch(`/api/expenses/${expense_id}/payments`);
   } else {
@@ -78,36 +118,20 @@ export const getPayments = (expense_id) => async (dispatch) => {
 
   if (response.ok) {
     const payments = await response.json();
+    // console.log("fetch returns :", payments);
     return dispatch(getPayment(payments));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
+    console.log(errorMessages)
     return errorMessages;
   } else {
+    // console.log("~getPayments Thunk - fetch failed");
     return { server: "Something went wrong. Please try again" };
   }
 };
 
-export const getCurrentUserPayments = (expenseIdsArr) => async (dispatch) => {
-  if (expenseIdsArr.length)
-    try {
-      const paymentPromises = expenseIdsArr.map((id) =>
-        fetch(`/api/expenses/${id}/payments`).then((response) => {
-          if (!response.ok) {
-            throw new Error(`Failed to fetch payments for expense ID ${id}`);
-          }
-          return response.json();
-        })
-      );
-
-      const payments = await Promise.all(paymentPromises);
-
-      dispatch(getUserPayments(payments));
-    } catch (error) {
-      console.error("Error fetching payments:", error);
-    }
-};
-
 export const addAPayment = (data, expense_id) => async (dispatch) => {
+  // console.log("~addPayment thunk");
   // console.log(JSON.stringify(data));
   const response = await fetch(`/api/expenses/${expense_id}/payments`, {
     method: "POST",
@@ -128,8 +152,16 @@ export const addAPayment = (data, expense_id) => async (dispatch) => {
   }
 };
 
+export const clearAllPayments = () => async (dispatch) => {
+  return dispatch(clearPayments(true));
+};
+
 // Reducer
-const initialState = { payments: [], payment: {}, user_payments: [] };
+const initialState = {
+  payments: [],
+  payment: {},
+  user_payments: { inbound: [], outbound: [] },
+};
 
 const paymentReducer = (state = initialState, action) => {
   let newState;
@@ -140,28 +172,32 @@ const paymentReducer = (state = initialState, action) => {
         payments: action.payments,
       };
       return newState;
-    case GET_USER_PAYMENTS: {
-      newState = { ...state };
-      for (const arr of action.payload) {
-        for (const i of arr) {
-          if (_.findWhere(newState.user_payments, i) == null) {
-            newState.user_payments.push(i);
-          }
-        }
-      }
-      return newState;
-    }
-    case GET_INBOUND_PAYMENTS:
-      newState = {
-        ...state,
-        inboundPayments: action.payload,
-      };
-      return newState;
     case ADD_PAYMENT:
       newState = {
         ...state,
         payments: [...state.payments, action.payment],
         payment: { [action.payment.id]: action.payment },
+      };
+      return newState;
+    case CLEAR_PAYMENT:
+      newState = initialState;
+      return newState;
+    case GET_OUTBOUND_PAYMENTS:
+      newState = {
+        ...state,
+        user_payments: {
+          inbound: state.user_payments.inbound,
+          outbound: action.payments,
+        },
+      };
+      return newState;
+    case GET_INBOUND_PAYMENTS:
+      newState = {
+        ...state,
+        user_payments: {
+          inbound: action.payments,
+          outbound: state.user_payments.outbound,
+        },
       };
       return newState;
     default:

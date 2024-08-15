@@ -15,10 +15,17 @@ def get_payments(expense_id):
 @login_required
 def post_new_payment(expense_id):
     req_body = request.get_json()
+    print("entering create payment route !")
+    print(req_body)
     return PaymentUtils.create_new_payment(req_body, expense_id)
 
 
-@payment.route("/payments/current", methods=["GET"])
+@payment.route("/payments/outbound", methods=["GET"])
 @login_required
-def get_user_payments():
+def get_outbound_payments():
     return PaymentUtils.get_payments_by_user()
+
+@payment.route("/payments/inbound", methods=["GET"])
+@login_required
+def get_inbound_payments(): 
+    return PaymentUtils.get_payments_to_user()

@@ -1,3 +1,5 @@
+// import { initial } from "underscore";
+
 const GET_ALL_EXPENSES = "expenses/GET_ALL_EXPENSES";
 const GET_EXPENSE_DETAILS = "expenses/GET_EXPENSE_DETAILS";
 const ADD_EXPENSE = "expense/ADD_EXPENSE";
@@ -6,6 +8,7 @@ const GET_PAYEES = "/expense/GET_PAYEES";
 const GET_EXPENSE_PAYEES = "expense/GET_EXPENSE_PAYEES";
 //add payees to expense doesn't need its own store action.
 const UPDATE_EXPENSE = "expenses/UPDATE_EXPENSE";
+const CLEAR_EXPENSE = "expeneses/CLEAR_EXPENSE";
 
 const loadExpenses = (expenses) => ({
   type: GET_ALL_EXPENSES,
@@ -50,6 +53,13 @@ const updateExpense = (expense) => {
   };
 };
 
+const clearExpense = (expense) => {
+  return {
+    type: CLEAR_EXPENSE,
+    payload: expense,
+  };
+};
+
 export const getAllExpenses = () => async (dispatch) => {
   try {
     const response = await fetch("/api/expenses/");
@@ -61,7 +71,7 @@ export const getAllExpenses = () => async (dispatch) => {
       throw new Error("failed to get expenses");
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 };
@@ -76,7 +86,7 @@ export const getSingleExpense = (expenseId) => async (dispatch) => {
       throw new Error(`failed to get expense ${expenseId}`);
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 };
@@ -93,7 +103,7 @@ export const addAnExpense = (data, payload2) => async (dispatch) => {
   if (response.ok) {
     const expense = await response.json();
     if (payload2) {
-      dispatch(addExpensePayees(expense.id, payload2))
+      dispatch(addExpensePayees(expense.id, payload2));
     }
     return dispatch(addExpense(expense));
   } else if (response.status < 500) {
@@ -118,8 +128,6 @@ export const updateAnExpense = (id, expense) => async (dispatch) => {
     const expense = await response.json();
     return dispatch(updateExpense(expense));
   } else {
-    const error = await response.json();
-    console.log(error);
     return { message: "Something went wrong" };
   }
 };
@@ -127,7 +135,10 @@ export const updateAnExpense = (id, expense) => async (dispatch) => {
 export const getExpensePayees = (expenseId) => async (dispatch) => {
   const response = await fetch(`/api/expenses/${expenseId}/payees`)
     .then((res) => res.json().then((res) => res.payees))
-    .catch((e) => console.log(e.message));
+    .catch((e) => {
+      throw new Error(e);
+    });
+  // .catch((e) => console.log(e.message));
   if (response.length) {
     const payload = {};
     payload.payees = response.reduce((acc, el) => {
@@ -153,7 +164,9 @@ export const addExpensePayees = (expenseId, payload) => async (dispatch) => {
   if (response.ok) {
     const response = await fetch(`/api/expenses/${expenseId}/payees`)
       .then((res) => res.json().then((res) => res.payees))
-      .catch((e) => console.log(e.message));
+      .catch((e) => {
+        throw new Error(e);
+      });
     if (response.length) {
       const payload = {};
       payload.payees = response.reduce((acc, el) => {
@@ -195,9 +208,13 @@ export const getListOfPayees = () => async (dispatch) => {
   }
 };
 
+export const clearAllExpense = () => async (dispatch) => {
+  return dispatch(clearExpense(true));
+};
+
 // REDUCER
 const expenseReducer = (
-  state = { root_expenses: {}, expense_details: {}, payees: []},
+  state = { root_expenses: {}, expense_details: {}, payees: [] },
   action
 ) => {
   switch (action.type) {
@@ -235,6 +252,10 @@ const expenseReducer = (
     case GET_PAYEES: {
       state.payees = action.payees;
       return state;
+    }
+    case CLEAR_EXPENSE: {
+      const newState = { root_expenses: {}, expense_details: {}, payees: [] };
+      return newState;
     }
     default:
       return state;

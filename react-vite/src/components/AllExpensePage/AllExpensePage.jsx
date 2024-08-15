@@ -55,16 +55,6 @@ function AllExpensePage() {
   // const [done, setDone] = useState(false);
   const [expenses, setExpenses] = useState([]);
 
-  // TEMPORARY IMAGE HARDCODE ------
-  // define type images - example method
-  //   const typeImgUrls = new Map();
-  //     typeImgUrls.set("Food", "../../public/food.png");
-  //     typeImgUrls.set("Travel", "../../public/travel.png");
-  //     typeImgUrls.set("Home", "../../public/home.png");
-  //     typeImgUrls.set("Entertainment", "../../public/entertainment.png");
-  //     typeImgUrls.set("Other", "../../public/other.png");
-  // --------------------------------
-
   const expenseState = useSelector((state) => state.expense.root_expenses);
 
   // useEffect on page render
@@ -110,12 +100,12 @@ function AllExpensePage() {
               }
             />
           </div>
-          {expenses.map((expense) => (
-            <>
+          {expenses.map((expense, i) => (
+            <div key={i}>
               <div className="expense-card" key={expense.id}>
                 <NavLink
                   to={`/expenses/${expense.id}`}
-                  className="ecard-navLink"
+                  className="ecard-navLink bg-gray-100 p-3 border-2 rounded-lg"
                 >
                   <div className="ecard-left">
                     <div className="ecard-date">
@@ -140,8 +130,7 @@ function AllExpensePage() {
                   </div>
                 </NavLink>
               </div>
-              <hr className="rounded" />
-            </>
+            </div>
           ))}
         </div>
       )}

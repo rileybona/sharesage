@@ -4,20 +4,12 @@ div.main-content {
   width: 100%;
 
   & > div.main {
-    /* testing out background image */
-    background-image: url("./background.png");
-    /* background-repeat: no-repeat; */
-    opacity: 85%;
-
     border: 1px solid lightgrey;
     width: 600px;
     min-height: 80vh;
     margin: 0 20px;
     border-radius: 1em;
-    background-color: rgba(18, 107, 68, 0.725);
-    /* display: flex; */
     flex-direction: column;
-    /* align-items: center; */
     align-items: center;
     box-shadow: 0 0 5px lightgrey;
     padding: 1em;
@@ -93,8 +85,6 @@ nav#sidebar li {
 div.main h1 {
   width: 200px;
   text-align: center;
-  background-color: rgb(177, 141, 90);
-  border: ridge, rgb(93, 66, 41), 5px;
 }
 
 div.main h3 {

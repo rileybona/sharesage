@@ -155,6 +155,7 @@ class ChildExpenseUtils:
                 "root_expense_id": obj.root_expense_id,
                 "user_id": obj.user_id,
                 "split_amount": obj.split_amount,
+                "balance": obj.balance,
             }
         except:
             raise Exception("Invalid Child Expense Object from query")
@@ -220,7 +221,7 @@ class ChildExpenseUtils:
                         ChildExpense.id == expense["id"]
                     ).first()
                     db.session.delete(expense)
-                    # db.session.commit()
+                    db.session.commit()
 
         # create new child expenses for new payees
         for newbie in payload["new_payees"]:
@@ -250,6 +251,21 @@ class ChildExpenseUtils:
         expense["payments"] = PaymentUtils.get_all_payments(int(id))
         return expense
 
+    @staticmethod
+    def get_root_expense_id(id):
+        expense = ChildExpenseUtils.parse_data(
+            ChildExpense.query.filter(ChildExpense.id == int(id)).first()
+        )
+        return expense["root_expense_id"]
+
+    @staticmethod
+    def add_to_balance(id, amount):
+        """Add specified amount to the 'balance' (amount paid) of a child expense"""
+        expense = ChildExpense.query.filter(ChildExpense.id == int(id)).first()
+
+        expense.balance += amount
+        db.session.commit()
+
 
 class PaymentUtils:
     @staticmethod
@@ -263,13 +279,14 @@ class PaymentUtils:
                 "method": payment_obj.method,
                 "amount": payment_obj.amount,
                 "created_at": payment_obj.created_at,
+                "recipient_id": payment_obj.recipient_id,
             }
         except:
             raise Exception("Invalid Payment Object from query")
 
     @staticmethod
     def get_all_payments(expense_id):
-        all_payments = Payment.query.filter(Payment.expense_id == expense_id)
+        all_payments = Payment.query.filter(Payment.root_expense_id== expense_id)
 
         return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))
 
@@ -280,11 +297,17 @@ class PaymentUtils:
             method=details.get("method"),
             amount=details.get("amount"),
             expense_id=expense_id,
+            root_expense_id=details.get("root_expense_id"),
             user_id=AuthUtils.get_current_user()["id"],
+            recipient_id=details.get("recipient_id"),
         )
         try:
             db.session.add(new_payment)
             db.session.commit()
+
+            # UPDATE BALANCE
+            ChildExpenseUtils.add_to_balance(expense_id, amount=(details.get("amount")))
+
             return PaymentUtils.parse_data(new_payment)
         except Exception as e:
             raise e
@@ -299,9 +322,27 @@ class PaymentUtils:
             parsed_payment["recipient"] = UserUtils.get_user_by_child_expense_id(
                 parsed_payment["expense_id"]
             )
+            parsed_payment["root_expense_id"] = ChildExpenseUtils.get_root_expense_id(
+                parsed_payment["expense_id"]
+            )
             return parsed_payment
 
         return list(map(lambda x: addOwner(x), all_payments))
+
+    @staticmethod
+    def get_payments_to_user():
+        user_id = AuthUtils.get_current_user()["id"]
+        payments = Payment.query.filter(Payment.recipient_id == user_id)
+
+        def addPayee(payment):
+            parsed_payment = PaymentUtils.parse_data(payment)
+            parsed_payment["root_expense_id"] = ChildExpenseUtils.get_root_expense_id(
+                parsed_payment["expense_id"]
+            )
+            return parsed_payment
+
+        return list(map(lambda x: addPayee(x), payments))
+
 
 class UserUtils:
     @staticmethod
@@ -335,9 +376,13 @@ class UserUtils:
     @staticmethod
     def get_user_by_child_expense_id(id):
         """Returns user info by associated child expense id"""
-        root_expense_id = ChildExpenseUtils.get_child_expense_details_by_id(id)["root_expense_id"]
+        root_expense_id = ChildExpenseUtils.get_child_expense_details_by_id(id)[
+            "root_expense_id"
+        ]
         print(ChildExpenseUtils.get_child_expense_details_by_id(id))
-        owner_id = ExpenseUtils.parse_data(ExpenseUtils.get_expense_by_id(root_expense_id))["owner_id"]
+        owner_id = ExpenseUtils.parse_data(
+            ExpenseUtils.get_expense_by_id(root_expense_id)
+        )["owner_id"]
         print(ExpenseUtils.parse_data(ExpenseUtils.get_expense_by_id(root_expense_id)))
 
         return UserUtils.get_user_by_id(owner_id)

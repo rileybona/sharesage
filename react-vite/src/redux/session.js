@@ -27,7 +27,7 @@ export const getAllUsers = () => async (dispatch) => {
       throw new Error("Failed to fetch users");
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 };
@@ -63,7 +63,7 @@ export const thunkLogin = (credentials) => async (dispatch) => {
 };
 
 export const thunkSignup = (user) => async (dispatch) => {
-  console.log(user)
+  // console.log(user);
   const response = await fetch("/api/auth/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

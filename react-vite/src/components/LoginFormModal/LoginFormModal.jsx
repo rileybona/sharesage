@@ -20,11 +20,11 @@ function LoginFormModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const serverResponse = await dispatch(
+    const serverResponse = dispatch(
       thunkLogin({
         email,
         password,
-      })
+      }),
     );
 
     if (serverResponse) {

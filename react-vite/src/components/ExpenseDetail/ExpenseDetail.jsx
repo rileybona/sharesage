@@ -23,7 +23,6 @@ export default function ExpenseDetail() {
   const user = useSelector((state) => state.session.user);
   const expense = useSelector((state) => state.expense.expense_details);
 
-
   useEffect(() => {
     dispatch(expenseActions.getSingleExpense(parseInt(expenseId)))
       .then(() => setLoaded(true))
@@ -37,7 +36,7 @@ export default function ExpenseDetail() {
   if (!loaded) return <h3>Loading</h3>;
   //for some reason, onModalClose triggers when on modal open...
   else {
-    const child_expense_id = expense[expenseId].child_expenses.find(
+    const child_expense = expense[expenseId].child_expenses.find(
       (e) => e.user_id == user.id
     );
     return (
@@ -70,7 +69,11 @@ export default function ExpenseDetail() {
               buttonText="Settle up"
               modalComponent={
                 <PaymentModal
-                  expenseId={child_expense_id.id}
+                  expenseId={child_expense.id}
+                  rootExpId={child_expense.root_expense_id}
+                  balance={child_expense.balance.toFixed(2)}
+                  splitAmount={child_expense.split_amount}
+                  ownerId={expense[expenseId].owner_id}
                   reload={reload}
                   setReload={setReload}
                 />

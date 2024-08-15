@@ -1,8 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* TODO: Add sitewide styles */
 body {
   margin: 0px;
   padding: 0px;
-  font: 1em "Roboto", sans-serif;
+  font:
+    1em "Roboto",
+    sans-serif;
 }
 
 ul {

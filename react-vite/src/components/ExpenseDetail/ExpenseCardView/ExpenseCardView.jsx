@@ -9,10 +9,15 @@ export default function ExpenseCardView({ id }) {
   const user = useSelector((state) => state.session.user);
   const child_expenses = root_expense.child_expenses;
   let split_amount = null;
+  let balance = null;
+  let owe = null;
   if (child_expenses.length && user.id != root_expense.owner_id) {
-    split_amount = child_expenses.find(
-      (child) => child.user_id === user.id
-    ).split_amount;
+    let my_child_expense = child_expenses.find((child) => child.user_id === user.id);
+    split_amount = my_child_expense.split_amount;
+    balance = my_child_expense.balance;
+    owe = + (split_amount - balance).toFixed(2);
+    
+
     // console.log(split_amount);
   }
   return (
@@ -33,7 +38,7 @@ export default function ExpenseCardView({ id }) {
           17
         )}`}</p>
         {user.id != root_expense.owner_id && (
-          <p>{`Your balance: ${split_amount}`}</p>
+          <p>{`Your balance: ${owe}`}</p>
         )}
         <p id="expense-desc">{`Added by ${root_expense.owner.first_name} ${
           root_expense.owner.last_name

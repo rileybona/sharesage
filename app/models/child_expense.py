@@ -17,6 +17,7 @@ class ChildExpense(db.Model):
         db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False
     )
     split_amount = db.Column(db.Float, nullable=False, default=0)
+    balance = db.Column(db.Float, nullable=False, default=0)
 
     # root_expense : child_expense relationship
     root_expense_child_expenses = db.relationship(

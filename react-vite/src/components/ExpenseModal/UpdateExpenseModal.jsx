@@ -12,7 +12,14 @@ import makeAnimated from "react-select/animated";
 
 import "./UpdateExpenseModal.css";
 
-const EXPENSE_TYPE = ["Other", "Food", "Travel", "Utilites", "Home", "Entertainment"];
+const EXPENSE_TYPE = [
+  "Other",
+  "Food",
+  "Travel",
+  "Utilites",
+  "Home",
+  "Entertainment",
+];
 
 const EXPENSE_TYPE_OPTIONS = EXPENSE_TYPE.map((e) => ({
   value: e,
@@ -142,7 +149,8 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
         ? selectedUsers.length
         : defaultOptions.length;
 
-      const split_amount = amount / payeeCount;
+      const split_amount = +(amount / (payeeCount + 1)).toFixed(2);
+      // console.log("~updateExpense s.amount = ", split_amount);
       const existingEmails = defaultOptions.map((e) => e.value);
 
       const childExpensePayload = selectedUsers.length
@@ -184,7 +192,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
         expense_type: type,
         transaction_date: convertDateSubmit(date),
       };
-      console.log(newExpense);
+      newExpense;
       dispatch(updateAnExpense(expenseId, newExpense));
       dispatch(addExpensePayees(expenseId, childExpensePayload))
         .then(() => {
@@ -262,7 +270,7 @@ export default function UpdateExpenseModal({ expenseId, setReload, reload }) {
             type="date"
             value={date}
             onChange={(e) => {
-              console.log(e.target.value);
+              // console.log(e.target.value);
               setDate(e.target.value);
             }}
           ></input>

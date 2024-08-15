@@ -8,6 +8,8 @@ import SignupFormModal from "../SignupFormModal";
 import { useNavigate } from "react-router-dom";
 
 import "./Navigation.css";
+import { clearAllExpense } from "../../redux/expense";
+import { clearAllPayments } from "../../redux/payment";
 
 function ProfileButton() {
   const navigate = useNavigate();
@@ -40,8 +42,9 @@ function ProfileButton() {
   const logout = (e) => {
     e.preventDefault();
     dispatch(thunkLogout());
+    dispatch(clearAllExpense())
+    dispatch(clearAllPayments())
     navigate("/");
-    window.location.reload();
     closeMenu();
   };
 
