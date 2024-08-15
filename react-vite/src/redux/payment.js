@@ -109,6 +109,7 @@ export const getPaymentsToMe = (expensesIOwn) => async (dispatch) => {
 
 export const getPayments = (expense_id) => async (dispatch) => {
   let response;
+  // console.log("~getPaymentsThunk: receiving ExpenseID of ", expense_id);
   if (expense_id) {
     response = await fetch(`/api/expenses/${expense_id}/payments`);
   } else {
@@ -117,11 +118,14 @@ export const getPayments = (expense_id) => async (dispatch) => {
 
   if (response.ok) {
     const payments = await response.json();
+    // console.log("fetch returns :", payments);
     return dispatch(getPayment(payments));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
+    console.log(errorMessages)
     return errorMessages;
   } else {
+    // console.log("~getPayments Thunk - fetch failed");
     return { server: "Something went wrong. Please try again" };
   }
 };

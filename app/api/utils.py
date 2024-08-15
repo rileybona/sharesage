@@ -286,7 +286,7 @@ class PaymentUtils:
 
     @staticmethod
     def get_all_payments(expense_id):
-        all_payments = Payment.query.filter(Payment.expense_id == expense_id)
+        all_payments = Payment.query.filter(Payment.root_expense_id== expense_id)
 
         return list(map(lambda x: PaymentUtils.parse_data(x), all_payments))
 
