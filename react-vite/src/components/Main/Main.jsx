@@ -44,14 +44,21 @@ function Main() {
             <div className="border-2 border-blue-500 rounded-full overflow-hidden w-[80px]">
               <img src="https://avatars.githubusercontent.com/u/151580529?v=4" />
             </div>
-            <p className="text-sm">Philip Nguyen</p>
+            <p className="text-sm">
+              Philip
+              <br />
+              Nguyen
+            </p>
           </div>
 
           <div className="bg-gray-100 w-fit p-3 rounded-lg">
             <div className="border-2 border-blue-500 rounded-full overflow-hidden w-[80px]">
               <img src="https://avatars.githubusercontent.com/u/93614894?v=4" />
             </div>
-            <p className="text-sm">Tim Macfarlane</p>
+            <p className="text-sm">
+              Tim
+              <br /> Macfarlane
+            </p>
           </div>
         </div>
         <p className="font-bold my-7">
