@@ -12,7 +12,7 @@ import "./RecentActivityPage.css";
 
 function PaymentCard({ payment, inbound, otherUser }) {
   return (
-    <div className="payment-card">
+    <div className="border-2 p-3 m-2 rounded-lg bg-gray-100 hover:bg-sky-300">
       <NavLink to={`/expenses/${payment.root_expense_id}`}>
         {inbound ? (
           <p>{`${otherUser.first_name} ${otherUser.last_name} paid me $${payment.amount}`}</p>
@@ -27,8 +27,10 @@ function PaymentCard({ payment, inbound, otherUser }) {
 
 const constructPaymentsView = (payments, users, inbound = true) => {
   return (
-    <div className="payment-container">
-      <p>{inbound ? "Payments received" : "Payments made"} </p>
+    <div className="oveflow-scroll">
+      <p className="text-black font-bold m-2">
+        {inbound ? "Payments received" : "Payments made"}{" "}
+      </p>
       {payments.map((e) => (
         <PaymentCard
           key={e.id}

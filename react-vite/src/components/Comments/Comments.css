@@ -24,8 +24,6 @@ div#comments {
 
     & > div.comment-header {
       margin-bottom: 10px;
-
-      color: rgba(68, 66, 66, 0.528);
     }
 
     & > div.comment-buttons {
@@ -48,8 +46,6 @@ div#comments {
   background-color: rgb(177, 141, 90);
   border: ridge, rgb(93, 66, 41), 5px;
 }
-
-
 
 #comments button {
   background-color: white;

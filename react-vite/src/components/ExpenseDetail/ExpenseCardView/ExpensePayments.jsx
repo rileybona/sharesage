@@ -24,12 +24,19 @@ export default function ExpensePayments({ expenseId }) {
   return (
     <div>
       {payments.map((payment) => (
-        <div className="payment-card" key={payment.id}>
+        <div
+          className="flex flex-col bg-gray-100 rounded-lg gap-2 m-3 p-2"
+          key={payment.id}
+        >
           <div>
             {" "}
             <p>
-              {`${users[payment.user_id].first_name}`} paid ${payment.amount}{" "}
-              via {payment.method} on {payment.created_at.slice(4, 17)}
+              <span className="font-bold">{`${users[payment.user_id].first_name}`}</span>{" "}
+              paid <span className="text-green-500">${payment.amount}</span> via{" "}
+              {payment.method} on{" "}
+              <span className="font-semibold">
+                {payment.created_at.slice(4, 17)}
+              </span>
             </p>
           </div>
           <div className="payment-note">

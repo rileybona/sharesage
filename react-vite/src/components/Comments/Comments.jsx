@@ -20,10 +20,8 @@ function Comments() {
 
   return (
     <div id="comments">
-      <div id="comment-sign-container">
-        {/* <img src="../../../public/sign1.png" className="sign-img-comments"/> */}
-        <h1 id="commenth1">Comments</h1>
-      </div>
+      <p className="font-bold text-lg m-2">Comments</p>
+
       <OpenModalButton
         className="post-comment-button"
         buttonText="Post your comment"
@@ -36,14 +34,14 @@ function Comments() {
           return a_dateString - b_dateString;
         })
         ?.map((comment, i) => (
-          <div className="comment" key={i}>
-            <div className="comment-header">
+          <div className="my-3 p-2 bg-gray-100 rounded-lg" key={i}>
+            <p className="text-gray-400 m-2">
               Created {comment?.created_at?.slice(0, -13)} by{" "}
               {comment?.user?.first_name}
-            </div>
+            </p>
             <div className="comment-body">{comment?.text}</div>
             {comment.user_id == userSession.id && (
-              <div className="comment-buttons">
+              <div className="flex gap-3 m-2">
                 <OpenModalButton
                   buttonText="Update"
                   modalComponent={

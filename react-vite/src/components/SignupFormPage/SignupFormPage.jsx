@@ -34,7 +34,7 @@ function SignupFormPage() {
         first_name: firstName,
         last_name: lastName,
         password,
-      })
+      }),
     );
 
     if (serverResponse) {
