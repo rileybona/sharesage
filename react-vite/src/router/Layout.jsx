@@ -37,7 +37,6 @@ export default function Layout() {
             <div className="right-bar">{/* <Sidebar /> */}</div>
           </>
         </div>
-        )
         <Modal />
       </ModalProvider>
     </>
