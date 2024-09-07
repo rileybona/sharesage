@@ -10,7 +10,7 @@ export default function LandingPage() {
                         <span>
                             Words Here Lorem Ipsum
                         </span>
-                        <button className="w-20 rounded-md border-black border-2">Sign Up</button>
+                        <button className="w-20 rounded-md border-black border-2 m-20">Sign Up</button>
                 </div>
 
                 <img src="/other.png" alt="Sage" className="w-2/5"/>
